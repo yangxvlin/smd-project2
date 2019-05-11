@@ -78,7 +78,7 @@ public class Simulation extends ApplicationAdapter implements InputProcessor {
 		drivingProperties.setProperty("Health", "100");
 		drivingProperties.setProperty("Conserve", "fuel");
 		
-		try (FileReader inStream = new FileReader("assets/Driving.Properties")) {
+		try (FileReader inStream = new FileReader("Driving.Properties")) {
 			drivingProperties.load(inStream);
 		} catch (IOException e) {
 			e.printStackTrace();
