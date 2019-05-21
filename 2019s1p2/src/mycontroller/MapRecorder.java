@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MapRecorder {
     /**
-     * reference mapping between coordinates and map tile in World
+     * mapping between coordinates and map tile in World
      */
     private HashMap<Coordinate, MapTile> tileMap;
 
