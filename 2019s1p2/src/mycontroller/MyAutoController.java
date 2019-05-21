@@ -7,7 +7,7 @@ import world.Car;
 /**
  *
  */
-public class MyAutoController extends CarController{
+public class MyAutoController extends CarController {
 
     private MapRecorder mapRecorder;
 
