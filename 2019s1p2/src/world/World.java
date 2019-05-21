@@ -167,7 +167,7 @@ public class World {
 		return this.car;
 	}
 	
-	public static HashMap<Coordinate,MapTile> getMap(){
+	public static HashMap<Coordinate, MapTile> getMap(){
 		if(providedMapTiles.keySet().size() == 0){ // Lazy initialisation
 			for(Coordinate coord : mapTiles.keySet()){
 				int reverseYAxis = MAP_HEIGHT-coord.y;
