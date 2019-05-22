@@ -23,10 +23,10 @@ public class MyAutoController extends CarController {
 	    super(car);
 
 	    this.mapRecorder = new MapRecorder();
-	    this.mapRecorder.updateInitialMap(super.getMap(), MapTile.Type.ROAD);
+	    this.mapRecorder.updateInitialMap(super.getMap());
 
-        driveStrategy = StrategyFactory.getInstance()
-                                        .createConserveStrategy(Simulation.toConserve());
+//        driveStrategy = StrategyFactory.getInstance()
+//                                        .createConserveStrategy(Simulation.toConserve());
 	}
 
     /**
@@ -35,6 +35,7 @@ public class MyAutoController extends CarController {
 	@Override
 	public void update() {
 	    mapRecorder.updateMapRecorder(super.getView());
+//	    mapRecorder.print();
 
         Coordinate carPosition = new Coordinate(getPosition());
 

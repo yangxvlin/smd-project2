@@ -344,7 +344,7 @@ public class Car extends Sprite{
 				subMap.put(new Coordinate(x,y),tile);
 			}
 		}
-		 System.out.printf("subMap: %s%n", subMap);
+//		 System.out.printf("subMap: %s%n", subMap);
 		return subMap;
 	}
 

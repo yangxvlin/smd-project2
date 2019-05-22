@@ -129,4 +129,13 @@ public class MapRecorder {
         /* update coordinate status */
         updateCoordinateStatue(c, currentTileAdapter);
     }
+
+    public void print() {
+        for (Coordinate c: coordinateTileMap.keySet()) {
+            System.out.println(String.format("(%s), type: %s, status: %s",
+                    c.toString(),
+                    coordinateTileMap.get(c).getType().toString(),
+                    mapStatus.get(c).toString()));
+        }
+    }
 }
