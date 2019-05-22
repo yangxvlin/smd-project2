@@ -1,6 +1,5 @@
 package mycontroller.TileAdapter;
 
-import org.omg.CORBA.TIMEOUT;
 import tiles.MapTile;
 
 /**

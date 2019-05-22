@@ -1,6 +1,6 @@
 package mycontroller;
 
-import tiles.LavaTrap;
+import mycontroller.TileAdapter.ITileAdapter;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.World;
@@ -24,12 +24,12 @@ public class MapRecorder {
     /**
      * mapping between coordinates and map tile in World
      */
-    private HashMap<Coordinate, MapTile> tileMap;
+    private HashMap<Coordinate, ITileAdapter> coordinateTileMap;
 
     /**
      * mapping between tile type and coordinates
      */
-    private HashMap<TileClassifier.TileType, ArrayList<Coordinate>> tileTypeMap;
+    private HashMap<ITileAdapter.TileType, ArrayList<Coordinate>> tileTypeCoordinatesMap;
 
 //    public static final HashMap<>
 
@@ -39,9 +39,8 @@ public class MapRecorder {
     private TileStatus[][] mapStatus;
 
     public MapRecorder() {
-        this.tileMap = new HashMap<>();
-
-        this.tileTypeMap = new HashMap<>();
+        this.coordinateTileMap      = new HashMap<>();
+        this.tileTypeCoordinatesMap = new HashMap<>();
 
         this.mapStatus = new TileStatus[World.MAP_WIDTH][World.MAP_HEIGHT];
 

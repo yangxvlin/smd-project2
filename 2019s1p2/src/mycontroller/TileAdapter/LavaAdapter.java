@@ -1,6 +1,6 @@
 package mycontroller.TileAdapter;
 
-import tiles.LavaTrap;
+import tiles.MapTile;
 
 /**
  * Xulin Yang, 904904
@@ -10,9 +10,9 @@ import tiles.LavaTrap;
  **/
 
 public class LavaAdapter implements ITileAdapter {
-    private LavaTrap lavaTile;
+    private MapTile lavaTile;
 
-    public LavaAdapter(LavaTrap lavaTile) {
+    public LavaAdapter(MapTile lavaTile) {
         this.lavaTile = lavaTile;
     }
 
