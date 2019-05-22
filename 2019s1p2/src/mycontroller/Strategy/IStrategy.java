@@ -1,5 +1,7 @@
 package mycontroller.Strategy;
 
+import mycontroller.MapRecorder;
+
 /**
  * Xulin Yang, 904904
  *
@@ -8,4 +10,6 @@ package mycontroller.Strategy;
  **/
 
 public interface IStrategy {
+
+    void updateCost(MapRecorder mapRecorder);
 }

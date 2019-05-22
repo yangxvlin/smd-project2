@@ -1,7 +1,10 @@
 package mycontroller;
 
 import controller.CarController;
+import mycontroller.Strategy.IStrategy;
+import swen30006.driving.Simulation;
 import tiles.MapTile;
+import utilities.Coordinate;
 import world.Car;
 
 /**
@@ -10,6 +13,8 @@ import world.Car;
 public class MyAutoController extends CarController {
 
     private MapRecorder mapRecorder;
+
+    private IStrategy driveStrategy;
 
 	/**
 	 * @param car
@@ -20,6 +25,8 @@ public class MyAutoController extends CarController {
 	    this.mapRecorder = new MapRecorder();
 	    this.mapRecorder.updateInitialMap(super.getMap(), MapTile.Type.ROAD);
 
+        driveStrategy = StrategyFactory.getInstance()
+                                        .createConserveStrategy(Simulation.toConserve());
 	}
 
     /**
@@ -28,5 +35,9 @@ public class MyAutoController extends CarController {
 	@Override
 	public void update() {
 	    mapRecorder.updateMapRecorder(super.getView());
+
+        Coordinate carPosition = new Coordinate(getPosition());
+
+
 	}
 }

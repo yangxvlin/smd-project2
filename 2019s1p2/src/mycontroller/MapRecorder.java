@@ -27,14 +27,11 @@ public class MapRecorder {
     private HashMap<Coordinate, MapTile> tileMap;
 
     /**
-     * mapping between trap tile type and coordinates
+     * mapping between tile type and coordinates
      */
-    private HashMap<Class<?>, ArrayList<Coordinate>> trapTileCoordinatesMap;
+    private HashMap<TileClassifier.TileType, ArrayList<Coordinate>> tileTypeMap;
 
-    /**
-     * ,apping between tile type and coordinates
-     */
-    private HashMap<MapTile.Type, ArrayList<Coordinate>> tileCoordinatesMap;
+//    public static final HashMap<>
 
     /**
      * guide agent the status of the tile in the map
@@ -44,8 +41,7 @@ public class MapRecorder {
     public MapRecorder() {
         this.tileMap = new HashMap<>();
 
-        this.trapTileCoordinatesMap = new HashMap<>();
-        this.tileCoordinatesMap     = new HashMap<>();
+        this.tileTypeMap = new HashMap<>();
 
         this.mapStatus = new TileStatus[World.MAP_WIDTH][World.MAP_HEIGHT];
 
@@ -58,7 +54,7 @@ public class MapRecorder {
     public void updateMapRecorder(HashMap<Coordinate, MapTile> carView) {
         for (Coordinate c : carView.keySet()) {
             MapTile t = carView.get(c);
-            if (!t.getType().equals(MapTile.Type.EMPTY)) {
+            if (!t.isType(MapTile.Type.EMPTY)) {
                 updateMapEntry(c, t);
             }
         }
@@ -75,7 +71,7 @@ public class MapRecorder {
 
         for (Coordinate c : initialMap.keySet()) {
             MapTile t = initialMap.get(c);
-            if (!t.getType().equals(MapTile.Type.EMPTY)) {
+            if (!t.isType(MapTile.Type.EMPTY)) {
                 if (!excludedClassesList.contains(t.getType())) {
                     updateMapEntry(c, t);
                     /* walls are unreachable */
@@ -100,15 +96,14 @@ public class MapRecorder {
      * @param currentTile
      */
     public void updateMapEntry(Coordinate c, MapTile currentTile) {
-        assert !currentTile.getType().equals(MapTile.Type.EMPTY);
+        assert !currentTile.isType(MapTile.Type.EMPTY);
 
         MapTile previousTile = tileMap.get(c);
-        Class currentTileClass = currentTile.getClass();
-        MapTile.Type currentTileType = currentTile.getType();
+        TileClassifier.TileType currentTileType = TileClassifier.getTileType(currentTile);
 
         /* overwrite coordinate's MapTile */
         tileMap.put(c, currentTile);
-        if (currentTile.getType() != MapTile.Type.WALL) {
+        if (!currentTile.isType(MapTile.Type.WALL)) {
             mapStatus[c.x][c.y] = TileStatus.EXPLORED;
         }
 
@@ -118,7 +113,8 @@ public class MapRecorder {
             Class previousTileClass = previousTile.getClass();
             MapTile.Type previousTileType = previousTile.getType();
 
-            if (!currentTileType.equals(previousTileType)) {
+            if (!currentTile.isType(previousTileType)) {
+                tileTypeMap.get()
                 tileCoordinatesMap.get(previousTileType).remove(c);
                 tileCoordinatesMap.putIfAbsent(currentTileType, new ArrayList<>());
                 tileCoordinatesMap.get(currentTileType).add(c);
@@ -131,7 +127,7 @@ public class MapRecorder {
         } else {
             tileCoordinatesMap.putIfAbsent(currentTileType, new ArrayList<>());
             tileCoordinatesMap.get(currentTileType).add(c);
-            if (currentTileType.equals(MapTile.Type.TRAP)) {
+            if (currentTile.isType(MapTile.Type.TRAP)) {
                 trapTileCoordinatesMap.putIfAbsent(currentTileClass, new ArrayList<>());
                 trapTileCoordinatesMap.get(currentTileClass).add(c);
             }
