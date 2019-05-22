@@ -89,6 +89,12 @@ public class MapRecorder {
         tileTypeCoordinatesMap.get(tileType).add(c);
     }
 
+    private void updateCoordinateStatue(Coordinate c, ITileAdapter t) {
+        if (!t.isType(ITileAdapter.TileType.WALL)) {
+            mapStatus.put(c, TileStatus.EXPLORED);
+        }
+    }
+
     /**
      * Update two hash map. First overwrite coordinate's MapTile. Second, if
      * there is an change in the MapTile type of the same coordinate, then there
@@ -98,15 +104,29 @@ public class MapRecorder {
      * @param currentTile
      */
     public void updateMapEntry(Coordinate c, MapTile currentTile) {
-        assert !currentTile.isType(MapTile.Type.EMPTY);
+        assert(!currentTile.isType(MapTile.Type.EMPTY));
         ITileAdapter currentTileAdapter  = TileAdapterFactory.getInstance()
                                                                 .createTileAdapter(currentTile);
         ITileAdapter previousTileAdapter = this.coordinateTileMap.get(c);
 
         if (previousTileAdapter != null) {
-
+            /* type of the tile has changed */
+            if (!currentTileAdapter.isType(previousTileAdapter.getType())) {
+                /* overwrite previous record */
+                coordinateTileMap.put(c, currentTileAdapter);
+                /* delete previous record */
+                tileTypeCoordinatesMap.get(previousTileAdapter.getType())
+                                        .remove(c);
+                /* update new record */
+                putTileTypeCoordinatesMap(currentTileAdapter.getType(), c);
+            }
+        /* new tile directly add */
         } else {
-
+            coordinateTileMap.putIfAbsent(c, currentTileAdapter);
+            putTileTypeCoordinatesMap(currentTileAdapter.getType(), c);
         }
+
+        /* update coordinate status */
+        updateCoordinateStatue(c, currentTileAdapter);
     }
 }
