@@ -2,6 +2,7 @@ package mycontroller;
 
 import controller.CarController;
 import mycontroller.Strategy.IStrategy;
+import mycontroller.Strategy.StrategyFactory;
 import swen30006.driving.Simulation;
 import tiles.MapTile;
 import utilities.Coordinate;
@@ -25,8 +26,8 @@ public class MyAutoController extends CarController {
 	    this.mapRecorder = new MapRecorder();
 	    this.mapRecorder.updateInitialMap(super.getMap());
 
-//        driveStrategy = StrategyFactory.getInstance()
-//                                        .createConserveStrategy(Simulation.toConserve());
+        driveStrategy = StrategyFactory.getInstance()
+                                        .createConserveStrategy(Simulation.toConserve());
 	}
 
     /**
