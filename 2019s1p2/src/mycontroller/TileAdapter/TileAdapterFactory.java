@@ -11,11 +11,20 @@ import tiles.TrapTile;
  **/
 
 public class TileAdapterFactory {
+    /**
+     *
+     */
     private static TileAdapterFactory tileAdapterFactory = null;
 
+    /**
+     *
+     */
     private TileAdapterFactory() {
     }
 
+    /**
+     * @return
+     */
     public static TileAdapterFactory getInstance() {
         if (tileAdapterFactory == null) {
             tileAdapterFactory = new TileAdapterFactory();
@@ -24,6 +33,10 @@ public class TileAdapterFactory {
         return tileAdapterFactory;
     }
 
+    /**
+     * @param mapTile
+     * @return
+     */
     public ITileAdapter createTileAdapter(MapTile mapTile) {
         switch (mapTile.getType()) {
             case START:

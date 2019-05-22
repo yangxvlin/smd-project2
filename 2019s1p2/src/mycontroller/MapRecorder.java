@@ -1,14 +1,12 @@
 package mycontroller;
 
 import mycontroller.TileAdapter.ITileAdapter;
+import mycontroller.TileAdapter.TileAdapterFactory;
 import tiles.MapTile;
 import utilities.Coordinate;
-import world.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Xulin Yang, 904904
@@ -31,19 +29,15 @@ public class MapRecorder {
      */
     private HashMap<ITileAdapter.TileType, ArrayList<Coordinate>> tileTypeCoordinatesMap;
 
-//    public static final HashMap<>
-
     /**
      * guide agent the status of the tile in the map
      */
-    private TileStatus[][] mapStatus;
+    private HashMap<Coordinate, TileStatus> mapStatus;
 
     public MapRecorder() {
         this.coordinateTileMap      = new HashMap<>();
         this.tileTypeCoordinatesMap = new HashMap<>();
-
-        this.mapStatus = new TileStatus[World.MAP_WIDTH][World.MAP_HEIGHT];
-
+        this.mapStatus              = new HashMap<>();
     }
 
     /**
@@ -63,27 +57,36 @@ public class MapRecorder {
      * exclude to update Road in the initial map because roads are unknown tile
      * in the map
      * @param initialMap
-     * @param excludedTileTypes
      */
-    public void updateInitialMap(HashMap<Coordinate, MapTile> initialMap, MapTile.Type... excludedTileTypes) {
-        List<MapTile.Type> excludedClassesList = Arrays.asList(excludedTileTypes);
+    public void updateInitialMap(HashMap<Coordinate, MapTile> initialMap) {
 
         for (Coordinate c : initialMap.keySet()) {
             MapTile t = initialMap.get(c);
             if (!t.isType(MapTile.Type.EMPTY)) {
-                if (!excludedClassesList.contains(t.getType())) {
-                    updateMapEntry(c, t);
-                    /* walls are unreachable */
-                    if (t.getType() != MapTile.Type.WALL) {
-                        mapStatus[c.x][c.y] = TileStatus.EXPLORED;
-                    } else {
-                        mapStatus[c.x][c.y] = TileStatus.UNREACHABLE;
-                    }
+                /* create adapter */
+                ITileAdapter tileAdapter = TileAdapterFactory.getInstance()
+                                                                .createTileAdapter(t);
+                /* update two maps */
+                coordinateTileMap.put(c, tileAdapter);
+                putTileTypeCoordinatesMap(tileAdapter.getType(), c);
+
+                /* Road are unexplored tile now */
+                if (t.isType(MapTile.Type.ROAD)) {
+                    mapStatus.put(c, TileStatus.UNEXPLORED);
+                /* walls are unreachable */
+                } else if (t.isType(MapTile.Type.WALL)) {
+                    mapStatus.put(c, TileStatus.UNREACHABLE);
+                /* other MapTile (start, finish) are explored */
                 } else {
-                    mapStatus[c.x][c.y] = TileStatus.UNEXPLORED;
+                    mapStatus.put(c, TileStatus.EXPLORED);
                 }
             }
         }
+    }
+
+    private void putTileTypeCoordinatesMap(ITileAdapter.TileType tileType, Coordinate c) {
+        tileTypeCoordinatesMap.putIfAbsent(tileType, new ArrayList<>());
+        tileTypeCoordinatesMap.get(tileType).add(c);
     }
 
     /**
@@ -96,40 +99,14 @@ public class MapRecorder {
      */
     public void updateMapEntry(Coordinate c, MapTile currentTile) {
         assert !currentTile.isType(MapTile.Type.EMPTY);
+        ITileAdapter currentTileAdapter  = TileAdapterFactory.getInstance()
+                                                                .createTileAdapter(currentTile);
+        ITileAdapter previousTileAdapter = this.coordinateTileMap.get(c);
 
-        MapTile previousTile = tileMap.get(c);
-        TileClassifier.TileType currentTileType = TileClassifier.getTileType(currentTile);
+        if (previousTileAdapter != null) {
 
-        /* overwrite coordinate's MapTile */
-        tileMap.put(c, currentTile);
-        if (!currentTile.isType(MapTile.Type.WALL)) {
-            mapStatus[c.x][c.y] = TileStatus.EXPLORED;
-        }
-
-        /* remove previous type's info there is an change in the type */
-        // TODO some redundant code
-        if (previousTile != null) {
-            Class previousTileClass = previousTile.getClass();
-            MapTile.Type previousTileType = previousTile.getType();
-
-            if (!currentTile.isType(previousTileType)) {
-                tileTypeMap.get()
-                tileCoordinatesMap.get(previousTileType).remove(c);
-                tileCoordinatesMap.putIfAbsent(currentTileType, new ArrayList<>());
-                tileCoordinatesMap.get(currentTileType).add(c);
-                if (currentTileType.equals(MapTile.Type.TRAP) & !previousTileClass.equals(currentTileClass)) {
-                    trapTileCoordinatesMap.get(currentTileClass).remove(c);
-                    trapTileCoordinatesMap.putIfAbsent(currentTileClass, new ArrayList<>());
-                    trapTileCoordinatesMap.get(currentTileClass).add(c);
-                }
-            }
         } else {
-            tileCoordinatesMap.putIfAbsent(currentTileType, new ArrayList<>());
-            tileCoordinatesMap.get(currentTileType).add(c);
-            if (currentTile.isType(MapTile.Type.TRAP)) {
-                trapTileCoordinatesMap.putIfAbsent(currentTileClass, new ArrayList<>());
-                trapTileCoordinatesMap.get(currentTileClass).add(c);
-            }
+
         }
     }
 }
