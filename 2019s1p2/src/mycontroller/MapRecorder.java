@@ -2,11 +2,17 @@ package mycontroller;
 
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileAdapter.TileAdapterFactory;
+import tiles.HealthTrap;
+import tiles.LavaTrap;
 import tiles.MapTile;
+import tiles.WaterTrap;
 import utilities.Coordinate;
+import world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Xulin Yang, 904904
@@ -33,6 +39,23 @@ public class MapRecorder {
      * guide agent the status of the tile in the map
      */
     private HashMap<Coordinate, TileStatus> mapStatus;
+
+    public static final Map<ITileAdapter.TileType, Float> tileHealthCostMap = initMap();
+
+    private static Map<ITileAdapter.TileType, Float> initMap() {
+        Map<ITileAdapter.TileType, Float> map = new HashMap<>();
+
+        map.put(ITileAdapter.TileType.FINISH, 0f);
+        map.put(ITileAdapter.TileType.START,  0f);
+        map.put(ITileAdapter.TileType.HEALTH, 1.25f); // 5 (ICE) * 0.25
+        map.put(ITileAdapter.TileType.LAVA,   -5f); // 20 (LAVA) * 0.25 (delta)
+        map.put(ITileAdapter.TileType.PARCEL, 0f);
+        map.put(ITileAdapter.TileType.ROAD,   0f);
+        map.put(ITileAdapter.TileType.WALL,   Float.MIN_VALUE);
+        map.put(ITileAdapter.TileType.WATER,  (float) WaterTrap.Yield);
+
+        return Collections.unmodifiableMap(map);
+    }
 
     public MapRecorder() {
         this.coordinateTileMap      = new HashMap<>();
@@ -137,5 +160,61 @@ public class MapRecorder {
                     coordinateTileMap.get(c).getType().toString(),
                     mapStatus.get(c).toString()));
         }
+    }
+
+    /**
+     * @param c
+     * @return explored neighbor coordinates
+     */
+    public ArrayList<Coordinate> tileNeighbors(Coordinate c) {
+        ArrayList<Coordinate> neighbors = new ArrayList<>();
+
+        /* up */
+        if (c.y < World.MAP_HEIGHT - 1) {
+            Coordinate up = new Coordinate(c.x, c.y + 1);
+
+            if (mapStatus.get(up) == TileStatus.EXPLORED) {
+                neighbors.add(up);
+            }
+        }
+
+        /* down */
+        if (c.y > 0) {
+            Coordinate down = new Coordinate(c.x, c.y-1);
+
+            if (mapStatus.get(down) == TileStatus.EXPLORED) {
+                neighbors.add(down);
+            }
+        }
+
+        /* left */
+        if (c.x > 0) {
+            Coordinate left = new Coordinate(c.x-1, c.y);
+
+            if (mapStatus.get(left) == TileStatus.EXPLORED) {
+                neighbors.add(left);
+            }
+        }
+
+        /* right */
+        if (c.x < World.MAP_WIDTH - 1) {
+            Coordinate right = new Coordinate(c.x+1, c.y);
+
+            if (mapStatus.get(right) == TileStatus.EXPLORED) {
+                neighbors.add(right);
+            }
+        }
+
+
+        return neighbors;
+    }
+
+    public ITileAdapter getTileAdapter(Coordinate c) {
+        return coordinateTileMap.get(c);
+    }
+
+    public ArrayList<Coordinate> getCoordinates(ITileAdapter.TileType tileType) {
+        tileTypeCoordinatesMap.putIfAbsent(tileType, new ArrayList<>());
+        return tileTypeCoordinatesMap.get(tileType);
     }
 }

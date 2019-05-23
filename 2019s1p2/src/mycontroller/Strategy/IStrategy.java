@@ -1,6 +1,7 @@
 package mycontroller.Strategy;
 
 import mycontroller.MapRecorder;
+import utilities.Coordinate;
 
 /**
  * Xulin Yang, 904904
@@ -12,4 +13,10 @@ import mycontroller.MapRecorder;
 public interface IStrategy {
 
     void updateCost(MapRecorder mapRecorder);
+
+    Coordinate getNextCoordinate(MapRecorder map,
+                                 Coordinate carPosition,
+                                 float health,
+                                 float fuel,
+                                 boolean enoughParcel);
 }

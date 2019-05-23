@@ -10,8 +10,8 @@ import swen30006.driving.Simulation;
 public class ServerLauncher {
 	public static void main (String[] arg) {
 		HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();		
-//		 config.backgroundFPS = 0;
-//		 config.foregroundFPS = 0;
+		// config.backgroundFPS = 0;
+		// config.foregroundFPS = 0;
 		new HeadlessApplication(new Simulation(arg), config);
 	}
 }

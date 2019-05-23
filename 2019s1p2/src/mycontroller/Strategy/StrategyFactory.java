@@ -33,7 +33,6 @@ public class StrategyFactory {
         }
 
         System.out.println("Unsupported mode!");
-        System.exit(1);
         return null;
     }
 }
