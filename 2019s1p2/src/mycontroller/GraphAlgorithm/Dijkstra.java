@@ -7,5 +7,5 @@ package mycontroller.GraphAlgorithm;
  * description:
  **/
 
-public class AStar {
+public class Dijkstra {
 }

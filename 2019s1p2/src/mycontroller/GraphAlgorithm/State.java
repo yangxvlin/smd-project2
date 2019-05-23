@@ -1,5 +1,7 @@
 package mycontroller.GraphAlgorithm;
 
+import java.util.ArrayList;
+
 /**
  * Xulin Yang, 904904
  *
@@ -11,5 +13,11 @@ public class State {
 
     public State() {
 
+    }
+
+    public ArrayList<State> allNextStates() {
+        ArrayList<State> states = new ArrayList<>();
+
+        return states;
     }
 }
