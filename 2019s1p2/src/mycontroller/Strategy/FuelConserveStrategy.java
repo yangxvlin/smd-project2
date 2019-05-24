@@ -5,6 +5,7 @@ import mycontroller.GraphAlgorithm.DijkstraPair;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
+import mycontroller.TileStatus;
 import utilities.Coordinate;
 
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ public class FuelConserveStrategy implements IStrategy {
     @Override
     public Coordinate getNextCoordinate(MapRecorder map, Coordinate carPosition, float health, float fuel, boolean enoughParcel) {
         Coordinate next;
-
         /* go to parcels */
         if (!enoughParcel) {
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
@@ -42,9 +42,14 @@ public class FuelConserveStrategy implements IStrategy {
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
         }
 
-        /* nowhere to go, so go to closest health/water */
+        /* no where to go, so go to closest health/water */
         if (next == null) {
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.WATER, ITileAdapter.TileType.HEALTH);
+        }
+
+        /* still no where to go, so go to closest unexplored */
+        if (next == null) {
+            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 
         /* debug */
@@ -55,13 +60,39 @@ public class FuelConserveStrategy implements IStrategy {
         return next;
     }
 
-    private Coordinate choosePath(MapRecorder map, Coordinate carPosition, float health, float fuel, ITileAdapter.TileType... tileTypes) {
+    private Coordinate choosePath(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float health,
+                                  float fuel,
+                                  ITileAdapter.TileType... tileTypes) {
         ArrayList<Coordinate> goals = new ArrayList<>();
 
         for (ITileAdapter.TileType tileType: tileTypes) {
             goals.addAll(map.getCoordinates(tileType));
         }
 
+        return closestPath(map, carPosition, health, fuel, goals);
+    }
+
+    private Coordinate choosePath(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float health,
+                                  float fuel,
+                                  TileStatus... tileStatuses) {
+        ArrayList<Coordinate> goals = new ArrayList<>();
+
+        for (TileStatus tileStatus: tileStatuses) {
+            goals.addAll(map.getCoordinates(tileStatus));
+        }
+
+        return closestPath(map, carPosition, health, fuel, goals);
+    }
+
+    private Coordinate closestPath(MapRecorder map,
+                                   Coordinate carPosition,
+                                   float health,
+                                   float fuel,
+                                   ArrayList<Coordinate> goals) {
         float minFuelUsage = Float.MIN_VALUE;
         Coordinate next = null;
 
@@ -75,7 +106,11 @@ public class FuelConserveStrategy implements IStrategy {
                     (res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) {
                 next = res.getNext(goal);
                 minFuelUsage = res.getCostSoFar().get(goal).getFuel();
+
+                System.out.print(carPosition.toString() + "->");
+                res.printPath(goal);
             }
+
         }
 
 

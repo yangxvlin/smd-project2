@@ -54,6 +54,8 @@ public class MyAutoController extends CarController {
 	}
 
 	private void makeMove(Coordinate from, Coordinate to) {
+        System.out.println(from.toString() + " -> " + to.toString());
+
         carFuel -= 1;
 
         if (from.equals(to)) {
@@ -64,40 +66,44 @@ public class MyAutoController extends CarController {
         } else if (from.x < to.x) {
             switch (getOrientation()) {
                 case NORTH:
+                    applyForwardAcceleration();
                     turnLeft();
                     return;
 
                 case SOUTH:
+                    applyForwardAcceleration();
                     turnRight();
                     return;
 
                 case EAST:
-                    applyBrake();
-                    applyReverseAcceleration();
+                    applyForwardAcceleration();
                     return;
 
                 case WEST:
-                    applyForwardAcceleration();
+                    applyBrake();
+                    applyReverseAcceleration();
                     return;
             }
 
         } else if (from.x > to.x) {
             switch (getOrientation()) {
                 case NORTH:
+                    applyForwardAcceleration();
                     turnRight();
                     return;
 
                 case SOUTH:
+                    applyForwardAcceleration();
                     turnLeft();
                     return;
 
                 case EAST:
-                    applyForwardAcceleration();
+                    applyBrake();
+                    applyReverseAcceleration();
                     return;
 
                 case WEST:
-                    applyBrake();
-                    applyReverseAcceleration();
+                    applyForwardAcceleration();
                     return;
             }
 
@@ -114,10 +120,12 @@ public class MyAutoController extends CarController {
                     return;
 
                 case EAST:
+                    applyForwardAcceleration();
                     turnLeft();
                     return;
 
                 case WEST:
+                    applyForwardAcceleration();
                     turnRight();
                     return;
             }
@@ -135,10 +143,12 @@ public class MyAutoController extends CarController {
                     return;
 
                 case EAST:
+                    applyForwardAcceleration();
                     turnRight();
                     return;
 
                 case WEST:
+                    applyForwardAcceleration();
                     turnLeft();
                     return;
             }

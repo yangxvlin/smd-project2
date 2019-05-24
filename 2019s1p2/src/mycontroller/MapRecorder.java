@@ -217,4 +217,16 @@ public class MapRecorder {
         tileTypeCoordinatesMap.putIfAbsent(tileType, new ArrayList<>());
         return tileTypeCoordinatesMap.get(tileType);
     }
+
+    public ArrayList<Coordinate> getCoordinates(TileStatus tileStatus) {
+        ArrayList<Coordinate> res = new ArrayList<>();
+
+        for (Coordinate c: mapStatus.keySet()) {
+            if (mapStatus.get(c) == tileStatus) {
+                res.add(c);
+            }
+        }
+
+        return res;
+    }
 }

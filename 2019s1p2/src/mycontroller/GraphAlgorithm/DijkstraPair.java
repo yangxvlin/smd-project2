@@ -34,8 +34,28 @@ public class DijkstraPair {
 
         for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
             path.push(c);
+
         }
 
-        return path.pop();
+        if (path.empty()) {
+            return destination;
+        } else {
+            return path.pop();
+        }
+
+    }
+
+    public void printPath(Coordinate destination) {
+        Stack<Coordinate> path = new Stack<>();
+
+        for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
+            path.push(c);
+        }
+
+        while (!path.empty()) {
+            System.out.print(path.pop().toString() + "->");
+        }
+
+        System.out.println();
     }
 }
