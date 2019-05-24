@@ -1,9 +1,11 @@
 package mycontroller.GraphAlgorithm;
 
 import mycontroller.MapRecorder;
+import mycontroller.TileStatus;
 import utilities.Coordinate;
 import world.World;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -22,7 +24,8 @@ public class Dijkstra {
                                         Coordinate destination,
                                         float health,
                                         float fuel,
-                                        Comparator<Node> comparator) {
+                                        Comparator<Node> comparator,
+                                        ArrayList<TileStatus> tileStatus) {
 //        System.out.println(source.toString() + "->" + destination.toString());
 
         Node sourceNode = new Node(source, health, fuel);
@@ -55,7 +58,7 @@ public class Dijkstra {
 //                    "destination: " + destination.toString() + " " +
 //            "current: " + current.toString());
 
-            for (Coordinate neighbor: map.tileNeighbors(current.getC())) {
+            for (Coordinate neighbor: map.tileNeighbors(current.getC(), tileStatus)) {
                 float neighborHealth = current.getHealth() -
                         MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
                 float neighborFuel   = current.getFuel() - 1;

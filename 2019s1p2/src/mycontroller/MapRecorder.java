@@ -9,10 +9,7 @@ import tiles.WaterTrap;
 import utilities.Coordinate;
 import world.World;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Xulin Yang, 904904
@@ -166,14 +163,15 @@ public class MapRecorder {
      * @param c
      * @return explored neighbor coordinates
      */
-    public ArrayList<Coordinate> tileNeighbors(Coordinate c) {
+    public ArrayList<Coordinate> tileNeighbors(Coordinate c, ArrayList<TileStatus> tileStatuses) {
+
         ArrayList<Coordinate> neighbors = new ArrayList<>();
 
         /* up */
         if (c.y < World.MAP_HEIGHT - 1) {
             Coordinate up = new Coordinate(c.x, c.y + 1);
 
-            if (mapStatus.get(up) == TileStatus.EXPLORED) {
+            if (tileStatuses.contains(mapStatus.get(up))) {
                 neighbors.add(up);
             }
         }
@@ -182,7 +180,7 @@ public class MapRecorder {
         if (c.y > 0) {
             Coordinate down = new Coordinate(c.x, c.y-1);
 
-            if (mapStatus.get(down) == TileStatus.EXPLORED) {
+            if (tileStatuses.contains(mapStatus.get(down))) {
                 neighbors.add(down);
             }
         }
@@ -191,7 +189,7 @@ public class MapRecorder {
         if (c.x > 0) {
             Coordinate left = new Coordinate(c.x-1, c.y);
 
-            if (mapStatus.get(left) == TileStatus.EXPLORED) {
+            if (tileStatuses.contains(mapStatus.get(left))) {
                 neighbors.add(left);
             }
         }
@@ -200,7 +198,7 @@ public class MapRecorder {
         if (c.x < World.MAP_WIDTH - 1) {
             Coordinate right = new Coordinate(c.x+1, c.y);
 
-            if (mapStatus.get(right) == TileStatus.EXPLORED) {
+            if (tileStatuses.contains(mapStatus.get(right))) {
                 neighbors.add(right);
             }
         }
@@ -218,12 +216,17 @@ public class MapRecorder {
         return tileTypeCoordinatesMap.get(tileType);
     }
 
-    public ArrayList<Coordinate> getCoordinates(TileStatus tileStatus) {
+    public ArrayList<Coordinate> getSurroundingUnExploredCoordinates() {
         ArrayList<Coordinate> res = new ArrayList<>();
 
         for (Coordinate c: mapStatus.keySet()) {
-            if (mapStatus.get(c) == tileStatus) {
-                res.add(c);
+            if (mapStatus.get(c) == TileStatus.EXPLORED) {
+                for (Coordinate neighbor: tileNeighbors(c, new ArrayList<>(Collections.singletonList(TileStatus.UNEXPLORED)))) {
+                    if (!res.contains(neighbor)) {
+                        res.add(c);
+                    }
+                }
+
             }
         }
 

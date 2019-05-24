@@ -8,9 +8,7 @@ import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Xulin Yang, 904904
@@ -42,10 +40,12 @@ public class FuelConserveStrategy implements IStrategy {
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
         }
 
-        /* no where to go, so go to closest health/water */
-        if (next == null) {
-            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.WATER, ITileAdapter.TileType.HEALTH);
-        }
+//        if (health <= 100) {
+//            /* no where to go, so go to closest health/water */
+//            if (next == null) {
+//                next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.WATER, ITileAdapter.TileType.HEALTH);
+//            }
+//        }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
@@ -54,7 +54,7 @@ public class FuelConserveStrategy implements IStrategy {
 
         /* debug */
         if (next == null) {
-            System.out.println("Error");
+            System.out.println("Error! No next searched!");
         }
 
         return next;
@@ -71,36 +71,43 @@ public class FuelConserveStrategy implements IStrategy {
             goals.addAll(map.getCoordinates(tileType));
         }
 
-        return closestPath(map, carPosition, health, fuel, goals);
+        return closestPath(map, carPosition, health, fuel, goals,
+                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
     }
 
     private Coordinate choosePath(MapRecorder map,
                                   Coordinate carPosition,
                                   float health,
                                   float fuel,
-                                  TileStatus... tileStatuses) {
-        ArrayList<Coordinate> goals = new ArrayList<>();
+                                  TileStatus tileStatus) {
 
-        for (TileStatus tileStatus: tileStatuses) {
-            goals.addAll(map.getCoordinates(tileStatus));
-        }
+        ArrayList<Coordinate> goals = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 
-        return closestPath(map, carPosition, health, fuel, goals);
+        System.out.println(goals.size());
+
+        return closestPath(map, carPosition, health, fuel, goals, new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
     }
 
     private Coordinate closestPath(MapRecorder map,
                                    Coordinate carPosition,
                                    float health,
                                    float fuel,
-                                   ArrayList<Coordinate> goals) {
+                                   ArrayList<Coordinate> goals,
+                                   ArrayList<TileStatus> tileStatusToGo) {
         float minFuelUsage = Float.MIN_VALUE;
         Coordinate next = null;
-
+        System.out.println();
         /* go to closest reachable parcel */
         for (Coordinate goal : goals) {
 //            System.out.println(tileTypes[0].toString());
 
-            DijkstraPair res = Dijkstra.dijkstra(map, carPosition, goal, health, fuel, fuelComparator);
+            DijkstraPair res = Dijkstra.dijkstra(map,
+                                                 carPosition,
+                                                 goal,
+                                                 health,
+                                                 fuel,
+                                                 fuelComparator,
+                                                 tileStatusToGo);
 
             if (isPossible(res.getCostSoFar(), goal) &&
                     (res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) {
@@ -135,6 +142,10 @@ public class FuelConserveStrategy implements IStrategy {
                 return -1;
             } else if (o1.getFuel() > o2.getFuel()) {
                 return 1;
+            } else if (o1.getHealth() < o2.getHealth()) {
+                return 1;
+            } else if (o1.getHealth() > o2.getHealth()) {
+                return -1;
             } else {
                 return 0;
             }
