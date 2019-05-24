@@ -39,7 +39,6 @@ public class Dijkstra {
 
 
         while (!frontier.isEmpty()) {
-            System.out.println(frontier.size());
 
 //            if (frontier.size() > World.MAP_HEIGHT * World.MAP_WIDTH) {
 //                System.out.println("errors!");
@@ -56,6 +55,9 @@ public class Dijkstra {
                 continue;
             }
 
+            System.out.println(frontier.size() + Boolean.toString(current.getC().equals(destination)));
+            System.out.println("current: " + current.toString());
+
             for (Coordinate neighbor: map.tileNeighbors(current.getC())) {
                 float neighborHealth = current.getHealth() -
                         MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
@@ -63,7 +65,7 @@ public class Dijkstra {
 
                 Node newNode = new Node(neighbor, neighborHealth, neighborFuel);
 
-                if ((!costSoFar.containsKey(neighbor)) || (comparator.compare(newNode, costSoFar.get(neighbor)) == -1)) {
+                if ((!costSoFar.containsKey(neighbor)) || (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
                     System.out.println(newNode.toString());
                     costSoFar.put(neighbor, newNode);
                     frontier.add(newNode);
