@@ -19,8 +19,7 @@ public class TileAdapterFactory {
     /**
      *
      */
-    private TileAdapterFactory() {
-    }
+    private TileAdapterFactory() {}
 
     /**
      * @return

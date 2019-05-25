@@ -2,8 +2,6 @@ package mycontroller;
 
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileAdapter.TileAdapterFactory;
-import tiles.HealthTrap;
-import tiles.LavaTrap;
 import tiles.MapTile;
 import tiles.WaterTrap;
 import utilities.Coordinate;
@@ -16,9 +14,10 @@ import java.util.*;
  *
  * @create 2019-05-21 20:33
  * description: record explored word information
- *              provide mapping between {coordinates: mapTile}
- *                                      {MapTile.Type: coordinates}
- *                                      {MapTile.class (MapTile.Type == Trap): coordinates}
+ *              provide below mapping for the system to make decision
+ *              {Coordinate            : ITileAdapter         }
+ *              {ITileAdapter.TileType : coordinate(s)        }
+ *              {Coordinate            : ITileAdapter.TileType}
  **/
 
 public class MapRecorder {
@@ -37,11 +36,19 @@ public class MapRecorder {
      */
     private HashMap<Coordinate, TileStatus> mapStatus;
 
+    /**
+     * mapping between tile type and car health cost
+     */
     public static final Map<ITileAdapter.TileType, Float> tileHealthCostMap = initMap();
 
+    /**
+     * @return mapping between tile type and car health cost object
+     */
     private static Map<ITileAdapter.TileType, Float> initMap() {
         Map<ITileAdapter.TileType, Float> map = new HashMap<>();
 
+        // TODO constant
+        //  https://app.lms.unimelb.edu.au/webapps/discussionboard/do/message?action=list_messages&course_id=_389181_1&nav=discussion_board_entry&conf_id=_835717_1&forum_id=_472706_1&message_id=_1910216_1
         map.put(ITileAdapter.TileType.FINISH, 0f);
         map.put(ITileAdapter.TileType.START,  0f);
         map.put(ITileAdapter.TileType.HEALTH, 1.25f); // 5 (ICE) * 0.25
@@ -54,6 +61,9 @@ public class MapRecorder {
         return Collections.unmodifiableMap(map);
     }
 
+    /**
+     * initialize map recorder object
+     */
     public MapRecorder() {
         this.coordinateTileMap      = new HashMap<>();
         this.tileTypeCoordinatesMap = new HashMap<>();
@@ -61,25 +71,10 @@ public class MapRecorder {
     }
 
     /**
-     *
-     * @param carView 9*9 grid car view
-     */
-    public void updateMapRecorder(HashMap<Coordinate, MapTile> carView) {
-        for (Coordinate c : carView.keySet()) {
-            MapTile t = carView.get(c);
-            if (!t.isType(MapTile.Type.EMPTY)) {
-                updateMapEntry(c, t);
-            }
-        }
-    }
-
-    /**
-     * exclude to update Road in the initial map because roads are unknown tile
-     * in the map
-     * @param initialMap
+     * update the world without trap information to the map recorder
+     * @param initialMap : map without any trap information
      */
     public void updateInitialMap(HashMap<Coordinate, MapTile> initialMap) {
-
         for (Coordinate c : initialMap.keySet()) {
             MapTile t = initialMap.get(c);
             if (!t.isType(MapTile.Type.EMPTY)) {
@@ -105,6 +100,20 @@ public class MapRecorder {
         }
     }
 
+    /**
+     * update the car's 9*9 observed tiles to the map
+     * @param carView : 9*9 grid car view
+     */
+    public void updateMapRecorder(HashMap<Coordinate, MapTile> carView) {
+        for (Coordinate c : carView.keySet()) {
+            MapTile t = carView.get(c);
+            /* EMPTY means this coordinate is not in the world, thus ignore it */
+            if (!t.isType(MapTile.Type.EMPTY)) {
+                updateMapEntry(c, t);
+            }
+        }
+    }
+
     private void putTileTypeCoordinatesMap(ITileAdapter.TileType tileType, Coordinate c) {
         tileTypeCoordinatesMap.putIfAbsent(tileType, new ArrayList<>());
         tileTypeCoordinatesMap.get(tileType).add(c);
@@ -124,7 +133,7 @@ public class MapRecorder {
      * @param c
      * @param currentTile
      */
-    public void updateMapEntry(Coordinate c, MapTile currentTile) {
+    private void updateMapEntry(Coordinate c, MapTile currentTile) {
         assert(!currentTile.isType(MapTile.Type.EMPTY));
         ITileAdapter currentTileAdapter  = TileAdapterFactory.getInstance()
                                                                 .createTileAdapter(currentTile);

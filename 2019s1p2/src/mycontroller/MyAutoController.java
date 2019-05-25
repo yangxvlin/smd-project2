@@ -8,18 +8,30 @@ import utilities.Coordinate;
 import world.Car;
 
 /**
+ * Xulin Yang, 904904
  *
- */
-public class MyAutoController extends CarController {
+ * @create 2019-05-21 20:33
+ * description: our ai car controller
+ **/
 
+public class MyAutoController extends CarController {
+    /**
+     * customized map information holder and updater
+     */
     private MapRecorder mapRecorder;
 
+    /**
+     * drive strategy to search next location to go to
+     */
     private IStrategy driveStrategy;
 
+    /**
+     * car's remaining fuel
+     */
     private float carFuel;
 
 	/**
-	 * @param car
+	 * @param car : car object
 	 */
 	public MyAutoController(Car car) {
 	    super(car);
@@ -28,11 +40,10 @@ public class MyAutoController extends CarController {
 	    this.mapRecorder.updateInitialMap(super.getMap());
 
         driveStrategy = StrategyFactory.getInstance()
-                                        .createConserveStrategy(Simulation.toConserve());
+                                        .createConserveStrategy(
+                                                Simulation.toConserve());
 
         carFuel = car.getFuel();
-
-//        System.out.println("finished");
 	}
 
     /**
@@ -54,17 +65,26 @@ public class MyAutoController extends CarController {
 		makeMove(carPosition, next);
 	}
 
+    /**
+     * based on the current location and next location to go, apply the car's
+     * reaction to the next location to go to
+     * @param from : current location
+     * @param to :   next location to go
+     */
 	private void makeMove(Coordinate from, Coordinate to) {
 	    assert(to != null);
 
         System.out.println(from.toString() + " -> " + to.toString() +
                 "(" + mapRecorder.getTileAdapter(to).getType().toString() + ")");
 
+        /* spend 1 fuel for an attempt move */
+        // TODO a constant 1?
         carFuel -= 1;
 
         if (from.equals(to)) {
             applyBrake();
-            /* brake has no fuel consumption */
+            /* brake has no move attempt thus no fuel consumption */
+            // TODO a constant 1?
             carFuel += 1;
             return;
         } else if (from.x < to.x) {
@@ -160,5 +180,6 @@ public class MyAutoController extends CarController {
 
         /* debug */
         System.out.println("Invalid");
+        System.exit(1);
     }
 }
