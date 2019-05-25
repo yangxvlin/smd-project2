@@ -34,9 +34,13 @@ public class FuelConserveStrategy implements IStrategy {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
+//            System.out.println();
+//            System.out.println("Parcels: ");
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
+//            System.out.println();
+//            System.out.println("Finishs");
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
         }
 
@@ -49,6 +53,8 @@ public class FuelConserveStrategy implements IStrategy {
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
+//            System.out.println();
+//            System.out.println("Unexplored: ");
             next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 
@@ -86,7 +92,8 @@ public class FuelConserveStrategy implements IStrategy {
 
 //        System.out.println(goals.size());
 
-        return closestPath(map, carPosition, health, fuel, goals, new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
+        return closestPath(map, carPosition, health, fuel, goals,
+                new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
     }
 
     private Coordinate closestPath(MapRecorder map,
@@ -99,25 +106,36 @@ public class FuelConserveStrategy implements IStrategy {
         float minHealthLeft = Float.MIN_VALUE;
 
         Coordinate next = null;
+
+        if (goals.isEmpty()) {
+            return next;
+        }
+        DijkstraPair res = Dijkstra.dijkstra(map,
+                                             carPosition,
+                                             goals.get(0),
+                                             health,
+                                             fuel,
+                                             fuelComparator,
+                                             tileStatusToGo);
+//        System.out.println(res.getCostSoFar().keySet());
+//        System.out.println(res.getCameFrom().keySet());
+
 //        System.out.println();
         /* go to closest reachable parcel */
         for (Coordinate goal : goals) {
-            System.out.println("goal: " + goal.toString() +
-                    " (" + map.getTileAdapter(goal).getType() + ")" +
-                    " (" + map.getTileStatus(goal) + ")");
+//            System.out.println("goal: " + goal.toString() +
+//                    " (" + map.getTileAdapter(goal).getType() + ")" +
+//                    " (" + map.getTileStatus(goal) + ")");
 
-            DijkstraPair res = Dijkstra.dijkstra(map,
-                                                 carPosition,
-                                                 goal,
-                                                 health,
-                                                 fuel,
-                                                 fuelComparator,
-                                                 tileStatusToGo);
 
             if (isPossible(res.getCostSoFar(), goal) &&
                     (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
                         ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
                          (res.getCostSoFar().get(goal).getHealth() > minHealthLeft) ) )) {
+//            if (res.getCameFrom().containsKey(goal) &&
+//                    (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
+//                            ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
+//                                    (res.getCostSoFar().get(goal).getHealth() > minHealthLeft)) ) ) {
                 next = res.getNext(goal);
                 minFuelUsage  = res.getCostSoFar().get(goal).getFuel();
                 minHealthLeft = res.getCostSoFar().get(goal).getHealth();
@@ -134,6 +152,8 @@ public class FuelConserveStrategy implements IStrategy {
 
     private boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
+//        System.out.println("Is Possible: " +
+//                Boolean.toString(costSoFar.containsKey(destination)));
         /* 0.5 see Car.java line 100 */
         if (costSoFar.containsKey(destination) && costSoFar.get(destination).getHealth() >= 0.5) {
 //        if (costSoFar.containsKey(destination)) {
@@ -151,9 +171,9 @@ public class FuelConserveStrategy implements IStrategy {
             } else if (o1.getFuel() > o2.getFuel()) {
                 return 1;
             } else if (o1.getHealth() < o2.getHealth()) {
-                return 1;
-            } else if (o1.getHealth() > o2.getHealth()) {
                 return -1;
+            } else if (o1.getHealth() > o2.getHealth()) {
+                return 1;
             } else {
                 return 0;
             }

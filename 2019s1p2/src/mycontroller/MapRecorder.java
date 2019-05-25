@@ -100,6 +100,7 @@ public class MapRecorder {
                 } else {
                     mapStatus.put(c, TileStatus.EXPLORED);
                 }
+//                System.out.println(c.toString() + " " + tileAdapter.getType() + " " + mapStatus.get(c));
             }
         }
     }
@@ -222,12 +223,13 @@ public class MapRecorder {
             if (mapStatus.get(c) == TileStatus.EXPLORED) {
                 for (Coordinate neighbor: tileNeighbors(c, new ArrayList<>(Collections.singletonList(TileStatus.UNEXPLORED)))) {
                     if (!res.contains(neighbor)) {
-                        res.add(c);
+                        res.add(neighbor);
                     }
                 }
             }
         }
 
+//        System.out.println(Arrays.toString(res.toArray()));
         return res;
     }
 

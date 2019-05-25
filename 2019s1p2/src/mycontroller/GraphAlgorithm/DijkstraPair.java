@@ -34,10 +34,10 @@ public class DijkstraPair {
 
         for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
             path.push(c);
-
         }
 
         if (path.empty()) {
+            assert(cameFrom.get(destination) == null);
             return destination;
         } else {
             return path.pop();

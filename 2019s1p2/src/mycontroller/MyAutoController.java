@@ -41,6 +41,7 @@ public class MyAutoController extends CarController {
 	@Override
 	public void update() {
 	    mapRecorder.updateMapRecorder(super.getView());
+        System.out.println();
 //	    mapRecorder.print();
 
         Coordinate carPosition = new Coordinate(getPosition());

@@ -5,10 +5,7 @@ import mycontroller.TileStatus;
 import utilities.Coordinate;
 import world.World;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Xulin Yang, 904904
@@ -40,7 +37,7 @@ public class Dijkstra {
         cameFrom.put(source, null);
         costSoFar.put(source, sourceNode);
 
-
+//        System.out.println(Arrays.toString(tileStatus.toArray()));
         while (!frontier.isEmpty()) {
 
             Node current = frontier.poll();
@@ -58,13 +55,16 @@ public class Dijkstra {
 //                    "destination: " + destination.toString() + " " +
 //            "current: " + current.toString());
 
+//            System.out.println(current.getC() + " -> " +
+//                    Arrays.toString(map.tileNeighbors(current.getC(), tileStatus).toArray()));
             for (Coordinate neighbor: map.tileNeighbors(current.getC(), tileStatus)) {
-                float neighborHealth = current.getHealth() -
+                float neighborHealth = current.getHealth() +
                         MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
                 float neighborFuel   = current.getFuel() - 1;
 
                 Node newNode = new Node(neighbor, neighborHealth, neighborFuel);
 
+                /* update when unvisited node or new node is better than old node */
                 if ((!costSoFar.containsKey(neighbor)) || (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
 //                    System.out.println(newNode.toString());
                     costSoFar.put(neighbor, newNode);
