@@ -112,7 +112,6 @@ public class FuelConserveStrategy implements IStrategy {
         }
         DijkstraPair res = Dijkstra.dijkstra(map,
                                              carPosition,
-                                             goals.get(0),
                                              health,
                                              fuel,
                                              fuelComparator,

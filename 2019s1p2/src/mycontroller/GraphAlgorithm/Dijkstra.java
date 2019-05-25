@@ -3,7 +3,6 @@ package mycontroller.GraphAlgorithm;
 import mycontroller.MapRecorder;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
-import world.World;
 
 import java.util.*;
 
@@ -11,19 +10,26 @@ import java.util.*;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 16:19
- * description:
+ * description: dijkstra single source shortest path graph search algorithm
  **/
 
 public class Dijkstra {
 
+    /**
+     * @param map :        the graph to search with
+     * @param source :     the start coordinate
+     * @param health :     the car's current health
+     * @param fuel :       the car's current fuel
+     * @param comparator : the node compare function
+     * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
+     * @return
+     */
     public static DijkstraPair dijkstra(MapRecorder map,
                                         Coordinate source,
-                                        Coordinate destination,
                                         float health,
                                         float fuel,
                                         Comparator<Node> comparator,
-                                        ArrayList<TileStatus> tileStatus) {
-//        System.out.println(source.toString() + "->" + destination.toString());
+                                        ArrayList<TileStatus> allowableNeighborTileStatus) {
 
         Node sourceNode = new Node(source, health, fuel);
 
@@ -33,40 +39,32 @@ public class Dijkstra {
         HashMap<Coordinate, Coordinate> cameFrom  = new HashMap<>();
         HashMap<Coordinate, Node>       costSoFar = new HashMap<>();
 
-
         cameFrom.put(source, null);
         costSoFar.put(source, sourceNode);
 
-//        System.out.println(Arrays.toString(tileStatus.toArray()));
+        /* update the graph when not finished traversing */
         while (!frontier.isEmpty()) {
-
             Node current = frontier.poll();
 
-//            if (current.getC().equals(destination)) {
-//                break;
+//            if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
+//                continue;
 //            }
+            /* expand the nodes */
+            for (Coordinate neighbor: map.tileNeighbors(current.getC(),
+                    allowableNeighborTileStatus)) {
 
-            if (current.getFuel() < 0.5) {
-                continue;
-            }
-
-//            System.out.println(frontier.size() + " " +
-//                    Boolean.toString(current.getC().equals(destination)) + " " +
-//                    "destination: " + destination.toString() + " " +
-//            "current: " + current.toString());
-
-//            System.out.println(current.getC() + " -> " +
-//                    Arrays.toString(map.tileNeighbors(current.getC(), tileStatus).toArray()));
-            for (Coordinate neighbor: map.tileNeighbors(current.getC(), tileStatus)) {
+                // TODO Unexplored ROAD cost = 0 now
                 float neighborHealth = current.getHealth() +
-                        MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
+                        MapRecorder.tileHealthCostMap.get(
+                                map.getTileAdapter(current.getC()).getType());
+                // TODO a map with values = 1 or a constant 1?
                 float neighborFuel   = current.getFuel() - 1;
-
                 Node newNode = new Node(neighbor, neighborHealth, neighborFuel);
 
                 /* update when unvisited node or new node is better than old node */
-                if ((!costSoFar.containsKey(neighbor)) || (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
-//                    System.out.println(newNode.toString());
+                // TODO 1 magic number? justify or becoma a constant?
+                if ((!costSoFar.containsKey(neighbor)) ||
+                        (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
                     costSoFar.put(neighbor, newNode);
                     frontier.add(newNode);
                     cameFrom.put(neighbor, current.getC());

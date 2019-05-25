@@ -6,36 +6,65 @@ import utilities.Coordinate;
  * Xulin Yang, 904904
  *
  * @create 2019-05-23 15:51
- * description:
+ * description: Class to represent a node in the graph search algorith,
  **/
 
-// Class to represent a node in the graph
 public class Node {
+    /**
+     * car's current location
+     */
     private Coordinate c;
+
+    /**
+     * remaining health for the car at the node
+     */
     private float health;
+
+    /**
+     * remaining fuel for the car at the node
+     */
     private float fuel;
 
 
+    /**
+     * @param c :      current coordinate
+     * @param health : the remaining health at current coordinate
+     * @param fuel :   the remaining fuel at current coordinate
+     */
     public Node(Coordinate c, float health, float fuel) {
         this.c = c;
         this.health = health;
         this.fuel = fuel;
     }
 
+    /**
+     * @return arrived coordinate
+     */
     public Coordinate getC() {
         return c;
     }
 
+    /**
+     * @return remaining health
+     */
     public float getHealth() {
         return health;
     }
 
+    /**
+     * @return remaining fuel
+     */
     public float getFuel() {
         return fuel;
     }
 
+    /**
+     * @return String representation of the node
+     */
     @Override
     public String toString() {
-        return "(" + c.toString() + ") health: " + Float.toString(health) + " fuel:" + Float.toString(fuel);
+        return "(" + c.toString() + "), " +
+                "health: " + Float.toString(health) + ", " +
+                "fuel: " + Float.toString(fuel);
     }
 }
