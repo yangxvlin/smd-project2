@@ -40,7 +40,7 @@ public class FuelConserveStrategy implements IStrategy {
             next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
         }
 
-//        if (health <= 100) {
+//        if (health <= 20) {
 //            /* no where to go, so go to closest health/water */
 //            if (next == null) {
 //                next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.WATER, ITileAdapter.TileType.HEALTH);
@@ -67,6 +67,7 @@ public class FuelConserveStrategy implements IStrategy {
                                   ITileAdapter.TileType... tileTypes) {
         ArrayList<Coordinate> goals = new ArrayList<>();
 
+
         for (ITileAdapter.TileType tileType: tileTypes) {
             goals.addAll(map.getCoordinates(tileType));
         }
@@ -83,7 +84,7 @@ public class FuelConserveStrategy implements IStrategy {
 
         ArrayList<Coordinate> goals = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 
-        System.out.println(goals.size());
+//        System.out.println(goals.size());
 
         return closestPath(map, carPosition, health, fuel, goals, new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
     }
@@ -95,11 +96,15 @@ public class FuelConserveStrategy implements IStrategy {
                                    ArrayList<Coordinate> goals,
                                    ArrayList<TileStatus> tileStatusToGo) {
         float minFuelUsage = Float.MIN_VALUE;
+        float minHealthLeft = Float.MIN_VALUE;
+
         Coordinate next = null;
-        System.out.println();
+//        System.out.println();
         /* go to closest reachable parcel */
         for (Coordinate goal : goals) {
-//            System.out.println(tileTypes[0].toString());
+            System.out.println("goal: " + goal.toString() +
+                    " (" + map.getTileAdapter(goal).getType() + ")" +
+                    " (" + map.getTileStatus(goal) + ")");
 
             DijkstraPair res = Dijkstra.dijkstra(map,
                                                  carPosition,
@@ -110,12 +115,15 @@ public class FuelConserveStrategy implements IStrategy {
                                                  tileStatusToGo);
 
             if (isPossible(res.getCostSoFar(), goal) &&
-                    (res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) {
+                    (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
+                        ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
+                         (res.getCostSoFar().get(goal).getHealth() > minHealthLeft) ) )) {
                 next = res.getNext(goal);
-                minFuelUsage = res.getCostSoFar().get(goal).getFuel();
+                minFuelUsage  = res.getCostSoFar().get(goal).getFuel();
+                minHealthLeft = res.getCostSoFar().get(goal).getHealth();
 
-                System.out.print(carPosition.toString() + "->");
-                res.printPath(goal);
+//                System.out.print(carPosition.toString() + "->");
+//                res.printPath(goal);
             }
 
         }

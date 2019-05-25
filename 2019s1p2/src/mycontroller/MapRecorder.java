@@ -167,12 +167,12 @@ public class MapRecorder {
 
         ArrayList<Coordinate> neighbors = new ArrayList<>();
 
-        /* up */
-        if (c.y < World.MAP_HEIGHT - 1) {
-            Coordinate up = new Coordinate(c.x, c.y + 1);
+        /* right */
+        if (c.x < World.MAP_WIDTH - 1) {
+            Coordinate right = new Coordinate(c.x+1, c.y);
 
-            if (tileStatuses.contains(mapStatus.get(up))) {
-                neighbors.add(up);
+            if (tileStatuses.contains(mapStatus.get(right))) {
+                neighbors.add(right);
             }
         }
 
@@ -194,15 +194,14 @@ public class MapRecorder {
             }
         }
 
-        /* right */
-        if (c.x < World.MAP_WIDTH - 1) {
-            Coordinate right = new Coordinate(c.x+1, c.y);
+        /* up */
+        if (c.y < World.MAP_HEIGHT - 1) {
+            Coordinate up = new Coordinate(c.x, c.y + 1);
 
-            if (tileStatuses.contains(mapStatus.get(right))) {
-                neighbors.add(right);
+            if (tileStatuses.contains(mapStatus.get(up))) {
+                neighbors.add(up);
             }
         }
-
 
         return neighbors;
     }
@@ -226,10 +225,13 @@ public class MapRecorder {
                         res.add(c);
                     }
                 }
-
             }
         }
 
         return res;
+    }
+
+    public TileStatus getTileStatus(Coordinate c) {
+        return mapStatus.get(c);
     }
 }

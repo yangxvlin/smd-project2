@@ -54,7 +54,10 @@ public class MyAutoController extends CarController {
 	}
 
 	private void makeMove(Coordinate from, Coordinate to) {
-        System.out.println(from.toString() + " -> " + to.toString());
+	    assert(to != null);
+
+        System.out.println(from.toString() + " -> " + to.toString() +
+                "(" + mapRecorder.getTileAdapter(to).getType().toString() + ")");
 
         carFuel -= 1;
 
@@ -67,12 +70,12 @@ public class MyAutoController extends CarController {
             switch (getOrientation()) {
                 case NORTH:
                     applyForwardAcceleration();
-                    turnLeft();
+                    turnRight();
                     return;
 
                 case SOUTH:
                     applyForwardAcceleration();
-                    turnRight();
+                    turnLeft();
                     return;
 
                 case EAST:
@@ -89,12 +92,12 @@ public class MyAutoController extends CarController {
             switch (getOrientation()) {
                 case NORTH:
                     applyForwardAcceleration();
-                    turnRight();
+                    turnLeft();
                     return;
 
                 case SOUTH:
                     applyForwardAcceleration();
-                    turnLeft();
+                    turnRight();
                     return;
 
                 case EAST:
