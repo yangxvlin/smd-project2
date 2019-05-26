@@ -39,21 +39,24 @@ public class HealthConserveStrategy implements IStrategy {
                                         float health,
                                         float fuel,
                                         boolean enoughParcel) {
-        Coordinate next;
+        Coordinate next = null;
 
-        /* go to parcels */
-        if (!enoughParcel) {
-            System.out.println("parcels ");
-            next = strategies.get(StrategyType.PICKUP)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-        /* go to finish */
-        } else {
-            System.out.println("finish: ");
-            next = strategies.get(StrategyType.EXIT)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-        }
+        System.out.println(strategies.get(StrategyType.EXIT)
+                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
+        if (strategies.get(StrategyType.EXIT)
+                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel) != null) {
+            /* go to parcels */
+            if (!enoughParcel) {
+                System.out.println("parcels ");
+                next = strategies.get(StrategyType.PICKUP)
+                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+            /* go to finish */
+            } else {
+                System.out.println("finish: ");
+                next = strategies.get(StrategyType.EXIT)
+                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+            }
 
-        if (health > maxHealth/2) {
             /* still no where to go, so go to closest unexplored */
             if (next == null) {
                 System.out.println("explore: ");
@@ -93,10 +96,10 @@ public class HealthConserveStrategy implements IStrategy {
         public int compare(Node o1, Node o2) {
             assert(o1.getMaxHealth() == o2.getMaxHealth());
 
-            if (o1.getHealth() < o2.getHealth()) {
-                return -1;
-            } else if (o1.getHealth() > o2.getHealth()) {
+            if (o1.getHealth() > o2.getHealth()) {
                 return 1;
+            } else if (o1.getHealth() < o2.getHealth()) {
+                return -1;
             } else if (o1.getFuel() < o2.getFuel()) {
                 return -1;
             } else if (o1.getFuel() > o2.getFuel()) {
@@ -117,10 +120,6 @@ public class HealthConserveStrategy implements IStrategy {
                 return -1;
             } else if (o1.getMaxHealth() < o2.getMaxHealth()) {
                 return 1;
-            } else if (o1.getHealth() > o2.getHealth()) {
-                return 1;
-            } else if (o1.getHealth() < o2.getHealth()) {
-                return -1;
             } else if (o1.getFuel() < o2.getFuel()) {
                 return -1;
             } else if (o1.getFuel() > o2.getFuel()) {
@@ -128,6 +127,22 @@ public class HealthConserveStrategy implements IStrategy {
             } else {
                 return 0;
             }
+
+//            if (o1.getMaxHealth() > o2.getMaxHealth()) {
+//                return -1;
+//            } else if (o1.getMaxHealth() < o2.getMaxHealth()) {
+//                return 1;
+//            } else if (o1.getHealth() > o2.getHealth()) {
+//                return 1;
+//            } else if (o1.getHealth() < o2.getHealth()) {
+//                return -1;
+//            } else if (o1.getFuel() < o2.getFuel()) {
+//                return -1;
+//            } else if (o1.getFuel() > o2.getFuel()) {
+//                return 1;
+//            } else {
+//                return 0;
+//            }
         }
     }
 }
