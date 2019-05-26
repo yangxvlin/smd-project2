@@ -25,23 +25,22 @@ public class FuelConserveStrategy implements IStrategy {
     }
 
     @Override
-    public void updateCost(MapRecorder mapRecorder) {
-
-    }
-
-    @Override
     public Coordinate getNextCoordinate(MapRecorder map, Coordinate carPosition, float health, float fuel, boolean enoughParcel) {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
 //            System.out.println();
 //            System.out.println("Parcels: ");
-            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
+            IStrategy parcel = new ParcelPickupStrategy(fuelComparator);
+            next = parcel.getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
+//            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
 //            System.out.println();
 //            System.out.println("Finishs");
-            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
+//            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
+            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
+                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
         }
 
 //        if (health <= 20) {
@@ -56,6 +55,11 @@ public class FuelConserveStrategy implements IStrategy {
 //            System.out.println();
 //            System.out.println("Unexplored: ");
             next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
+        }
+
+        if (next == null) {
+            IStrategy random = new RandomMoveStrategy();
+            next = random.getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
         }
 
         /* debug */
@@ -149,17 +153,7 @@ public class FuelConserveStrategy implements IStrategy {
         return next;
     }
 
-    private boolean isPossible(HashMap<Coordinate, Node> costSoFar,
-                               Coordinate destination) {
-//        System.out.println("Is Possible: " +
-//                Boolean.toString(costSoFar.containsKey(destination)));
-        /* 0.5 see Car.java line 100 */
-        if (costSoFar.containsKey(destination) && costSoFar.get(destination).getHealth() >= 0.5) {
-//        if (costSoFar.containsKey(destination)) {
-            return true;
-        }
-        return false;
-    }
+
 
     class FuelComparator implements Comparator<Node> {
 

@@ -2,7 +2,6 @@ package mycontroller.Strategy;
 
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
-import world.World;
 
 /**
  * Xulin Yang, 904904
@@ -12,12 +11,6 @@ import world.World;
  **/
 
 public class HealthConserveStrategy implements IStrategy {
-
-
-    @Override
-    public void updateCost(MapRecorder mapRecorder) {
-
-    }
 
     @Override
     public Coordinate getNextCoordinate(MapRecorder map,
