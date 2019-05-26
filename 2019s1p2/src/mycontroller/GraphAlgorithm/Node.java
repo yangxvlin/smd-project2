@@ -25,16 +25,18 @@ public class Node {
      */
     private float fuel;
 
+    private float maxHealth;
 
     /**
      * @param c :      current coordinate
      * @param health : the remaining health at current coordinate
      * @param fuel :   the remaining fuel at current coordinate
      */
-    public Node(Coordinate c, float health, float fuel) {
+    public Node(Coordinate c, float health, float fuel, float maxHealth) {
         this.c = c;
         this.health = health;
         this.fuel = fuel;
+        this.maxHealth = maxHealth;
     }
 
     /**
@@ -56,6 +58,10 @@ public class Node {
      */
     public float getFuel() {
         return fuel;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
     }
 
     /**

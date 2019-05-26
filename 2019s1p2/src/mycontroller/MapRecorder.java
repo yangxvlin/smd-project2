@@ -52,7 +52,7 @@ public class MapRecorder {
         map.put(ITileAdapter.TileType.FINISH, 0f);
         map.put(ITileAdapter.TileType.START,  0f);
         map.put(ITileAdapter.TileType.HEALTH, 1.25f); // 5 (ICE) * 0.25
-        map.put(ITileAdapter.TileType.LAVA,   -5f); // 20 (LAVA) * 0.25 (delta)
+        map.put(ITileAdapter.TileType.LAVA,   -5f-4); // 20 (LAVA) * 0.25 (delta)
         map.put(ITileAdapter.TileType.PARCEL, 0f);
         map.put(ITileAdapter.TileType.ROAD,   0f);
         map.put(ITileAdapter.TileType.WALL,   Float.MIN_VALUE);

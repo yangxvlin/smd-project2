@@ -28,28 +28,35 @@ public class ExitStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map, Coordinate carPosition, float health, float fuel, boolean enoughParcel) {
+    public Coordinate getNextCoordinate(MapRecorder map,
+                                        Coordinate carPosition,
+                                        float maxHealth,
+                                        float health,
+                                        float fuel,
+                                        boolean enoughParcel) {
         ArrayList<Coordinate> finishes = map.getCoordinates(ITileAdapter.TileType.FINISH);
         assert(!finishes.isEmpty());
 
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                 carPosition,
+                maxHealth,
                 health,
                 fuel,
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        Coordinate next = choosePath(finishes, res, comparator);
+        Coordinate next = choosePath(finishes, res, comparator, maxHealth);
 
         if (next == null) {
             res = Dijkstra.dijkstra(map,
                     carPosition,
+                    maxHealth,
                     health,
                     fuel,
                     comparator,
                     new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-            next = choosePath(finishes, res, comparator);
+            next = choosePath(finishes, res, comparator, maxHealth);
         }
 
         return next;

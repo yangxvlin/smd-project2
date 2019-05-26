@@ -18,12 +18,13 @@ import java.util.HashMap;
 
 public interface IStrategy {
 
-    enum StrategyType {PICKUP, EXIT, EXPLORE}
+    enum StrategyType {PICKUP, EXIT, EXPLORE, HEAL}
 
 //    void updateCost(MapRecorder mapRecorder);
 
     Coordinate getNextCoordinate(MapRecorder map,
                                  Coordinate carPosition,
+                                 float maxHealth,
                                  float health,
                                  float fuel,
                                  boolean enoughParcel);
@@ -40,20 +41,25 @@ public interface IStrategy {
 
     default Coordinate choosePath(ArrayList<Coordinate> destinations,
                                   DijkstraPair searchResult,
-                                  Comparator<Node> comparator) {
-        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE);
+                                  Comparator<Node> comparator,
+                                  float maxHealth) {
+        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE, maxHealth);
         /* go to closest reachable parcel */
         for (Coordinate destination : destinations) {
 
             if (isPossible(searchResult.getCostSoFar(), destination)) {
                 Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
-                        searchResult.getCostSoFar().get(destination).getFuel());
+                        searchResult.getCostSoFar().get(destination).getFuel(),
+                        maxHealth);
 
+//                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
                 }
             }
+
+//            System.out.println(nextNode);
         }
 
         return nextNode.getC();

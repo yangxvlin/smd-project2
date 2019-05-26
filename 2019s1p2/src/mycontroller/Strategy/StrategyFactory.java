@@ -30,11 +30,20 @@ public class StrategyFactory {
     public IStrategy createConserveStrategy(Simulation.StrategyMode mode) {
         switch (mode) {
             case HEALTH:
-                return new HealthConserveStrategy();
-            case FUEL:
-                Comparator<Node> fuelComparator = new FuelConserveStrategy.FuelComparator();
-                FuelConserveStrategy fuelConserveStrategy = new FuelConserveStrategy(fuelComparator);
+                HealthConserveStrategy healthConserveStrategy = new HealthConserveStrategy();
 
+                Comparator<Node> healthComparator = new HealthConserveStrategy.HealthComparator();
+                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  new ParcelPickupStrategy(healthComparator));
+                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    new ExitStrategy(healthComparator));
+                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, new ExploreStrategy(healthComparator));
+//                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, new ExploreStrategy(new HealthConserveStrategy.HealthComparator2()));
+                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.HEAL,    new HealStrategy(new HealthConserveStrategy.HealthComparator2()));
+
+                return healthConserveStrategy;
+            case FUEL:
+                FuelConserveStrategy fuelConserveStrategy = new FuelConserveStrategy();
+
+                Comparator<Node> fuelComparator = new FuelConserveStrategy.FuelComparator();
                 fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  new ParcelPickupStrategy(fuelComparator));
                 fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    new ExitStrategy(fuelComparator));
                 fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, new ExploreStrategy(fuelComparator));

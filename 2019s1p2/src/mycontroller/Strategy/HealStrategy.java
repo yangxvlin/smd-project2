@@ -4,25 +4,25 @@ import mycontroller.GraphAlgorithm.Dijkstra;
 import mycontroller.GraphAlgorithm.DijkstraPair;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
+import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
 /**
  * Xulin Yang, 904904
  *
- * @create 2019-05-26 15:01
+ * @create 2019-05-26 19:41
  * description:
  **/
 
-public class ExploreStrategy implements IStrategy {
+public class HealStrategy implements IStrategy {
     private Comparator<Node> comparator;
 
-    public ExploreStrategy(Comparator<Node> comparator) {
+    public HealStrategy(Comparator<Node> comparator) {
         this.comparator = comparator;
     }
 
@@ -33,12 +33,13 @@ public class ExploreStrategy implements IStrategy {
                                         float health,
                                         float fuel,
                                         boolean enoughParcel) {
-        ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
+        ArrayList<Coordinate> heals = map.getCoordinates(ITileAdapter.TileType.WATER);
+        heals.addAll(map.getCoordinates(ITileAdapter.TileType.HEALTH));
 
-        if (unexplored.isEmpty()) {
+        if (heals.isEmpty()) {
             return null;
         }
-        System.out.println(Arrays.toString(unexplored.toArray()));
+
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                 carPosition,
@@ -46,10 +47,8 @@ public class ExploreStrategy implements IStrategy {
                 health,
                 fuel,
                 comparator,
-                new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        System.out.println(">>>>");
-
-        return choosePath(unexplored, res, comparator, maxHealth);
+        return choosePath(heals, res, comparator, maxHealth);
     }
 }

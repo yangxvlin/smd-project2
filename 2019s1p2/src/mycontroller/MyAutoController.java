@@ -30,6 +30,8 @@ public class MyAutoController extends CarController {
      */
     private float carFuel;
 
+    private float maxHealth;
+
 	/**
 	 * @param car : car object
 	 */
@@ -44,6 +46,8 @@ public class MyAutoController extends CarController {
                                                 Simulation.toConserve());
 
         carFuel = car.getFuel();
+
+        maxHealth = getHealth();
 	}
 
     /**
@@ -51,6 +55,10 @@ public class MyAutoController extends CarController {
      */
 	@Override
 	public void update() {
+	    if (getHealth() > maxHealth) {
+	        maxHealth = getHealth();
+        }
+
 	    mapRecorder.updateMapRecorder(super.getView());
         System.out.println();
 //	    mapRecorder.print();
@@ -59,6 +67,7 @@ public class MyAutoController extends CarController {
 
 		Coordinate next = driveStrategy.getNextCoordinate(mapRecorder,
                                                           carPosition,
+                                                          maxHealth,
                                                           getHealth(),
                                                           carFuel,
                                                           numParcels() == numParcelsFound());

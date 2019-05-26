@@ -26,12 +26,13 @@ public class Dijkstra {
      */
     public static DijkstraPair dijkstra(MapRecorder map,
                                         Coordinate source,
+                                        float maxHealth,
                                         float health,
                                         float fuel,
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
-        Node sourceNode = new Node(source, health, fuel);
+        Node sourceNode = new Node(source, health, fuel, maxHealth);
 
         PriorityQueue<Node> frontier = new PriorityQueue<>(comparator);
         frontier.add(sourceNode);
@@ -46,9 +47,9 @@ public class Dijkstra {
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
 
-//            if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
-//                continue;
-//            }
+            if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
+                continue;
+            }
             /* expand the nodes */
             for (Coordinate neighbor: map.tileNeighbors(current.getC(),
                     allowableNeighborTileStatus)) {
@@ -59,7 +60,13 @@ public class Dijkstra {
                                 map.getTileAdapter(current.getC()).getType());
                 // TODO a map with values = 1 or a constant 1?
                 float neighborFuel   = current.getFuel() - 1;
-                Node newNode = new Node(neighbor, neighborHealth, neighborFuel);
+
+                float neighborMaxHealth = current.getMaxHealth();
+                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType()) > 0) {
+                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
+                }
+
+                Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
 
                 /* update when unvisited node or new node is better than old node */
                 // TODO 1 magic number? justify or become a constant?

@@ -42,6 +42,14 @@ public class DijkstraPair {
 
         /* backtrack the path */
         for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
+//            System.out.print(c + "pushed, ");
+
+            /* TODO problem occurs when explore for health conserve */
+            assert(!path.contains(c));
+//            if(path.contains(c)) {
+//                break;
+//            }
+
             path.push(c);
         }
 

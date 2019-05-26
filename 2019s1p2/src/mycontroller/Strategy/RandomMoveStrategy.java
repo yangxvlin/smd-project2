@@ -19,6 +19,7 @@ public class RandomMoveStrategy implements IStrategy {
     @Override
     public Coordinate getNextCoordinate(MapRecorder map,
                                         Coordinate carPosition,
+                                        float maxHealth,
                                         float health,
                                         float fuel,
                                         boolean enoughParcel) {

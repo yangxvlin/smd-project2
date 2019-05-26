@@ -29,6 +29,7 @@ public class ParcelPickupStrategy implements IStrategy {
     @Override
     public Coordinate getNextCoordinate(MapRecorder map,
                                         Coordinate carPosition,
+                                        float maxHealth,
                                         float health,
                                         float fuel,
                                         boolean enoughParcel) {
@@ -40,11 +41,12 @@ public class ParcelPickupStrategy implements IStrategy {
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                                              carPosition,
+                                             maxHealth,
                                              health,
                                              fuel,
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        return choosePath(parcels, res, comparator);
+        return choosePath(parcels, res, comparator, maxHealth);
     }
 }
