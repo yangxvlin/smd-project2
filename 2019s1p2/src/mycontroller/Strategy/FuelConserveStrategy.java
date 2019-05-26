@@ -18,10 +18,13 @@ import java.util.*;
  **/
 
 public class FuelConserveStrategy implements IStrategy {
-    private FuelComparator fuelComparator;
+    private Comparator<Node> fuelComparator;
 
-    public FuelConserveStrategy() {
-        fuelComparator = new FuelComparator();
+    private HashMap<StrategyType, IStrategy> strategies;
+
+    public FuelConserveStrategy(Comparator<Node> fuelComparator) {
+        this.fuelComparator = fuelComparator;
+        this.strategies = new HashMap<>();
     }
 
     @Override
@@ -29,18 +32,17 @@ public class FuelConserveStrategy implements IStrategy {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
-//            System.out.println();
 //            System.out.println("Parcels: ");
-            IStrategy parcel = new ParcelPickupStrategy(fuelComparator);
-            next = parcel.getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
+            next = strategies.get(StrategyType.PICKUP)
+                                .getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
-//            System.out.println();
 //            System.out.println("Finishs");
-//            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.FINISH);
-            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
-                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+            next = strategies.get(StrategyType.EXIT)
+                                .getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
+//            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
+//                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
         }
 
 //        if (health <= 20) {
@@ -52,9 +54,10 @@ public class FuelConserveStrategy implements IStrategy {
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
-//            System.out.println();
 //            System.out.println("Unexplored: ");
-            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
+            next = strategies.get(StrategyType.EXPLORE)
+                                .getNextCoordinate(map, carPosition, health, fuel, enoughParcel);
+//            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 
         if (next == null) {
@@ -70,92 +73,92 @@ public class FuelConserveStrategy implements IStrategy {
         return next;
     }
 
-    private Coordinate choosePath(MapRecorder map,
-                                  Coordinate carPosition,
-                                  float health,
-                                  float fuel,
-                                  ITileAdapter.TileType... tileTypes) {
-        ArrayList<Coordinate> goals = new ArrayList<>();
-
-
-        for (ITileAdapter.TileType tileType: tileTypes) {
-            goals.addAll(map.getCoordinates(tileType));
-        }
-
-        return closestPath(map, carPosition, health, fuel, goals,
-                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
+    public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
+        this.strategies.put(strategyType, strategy);
     }
 
-    private Coordinate choosePath(MapRecorder map,
-                                  Coordinate carPosition,
-                                  float health,
-                                  float fuel,
-                                  TileStatus tileStatus) {
-
-        ArrayList<Coordinate> goals = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
-
-//        System.out.println(goals.size());
-
-        return closestPath(map, carPosition, health, fuel, goals,
-                new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
-    }
-
-    private Coordinate closestPath(MapRecorder map,
-                                   Coordinate carPosition,
-                                   float health,
-                                   float fuel,
-                                   ArrayList<Coordinate> goals,
-                                   ArrayList<TileStatus> tileStatusToGo) {
-        float minFuelUsage = Float.MIN_VALUE;
-        float minHealthLeft = Float.MIN_VALUE;
-
-        Coordinate next = null;
-
-        if (goals.isEmpty()) {
-            return next;
-        }
-        DijkstraPair res = Dijkstra.dijkstra(map,
-                                             carPosition,
-                                             health,
-                                             fuel,
-                                             fuelComparator,
-                                             tileStatusToGo);
-//        System.out.println(res.getCostSoFar().keySet());
-//        System.out.println(res.getCameFrom().keySet());
-
-//        System.out.println();
-        /* go to closest reachable parcel */
-        for (Coordinate goal : goals) {
-//            System.out.println("goal: " + goal.toString() +
-//                    " (" + map.getTileAdapter(goal).getType() + ")" +
-//                    " (" + map.getTileStatus(goal) + ")");
-
-
-            if (isPossible(res.getCostSoFar(), goal) &&
-                    (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
-                        ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
-                         (res.getCostSoFar().get(goal).getHealth() > minHealthLeft) ) )) {
-//            if (res.getCameFrom().containsKey(goal) &&
+    /* ** try to get rid of below, but don't delete them until we finished ** */
+//    private Coordinate choosePath(MapRecorder map,
+//                                  Coordinate carPosition,
+//                                  float health,
+//                                  float fuel,
+//                                  ITileAdapter.TileType... tileTypes) {
+//        ArrayList<Coordinate> goals = new ArrayList<>();
+//
+//
+//        for (ITileAdapter.TileType tileType: tileTypes) {
+//            goals.addAll(map.getCoordinates(tileType));
+//        }
+//
+//        return closestPath(map, carPosition, health, fuel, goals,
+//                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
+//    }
+//
+//    private Coordinate choosePath(MapRecorder map,
+//                                  Coordinate carPosition,
+//                                  float health,
+//                                  float fuel,
+//                                  TileStatus tileStatus) {
+//
+//        ArrayList<Coordinate> goals = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
+//
+////        System.out.println(goals.size());
+//
+//        return closestPath(map, carPosition, health, fuel, goals,
+//                new ArrayList<>(Arrays.asList(tileStatus, TileStatus.EXPLORED)));
+//    }
+//
+//    private Coordinate closestPath(MapRecorder map,
+//                                   Coordinate carPosition,
+//                                   float health,
+//                                   float fuel,
+//                                   ArrayList<Coordinate> goals,
+//                                   ArrayList<TileStatus> tileStatusToGo) {
+//        float minFuelUsage = Float.MIN_VALUE;
+//        float minHealthLeft = Float.MIN_VALUE;
+//
+//        Coordinate next = null;
+//
+//        if (goals.isEmpty()) {
+//            return next;
+//        }
+//        DijkstraPair res = Dijkstra.dijkstra(map,
+//                                             carPosition,
+//                                             health,
+//                                             fuel,
+//                                             fuelComparator,
+//                                             tileStatusToGo);
+////        System.out.println(res.getCostSoFar().keySet());
+////        System.out.println(res.getCameFrom().keySet());
+//
+////        System.out.println();
+//        /* go to closest reachable parcel */
+//        for (Coordinate goal : goals) {
+////            System.out.println("goal: " + goal.toString() +
+////                    " (" + map.getTileAdapter(goal).getType() + ")" +
+////                    " (" + map.getTileStatus(goal) + ")");
+//
+//
+//            if (isPossible(res.getCostSoFar(), goal) &&
 //                    (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
-//                            ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
-//                                    (res.getCostSoFar().get(goal).getHealth() > minHealthLeft)) ) ) {
-                next = res.getNext(goal);
-                minFuelUsage  = res.getCostSoFar().get(goal).getFuel();
-                minHealthLeft = res.getCostSoFar().get(goal).getHealth();
+//                        ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
+//                         (res.getCostSoFar().get(goal).getHealth() > minHealthLeft) ) )) {
+////            if (res.getCameFrom().containsKey(goal) &&
+////                    (((res.getCostSoFar().get(goal).getFuel() > minFuelUsage)) ||
+////                            ((res.getCostSoFar().get(goal).getFuel() == minFuelUsage) &&
+////                                    (res.getCostSoFar().get(goal).getHealth() > minHealthLeft)) ) ) {
+//                next = res.getNext(goal);
+//                minFuelUsage  = res.getCostSoFar().get(goal).getFuel();
+//                minHealthLeft = res.getCostSoFar().get(goal).getHealth();
+//
+////                System.out.print(carPosition.toString() + "->");
+////                res.printPath(goal);
+//            }
+//        }
+//        return next;
+//    }
 
-//                System.out.print(carPosition.toString() + "->");
-//                res.printPath(goal);
-            }
-
-        }
-
-
-        return next;
-    }
-
-
-
-    class FuelComparator implements Comparator<Node> {
+    static class FuelComparator implements Comparator<Node> {
 
         @Override
         public int compare(Node o1, Node o2) {

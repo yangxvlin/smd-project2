@@ -1,9 +1,12 @@
 package mycontroller.Strategy;
 
+import mycontroller.GraphAlgorithm.DijkstraPair;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -14,6 +17,8 @@ import java.util.HashMap;
  **/
 
 public interface IStrategy {
+
+    enum StrategyType {PICKUP, EXIT, EXPLORE}
 
 //    void updateCost(MapRecorder mapRecorder);
 
@@ -31,5 +36,26 @@ public interface IStrategy {
             return true;
         }
         return false;
+    }
+
+    default Coordinate choosePath(ArrayList<Coordinate> destinations,
+                                  DijkstraPair searchResult,
+                                  Comparator<Node> comparator) {
+        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE);
+        /* go to closest reachable parcel */
+        for (Coordinate destination : destinations) {
+
+            if (isPossible(searchResult.getCostSoFar(), destination)) {
+                Node newNode = new Node(searchResult.getNext(destination),
+                        searchResult.getCostSoFar().get(destination).getHealth(),
+                        searchResult.getCostSoFar().get(destination).getFuel());
+
+                if (comparator.compare(nextNode, newNode) == -1) {
+                    nextNode = newNode;
+                }
+            }
+        }
+
+        return nextNode.getC();
     }
 }

@@ -37,7 +37,6 @@ public class ParcelPickupStrategy implements IStrategy {
             return null;
         }
 
-        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE);
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                                              carPosition,
@@ -46,21 +45,6 @@ public class ParcelPickupStrategy implements IStrategy {
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        /* go to closest reachable parcel */
-        for (Coordinate parcel : parcels) {
-
-            if (isPossible(res.getCostSoFar(), parcel)) {
-                Node newNode = new Node(res.getNext(parcel),
-                                        res.getCostSoFar().get(parcel).getHealth(),
-                                        res.getCostSoFar().get(parcel).getFuel());
-
-                if (comparator.compare(nextNode, newNode) == -1) {
-                    nextNode = newNode;
-                }
-            }
-
-        }
-
-        return nextNode.getC();
+        return choosePath(parcels, res, comparator);
     }
 }

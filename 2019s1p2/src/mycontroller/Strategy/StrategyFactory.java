@@ -1,6 +1,9 @@
 package mycontroller.Strategy;
 
+import mycontroller.GraphAlgorithm.Node;
 import swen30006.driving.Simulation;
+
+import java.util.Comparator;
 
 /**
  * Xulin Yang, 904904
@@ -29,7 +32,14 @@ public class StrategyFactory {
             case HEALTH:
                 return new HealthConserveStrategy();
             case FUEL:
-                return new FuelConserveStrategy();
+                Comparator<Node> fuelComparator = new FuelConserveStrategy.FuelComparator();
+                FuelConserveStrategy fuelConserveStrategy = new FuelConserveStrategy(fuelComparator);
+
+                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  new ParcelPickupStrategy(fuelComparator));
+                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    new ExitStrategy(fuelComparator));
+                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, new ExploreStrategy(fuelComparator));
+
+                return fuelConserveStrategy;
         }
 
         System.out.println("Unsupported mode!");

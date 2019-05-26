@@ -62,7 +62,7 @@ public class Dijkstra {
                 Node newNode = new Node(neighbor, neighborHealth, neighborFuel);
 
                 /* update when unvisited node or new node is better than old node */
-                // TODO 1 magic number? justify or becoma a constant?
+                // TODO 1 magic number? justify or become a constant?
                 if ((!costSoFar.containsKey(neighbor)) ||
                         (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
                     costSoFar.put(neighbor, newNode);
