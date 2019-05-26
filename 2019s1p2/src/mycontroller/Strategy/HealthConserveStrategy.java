@@ -1,7 +1,11 @@
 package mycontroller.Strategy;
 
+import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
+
+import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Xulin Yang, 904904
@@ -12,6 +16,15 @@ import utilities.Coordinate;
 
 public class HealthConserveStrategy implements IStrategy {
 
+    private Comparator<Node> healthComparator;
+
+    private HashMap<StrategyType, IStrategy> strategies;
+
+    public HealthConserveStrategy(Comparator<Node> healthComparator) {
+        this.healthComparator = healthComparator;
+        this.strategies = new HashMap<>();
+    }
+
     @Override
     public Coordinate getNextCoordinate(MapRecorder map,
                                         Coordinate carPosition,
@@ -20,9 +33,4 @@ public class HealthConserveStrategy implements IStrategy {
                                         boolean enoughParcel) {
         return null;
     }
-
-//    @Override
-//    public void registerIStrategy(IStrategy iStrategy) {
-//
-//    }
 }
