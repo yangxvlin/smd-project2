@@ -53,11 +53,13 @@ public class HealthConserveStrategy implements IStrategy {
                     .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
         }
 
-        /* still no where to go, so go to closest unexplored */
-        if (next == null) {
-            System.out.println("explore: ");
-            next = strategies.get(StrategyType.EXPLORE)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+        if (health > maxHealth/2) {
+            /* still no where to go, so go to closest unexplored */
+            if (next == null) {
+                System.out.println("explore: ");
+                next = strategies.get(StrategyType.EXPLORE)
+                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+            }
         }
 
         /* no where to go, so go to closest health/water */
