@@ -41,28 +41,46 @@ public class HealthConserveStrategy implements IStrategy {
                                         boolean enoughParcel) {
         Coordinate next = null;
 
-        System.out.println(strategies.get(StrategyType.EXIT)
-                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
-        if (strategies.get(StrategyType.EXIT)
-                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel) != null) {
-            /* go to parcels */
-            if (!enoughParcel) {
-                System.out.println("parcels ");
-                next = strategies.get(StrategyType.PICKUP)
-                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+//        System.out.println(strategies.get(StrategyType.EXIT)
+////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
+////        if (strategies.get(StrategyType.EXIT)
+////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel) != null) {
+////            /* go to parcels */
+////            if (!enoughParcel) {
+////                System.out.println("parcels ");
+////                next = strategies.get(StrategyType.PICKUP)
+////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+////            /* go to finish */
+////            } else {
+////                System.out.println("finish: ");
+////                next = strategies.get(StrategyType.EXIT)
+////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+////            }
+////
+////            /* still no where to go, so go to closest unexplored */
+////            if (next == null) {
+////                System.out.println("explore: ");
+////                next = strategies.get(StrategyType.EXPLORE)
+////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+////            }
+////        }
+        /* go to parcels */
+        if (!enoughParcel) {
+            System.out.println("parcels ");
+            next = strategies.get(StrategyType.PICKUP)
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
             /* go to finish */
-            } else {
-                System.out.println("finish: ");
-                next = strategies.get(StrategyType.EXIT)
-                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            }
+        } else {
+            System.out.println("finish: ");
+            next = strategies.get(StrategyType.EXIT)
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+        }
 
-            /* still no where to go, so go to closest unexplored */
-            if (next == null) {
-                System.out.println("explore: ");
-                next = strategies.get(StrategyType.EXPLORE)
-                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            }
+        /* still no where to go, so go to closest unexplored */
+        if (next == null) {
+            System.out.println("explore: ");
+            next = strategies.get(StrategyType.EXPLORE)
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
@@ -115,8 +133,11 @@ public class HealthConserveStrategy implements IStrategy {
         @Override
         public int compare(Node o1, Node o2) {
             assert(o1.getMaxHealth() == o2.getMaxHealth());
-
-            if (o1.getMaxHealth() > o2.getMaxHealth()) {
+            if (o1.getHealth() > o2.getHealth()) {
+                return 1;
+            } else if (o1.getHealth() < o2.getHealth()) {
+                return -1;
+            } else if (o1.getMaxHealth() > o2.getMaxHealth()) {
                 return -1;
             } else if (o1.getMaxHealth() < o2.getMaxHealth()) {
                 return 1;

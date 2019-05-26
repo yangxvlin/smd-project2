@@ -53,7 +53,7 @@ public interface IStrategy {
                         searchResult.getCostSoFar().get(destination).getFuel(),
                         maxHealth);
 
-//                System.out.println("<><><><>");
+                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
                 }
