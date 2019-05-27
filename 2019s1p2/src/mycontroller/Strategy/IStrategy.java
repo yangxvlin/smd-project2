@@ -48,7 +48,7 @@ public interface IStrategy {
                                   DijkstraPair searchResult,
                                   Comparator<Node> comparator,
                                   float maxHealth) {
-        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE, maxHealth);
+        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE, maxHealth, null);
 //        System.out.println(Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 //        System.out.println(Arrays.toString(searchResult.getCostSoFar().keySet().toArray()));
         for (Coordinate c: searchResult.getCameFrom().keySet()) {
@@ -63,7 +63,8 @@ public interface IStrategy {
                 Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
                         searchResult.getCostSoFar().get(destination).getFuel(),
-                        maxHealth);
+                        maxHealth,
+                        null);
 
 //                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {

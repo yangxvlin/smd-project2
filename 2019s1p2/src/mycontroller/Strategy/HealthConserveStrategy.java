@@ -4,6 +4,7 @@ import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class HealthConserveStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         Coordinate next = null;
 
@@ -68,26 +70,26 @@ public class HealthConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("parcels ");
             next = strategies.get(StrategyType.PICKUP)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
             /* go to finish */
         } else {
             System.out.println("finish: ");
             next = strategies.get(StrategyType.EXIT)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
             System.out.println("explore: ");
             next = strategies.get(StrategyType.EXPLORE)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
             System.out.println("healing: ");
             next = strategies.get(StrategyType.HEAL)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
         }
 
         if (next == null) {

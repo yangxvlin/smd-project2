@@ -7,6 +7,7 @@ import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class HealStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> heals = map.getCoordinates(ITileAdapter.TileType.WATER);
         heals.addAll(map.getCoordinates(ITileAdapter.TileType.HEALTH));
@@ -49,6 +51,7 @@ public class HealStrategy implements IStrategy {
                 maxHealth,
                 health,
                 fuel,
+                carDirection,
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 

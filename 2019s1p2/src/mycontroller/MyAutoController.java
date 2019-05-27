@@ -48,6 +48,7 @@ public class MyAutoController extends CarController {
                                         .createConserveStrategy(
                                                 Simulation.toConserve());
 
+//        carFuel = car.getFuel();
 
         maxHealth = getHealth();
 	}
@@ -71,7 +72,8 @@ public class MyAutoController extends CarController {
                                                           carPosition,
                                                           maxHealth,
                                                           getHealth(),
-                                                          carFuel,
+                                                          0,
+                                                          getOrientation(),
                                                           numParcels() == numParcelsFound());
 		makeMove(carPosition, next);
 	}
@@ -89,6 +91,8 @@ public class MyAutoController extends CarController {
                 "(" + mapRecorder.getTileAdapter(to).getType().toString() + ")");
 
         /* spend 1 fuel for an attempt move */
+        // TODO a constant 1?
+//        carFuel -= 1;
 
         if (from.equals(to)) {
             applyBrake();
