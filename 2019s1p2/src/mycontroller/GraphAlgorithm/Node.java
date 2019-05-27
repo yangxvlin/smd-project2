@@ -82,14 +82,11 @@ public class Node {
         * self
         * */
 
-        map.
-        this.direction;
-        Node(Coordinate c, float health, float fuel, float maxHealth, WorldSpatial.Direction direction)
 
         for (Coordinate c : adjacentCoordinates){
             // get the tile type the adjacent tile type
             ITileAdapter.TileType adjacentTileType = map.getTileAdapter(c).getType();
-
+            world.WorldSpatial.Direction adjacentDirection = nextDirection(c);
 
 
         }
@@ -97,6 +94,35 @@ public class Node {
         // move toward reverse direction
         /* update c, health(negative * 2, ice * 2, otherwise + health delta), fuel + 1, max health + positive(health delta, 0), direction */
         return null;
+    }
+
+    /**
+     *
+     * Decide whether the car is moving backward
+     *
+     * */
+    private boolean isMoveBackward(WorldSpatial.Direction nextDirection, Coordinate adjacentCoordinate){
+        if (this.direction == nextDirection){
+            if (this.direction == WorldSpatial.Direction.EAST){
+                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x + 1){
+                    return true;
+                }
+            }else if (this.direction == WorldSpatial.Direction.WEST){
+                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x -1){
+                    return true;
+                }
+            }else if (this.direction == WorldSpatial.Direction.NORTH){
+                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y + 1){
+                    return true;
+                }
+            }else if (this.direction == WorldSpatial.Direction.NORTH){
+                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y -1){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
