@@ -50,6 +50,7 @@ public class Dijkstra {
             if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
                 continue;
             }
+
             /* expand the nodes */
             for (Coordinate neighbor: map.tileNeighbors(current.getC(),
                     allowableNeighborTileStatus)) {
