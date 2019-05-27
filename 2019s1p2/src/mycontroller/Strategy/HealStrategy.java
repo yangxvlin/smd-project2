@@ -40,9 +40,9 @@ public class HealStrategy implements IStrategy {
             return null;
         }
 
-        for (Coordinate c: heals) {
-            System.out.println(c + " " + map.getTileAdapter(c).getType());
-        }
+//        for (Coordinate c: heals) {
+//            System.out.println(c + " " + map.getTileAdapter(c).getType());
+//        }
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                 carPosition,

@@ -4,8 +4,10 @@ import mycontroller.GraphAlgorithm.DijkstraPair;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -27,13 +29,14 @@ public interface IStrategy {
                                  float maxHealth,
                                  float health,
                                  float fuel,
+                                 WorldSpatial.Direction carDirection,
                                  boolean enoughParcel);
 
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
         /* 0.5 see Car.java line 100 */
-        System.out.println(destination + " " +
-                Boolean.toString(costSoFar.containsKey(destination)));
+//        System.out.println(destination + " " +
+//                Boolean.toString(costSoFar.containsKey(destination)));
         if (costSoFar.containsKey(destination) &&
                 costSoFar.get(destination).getHealth() >= 0.5) {
             return true;
@@ -46,6 +49,12 @@ public interface IStrategy {
                                   Comparator<Node> comparator,
                                   float maxHealth) {
         Node nextNode = new Node(null, Float.MIN_VALUE, Float.MIN_VALUE, maxHealth);
+//        System.out.println(Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
+//        System.out.println(Arrays.toString(searchResult.getCostSoFar().keySet().toArray()));
+        for (Coordinate c: searchResult.getCameFrom().keySet()) {
+            System.out.println(c.toString() + " " + searchResult.getCameFrom().get(c) + " " + searchResult.getCostSoFar().get(c));
+        }
+
         /* go to closest reachable parcel */
         for (Coordinate destination : destinations) {
 
@@ -55,7 +64,7 @@ public interface IStrategy {
                         searchResult.getCostSoFar().get(destination).getFuel(),
                         maxHealth);
 
-                System.out.println("<><><><>");
+//                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
                 }

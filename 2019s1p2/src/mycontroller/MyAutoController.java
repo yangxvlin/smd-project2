@@ -6,6 +6,7 @@ import mycontroller.Strategy.StrategyFactory;
 import swen30006.driving.Simulation;
 import utilities.Coordinate;
 import world.Car;
+import world.World;
 
 /**
  * Xulin Yang, 904904
@@ -15,6 +16,8 @@ import world.Car;
  **/
 
 public class MyAutoController extends CarController {
+
+
     /**
      * customized map information holder and updater
      */
@@ -28,7 +31,7 @@ public class MyAutoController extends CarController {
     /**
      * car's remaining fuel
      */
-    private float carFuel;
+//    private float carFuel;
 
     private float maxHealth;
 
@@ -94,7 +97,7 @@ public class MyAutoController extends CarController {
             applyBrake();
             /* brake has no move attempt thus no fuel consumption */
             // TODO a constant 1?
-            carFuel += 1;
+//            carFuel += 1;
             return;
         } else if (from.x < to.x) {
             switch (getOrientation()) {
@@ -113,7 +116,7 @@ public class MyAutoController extends CarController {
                     return;
 
                 case WEST:
-                    applyBrake();
+//                    applyBrake();
                     applyReverseAcceleration();
                     return;
             }
@@ -131,7 +134,7 @@ public class MyAutoController extends CarController {
                     return;
 
                 case EAST:
-                    applyBrake();
+//                    applyBrake();
                     applyReverseAcceleration();
                     return;
 
@@ -148,7 +151,7 @@ public class MyAutoController extends CarController {
                     return;
 
                 case SOUTH:
-                    applyBrake();
+//                    applyBrake();
                     applyReverseAcceleration();
                     return;
 
@@ -167,7 +170,7 @@ public class MyAutoController extends CarController {
             switch (getOrientation()) {
 
                 case NORTH:
-                    applyBrake();
+//                    applyBrake();
                     applyReverseAcceleration();
                     return;
 

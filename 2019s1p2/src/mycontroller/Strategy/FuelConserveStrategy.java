@@ -32,13 +32,13 @@ public class FuelConserveStrategy implements IStrategy {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
-//            System.out.println("Parcels: ");
+            System.out.println("Parcels: ");
             next = strategies.get(StrategyType.PICKUP)
                                 .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
-//            System.out.println("Finishs");
+            System.out.println("Finishs");
             next = strategies.get(StrategyType.EXIT)
                                 .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
 //            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
@@ -47,7 +47,7 @@ public class FuelConserveStrategy implements IStrategy {
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
-//            System.out.println("Unexplored: ");
+            System.out.println("Unexplored: ");
             next = strategies.get(StrategyType.EXPLORE)
                                 .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
@@ -61,8 +61,9 @@ public class FuelConserveStrategy implements IStrategy {
 //        }
 
         if (next == null) {
-            IStrategy random = new RandomMoveStrategy();
-            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+//            IStrategy random = new RandomMoveStrategy();
+//            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+            next = carPosition;
         }
 
         /* debug */

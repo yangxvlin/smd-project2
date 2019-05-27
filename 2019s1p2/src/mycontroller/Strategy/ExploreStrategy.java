@@ -38,7 +38,7 @@ public class ExploreStrategy implements IStrategy {
         if (unexplored.isEmpty()) {
             return null;
         }
-        System.out.println(Arrays.toString(unexplored.toArray()));
+//        System.out.println(Arrays.toString(unexplored.toArray()));
 
         DijkstraPair res = Dijkstra.dijkstra(map,
                 carPosition,
@@ -48,7 +48,7 @@ public class ExploreStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
 
-        System.out.println(">>>>");
+//        System.out.println(">>>>");
 
         return choosePath(unexplored, res, comparator, maxHealth);
     }

@@ -47,7 +47,7 @@ public class ExitStrategy implements IStrategy {
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
         Coordinate next = choosePath(finishes, res, comparator, maxHealth);
-
+        System.out.println(" --- ");
         if (next == null) {
             res = Dijkstra.dijkstra(map,
                     carPosition,

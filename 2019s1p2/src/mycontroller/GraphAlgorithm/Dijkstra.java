@@ -3,6 +3,7 @@ package mycontroller.GraphAlgorithm;
 import mycontroller.MapRecorder;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class Dijkstra {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
@@ -42,10 +44,16 @@ public class Dijkstra {
 
         cameFrom.put(source, null);
         costSoFar.put(source, sourceNode);
-
+//        boolean tmp = false;
         /* update the graph when not finished traversing */
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
+//            tmp = frontier.isEmpty();
+//
+//            if (tmp) {
+//                System.out.println(current + " " +
+//                                Arrays.toString(map.tileNeighbors(current.getC(), allowableNeighborTileStatus).toArray()));
+//            }
 
             if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
                 continue;
@@ -58,17 +66,22 @@ public class Dijkstra {
                 // TODO Unexplored ROAD cost = 0 now
                 float neighborHealth = current.getHealth() +
                         MapRecorder.tileHealthCostMap.get(
-                                map.getTileAdapter(current.getC()).getType());
+                                map.getTileAdapter(neighbor).getType());
                 // TODO a map with values = 1 or a constant 1?
                 float neighborFuel   = current.getFuel() - 1;
 
                 float neighborMaxHealth = current.getMaxHealth();
-                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType()) > 0) {
-                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(current.getC()).getType());
+                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType()) > 0) {
+                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType());
                 }
 
                 Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
 
+//                if (tmp){
+//                    System.out.println(neighbor + " " +
+//                            Boolean.toString(!costSoFar.containsKey(neighbor)) + " " );
+////                            Boolean.toString(comparator.compare(newNode, costSoFar.get(neighbor)) == 1));
+//                }
                 /* update when unvisited node or new node is better than old node */
                 // TODO 1 magic number? justify or become a constant?
                 if ((!costSoFar.containsKey(neighbor)) ||
@@ -77,7 +90,9 @@ public class Dijkstra {
                     frontier.add(newNode);
                     cameFrom.put(neighbor, current.getC());
                 }
+
             }
+//            tmp = false;
         }
 
         return new DijkstraPair(cameFrom, costSoFar);
