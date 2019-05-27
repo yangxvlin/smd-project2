@@ -1,5 +1,6 @@
 package mycontroller.GraphAlgorithm;
 
+import mycontroller.MapRecorder;
 import utilities.Coordinate;
 import world.WorldSpatial;
 
@@ -37,11 +38,12 @@ public class Node {
      * @param health : the remaining health at current coordinate
      * @param fuel :   the remaining fuel at current coordinate
      */
-    public Node(Coordinate c, float health, float fuel, float maxHealth) {
+    public Node(Coordinate c, float health, float fuel, float maxHealth, WorldSpatial.Direction direction) {
         this.c = c;
         this.health = health;
         this.fuel = fuel;
         this.maxHealth = maxHealth;
+        this.direction = direction;
     }
 
     /**
@@ -69,7 +71,8 @@ public class Node {
         return maxHealth;
     }
 
-    public ArrayList<Node> getNeighbors(ArrayList<Coordinate> adjacentCoordinates) {
+    public ArrayList<Node> getNeighbors(MapRecorder map,
+                                        ArrayList<Coordinate> adjacentCoordinates) {
         /*
         * up
         * down
@@ -80,6 +83,7 @@ public class Node {
 
         // move toward reverse direction
         /* update c, health(negative * 2, ice * 2, otherwise + health delta), fuel + 1, max health + positive(health delta, 0), direction */
+        return null;
     }
 
     /**

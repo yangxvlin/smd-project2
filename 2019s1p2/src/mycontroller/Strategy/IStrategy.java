@@ -57,6 +57,7 @@ public interface IStrategy {
 
         /* go to closest reachable parcel */
         for (Coordinate destination : destinations) {
+            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 
             if (isPossible(searchResult.getCostSoFar(), destination)) {
                 Node newNode = new Node(searchResult.getNext(destination),

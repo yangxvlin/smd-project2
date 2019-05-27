@@ -34,7 +34,7 @@ public class Dijkstra {
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
-        Node sourceNode = new Node(source, health, fuel, maxHealth);
+        Node sourceNode = new Node(source, health, fuel, maxHealth, carDirection);
 
         PriorityQueue<Node> frontier = new PriorityQueue<>(comparator);
         frontier.add(sourceNode);
@@ -60,22 +60,21 @@ public class Dijkstra {
             }
 
             /* expand the nodes */
-            for (Coordinate neighbor: map.tileNeighbors(current.getC(),
-                    allowableNeighborTileStatus)) {
+            for (Node neighbor: current.getNeighbors(map, map.tileNeighbors(current.getC(), allowableNeighborTileStatus))) {
 
-                // TODO Unexplored ROAD cost = 0 now
-                float neighborHealth = current.getHealth() +
-                        MapRecorder.tileHealthCostMap.get(
-                                map.getTileAdapter(neighbor).getType());
-                // TODO a map with values = 1 or a constant 1?
-                float neighborFuel   = current.getFuel() - 1;
-
-                float neighborMaxHealth = current.getMaxHealth();
-                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType()) > 0) {
-                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType());
-                }
-
-                Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
+//                // TODO Unexplored ROAD cost = 0 now
+//                float neighborHealth = current.getHealth() +
+//                        MapRecorder.tileHealthCostMap.get(
+//                                map.getTileAdapter(neighbor).getType());
+//                // TODO a map with values = 1 or a constant 1?
+//                float neighborFuel   = current.getFuel() - 1;
+//
+//                float neighborMaxHealth = current.getMaxHealth();
+//                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType()) > 0) {
+//                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType());
+//                }
+//
+//                Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
 
 //                if (tmp){
 //                    System.out.println(neighbor + " " +
@@ -84,11 +83,11 @@ public class Dijkstra {
 //                }
                 /* update when unvisited node or new node is better than old node */
                 // TODO 1 magic number? justify or become a constant?
-                if ((!costSoFar.containsKey(neighbor)) ||
-                        (comparator.compare(newNode, costSoFar.get(neighbor)) == 1)) {
-                    costSoFar.put(neighbor, newNode);
-                    frontier.add(newNode);
-                    cameFrom.put(neighbor, current.getC());
+                if ((!costSoFar.containsKey(neighbor.getC())) ||
+                        (comparator.compare(neighbor, costSoFar.get(neighbor.getC())) == 1)) {
+                    costSoFar.put(neighbor.getC(), neighbor);
+                    frontier.add(neighbor);
+                    cameFrom.put(neighbor.getC(), current.getC());
                 }
 
             }

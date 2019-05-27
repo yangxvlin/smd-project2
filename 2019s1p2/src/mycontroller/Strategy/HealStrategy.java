@@ -34,7 +34,7 @@ public class HealStrategy implements IStrategy {
                                         float fuel,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> heals = map.getCoordinates(ITileAdapter.TileType.WATER);
-//        heals.addAll(map.getCoordinates(ITileAdapter.TileType.HEALTH));
+        heals.addAll(map.getCoordinates(ITileAdapter.TileType.HEALTH));
 
         if (heals.isEmpty()) {
             return null;
