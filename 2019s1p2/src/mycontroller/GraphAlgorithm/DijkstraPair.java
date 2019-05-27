@@ -46,9 +46,9 @@ public class DijkstraPair {
 
             /* TODO problem occurs when explore for health conserve */
             assert(!path.contains(c));
-            if(path.contains(c)) {
-                break;
-            }
+//            if(path.contains(c)) {
+//                break;
+//            }
 
             path.push(c);
         }

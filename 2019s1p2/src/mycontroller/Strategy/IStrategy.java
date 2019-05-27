@@ -32,6 +32,8 @@ public interface IStrategy {
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
         /* 0.5 see Car.java line 100 */
+        System.out.println(destination + " " +
+                Boolean.toString(costSoFar.containsKey(destination)));
         if (costSoFar.containsKey(destination) &&
                 costSoFar.get(destination).getHealth() >= 0.5) {
             return true;
