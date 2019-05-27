@@ -7,6 +7,7 @@ import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class ExitStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> finishes = map.getCoordinates(ITileAdapter.TileType.FINISH);
         assert(!finishes.isEmpty());
@@ -43,6 +45,7 @@ public class ExitStrategy implements IStrategy {
                 maxHealth,
                 health,
                 fuel,
+                carDirection,
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
@@ -54,6 +57,7 @@ public class ExitStrategy implements IStrategy {
                     maxHealth,
                     health,
                     fuel,
+                    carDirection,
                     comparator,
                     new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
             next = choosePath(finishes, res, comparator, maxHealth);

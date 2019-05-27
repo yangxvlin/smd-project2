@@ -6,6 +6,7 @@ import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ public class ExploreStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 
@@ -45,6 +47,7 @@ public class ExploreStrategy implements IStrategy {
                 maxHealth,
                 health,
                 fuel,
+                carDirection,
                 comparator,
                 new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
 

@@ -7,6 +7,7 @@ import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class ParcelPickupStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuel,
+                                        WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> parcels = map.getCoordinates(ITileAdapter.TileType.PARCEL);
         if (parcels.isEmpty()) {
@@ -44,6 +46,7 @@ public class ParcelPickupStrategy implements IStrategy {
                                              maxHealth,
                                              health,
                                              fuel,
+                                             carDirection,
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 

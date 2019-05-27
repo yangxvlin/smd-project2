@@ -3,6 +3,7 @@ package mycontroller.Strategy;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
+import world.WorldSpatial;
 
 import java.util.*;
 
@@ -28,19 +29,25 @@ public class FuelConserveStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map, Coordinate carPosition, float maxHealth, float health, float fuel, boolean enoughParcel) {
+    public Coordinate getNextCoordinate(MapRecorder map,
+                                        Coordinate carPosition,
+                                        float maxHealth,
+                                        float health,
+                                        float fuel,
+                                        WorldSpatial.Direction carDirection,
+                                        boolean enoughParcel) {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
             System.out.println("Parcels: ");
             next = strategies.get(StrategyType.PICKUP)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
             System.out.println("Finishs");
             next = strategies.get(StrategyType.EXIT)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
 //            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
 //                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
         }
@@ -49,7 +56,7 @@ public class FuelConserveStrategy implements IStrategy {
         if (next == null) {
             System.out.println("Unexplored: ");
             next = strategies.get(StrategyType.EXPLORE)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 
