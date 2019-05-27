@@ -82,14 +82,15 @@ public class Node {
         * self
         * */
 
+        map.
+        this.direction;
         Node(Coordinate c, float health, float fuel, float maxHealth, WorldSpatial.Direction direction)
 
         for (Coordinate c : adjacentCoordinates){
             // get the tile type the adjacent tile type
             ITileAdapter.TileType adjacentTileType = map.getTileAdapter(c).getType();
 
-            world.WorldSpatial.Direction nextDirection = nextStepDirection()
-            if(this.direction == nextDirection && )
+
 
         }
 
@@ -98,34 +99,67 @@ public class Node {
         return null;
     }
 
-    private boolean isMoveBackward(WorldSpatial.Direction nextDirection, Coordinate adjacentCoordinate){
-        if (this.direction == nextDirection){
-            if (this.direction == WorldSpatial.Direction.EAST){
-                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x + 1){
-                    return true;
+    /**
+     * @param adj : adjacent tile's coordinate
+     * @return direction based on move from current coordinate to adjacent coordinate
+     */
+    private WorldSpatial.Direction nextDirection(Coordinate adj){
+        switch (direction) {
+            case NORTH:
+                if (c.x > adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.WEST;
+                } else if (c.x < adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.EAST;
+                } else if (c.y > adj.y) {
+                    return WorldSpatial.Direction.NORTH;
+                } else if (c.y < adj.y) {
+                    return WorldSpatial.Direction.NORTH;
                 }
-            }else if (this.direction == WorldSpatial.Direction.WEST){
-                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x -1){
-                    return true;
+
+            case SOUTH:
+                if (c.x > adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.WEST;
+                } else if (c.x < adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.EAST;
+                } else if (c.y > adj.y) {
+                    return WorldSpatial.Direction.SOUTH;
+                } else if (c.y < adj.y) {
+                    return WorldSpatial.Direction.SOUTH;
                 }
-            }else if (this.direction == WorldSpatial.Direction.NORTH){
-                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y + 1){
-                    return true;
+
+            case EAST:
+                if (c.x > adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.EAST;
+                } else if (c.x < adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.EAST;
+                } else if (c.y > adj.y) {
+                    return WorldSpatial.Direction.SOUTH;
+                } else if (c.y < adj.y) {
+                    return WorldSpatial.Direction.NORTH;
                 }
-            }else if (this.direction == WorldSpatial.Direction.NORTH){
-                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y -1){
-                    return true;
+
+            case WEST:
+                if (c.x > adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.WEST;
+                } else if (c.x < adj.x) {
+                    assert(c.y == adj.y);
+                    return WorldSpatial.Direction.WEST;
+                } else if (c.y > adj.y) {
+                    return WorldSpatial.Direction.NORTH;
+                } else if (c.y < adj.y) {
+                    return WorldSpatial.Direction.SOUTH;
                 }
-            }
         }
 
-        return false;
-    }
-
-    private WorldSpatial.Direction nextStepDirection(Coordinate currentCoordinate, Coordinate adjacentCoordinate){
-        if (currentCoordinate.x() == adjacentCoordinate.x()){
-
-        }
+        System.out.println("Invalid move in direction!");
+        System.exit(1);
     }
 
     /**
