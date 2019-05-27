@@ -1,6 +1,7 @@
 package mycontroller.GraphAlgorithm;
 
 import mycontroller.MapRecorder;
+import mycontroller.TileAdapter.ITileAdapter;
 import utilities.Coordinate;
 import world.WorldSpatial;
 
@@ -81,9 +82,25 @@ public class Node {
         * self
         * */
 
+        map.
+        this.direction;
+        Node(Coordinate c, float health, float fuel, float maxHealth, WorldSpatial.Direction direction)
+
+        for (Coordinate c : adjacentCoordinates){
+            // get the tile type the adjacent tile type
+            ITileAdapter.TileType adjacentTileType = map.getTileAdapter(c).getType();
+
+
+
+        }
+
         // move toward reverse direction
         /* update c, health(negative * 2, ice * 2, otherwise + health delta), fuel + 1, max health + positive(health delta, 0), direction */
         return null;
+    }
+
+    private WorldSpatial.Direction nextStepDirection(Coordinate currentCoordinate, Coordinate adjacentCoordinate){
+        if (currentCoordinate.x())
     }
 
     /**
