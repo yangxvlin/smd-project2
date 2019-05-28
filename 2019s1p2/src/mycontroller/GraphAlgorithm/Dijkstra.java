@@ -35,7 +35,7 @@ public class Dijkstra {
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
-        Node sourceNode = new Node(source, health, fuelCost, maxHealth, carDirection);
+        Node sourceNode = new Node(source, health, fuelCost, maxHealth, velocity, carDirection);
 
         PriorityQueue<Node> frontier = new PriorityQueue<>(comparator);
         frontier.add(sourceNode);
@@ -56,7 +56,7 @@ public class Dijkstra {
 //                                Arrays.toString(map.tileNeighbors(current.getC(), allowableNeighborTileStatus).toArray()));
 //            }
 
-            if ((current.getFuel() < 0.5) || (current.getHealth() < 0.5)) {
+            if (current.getHealth() < 0.5) {
                 continue;
             }
 

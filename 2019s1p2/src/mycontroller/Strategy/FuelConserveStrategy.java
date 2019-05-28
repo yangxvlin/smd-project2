@@ -33,7 +33,8 @@ public class FuelConserveStrategy implements IStrategy {
                                         Coordinate carPosition,
                                         float maxHealth,
                                         float health,
-                                        float fuel,
+                                        float fuelCost,
+                                        float velocity,
                                         WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         Coordinate next;
@@ -41,13 +42,13 @@ public class FuelConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("Parcels: ");
             next = strategies.get(StrategyType.PICKUP)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, carDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
             System.out.println("Finishs");
             next = strategies.get(StrategyType.EXIT)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, carDirection, enoughParcel);
 //            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
 //                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
         }
@@ -56,7 +57,7 @@ public class FuelConserveStrategy implements IStrategy {
         if (next == null) {
             System.out.println("Unexplored: ");
             next = strategies.get(StrategyType.EXPLORE)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, carDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, carDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 
@@ -170,10 +171,10 @@ public class FuelConserveStrategy implements IStrategy {
 
         @Override
         public int compare(Node o1, Node o2) {
-            if (o1.getFuel() < o2.getFuel()) {
-                return -1;
-            } else if (o1.getFuel() > o2.getFuel()) {
+            if (o1.getFuelCost() < o2.getFuelCost()) {
                 return 1;
+            } else if (o1.getFuelCost() > o2.getFuelCost()) {
+                return -1;
             } else if (o1.getHealth() < o2.getHealth()) {
                 return -1;
             } else if (o1.getHealth() > o2.getHealth()) {

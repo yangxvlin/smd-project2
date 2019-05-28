@@ -32,7 +32,8 @@ public class HealStrategy implements IStrategy {
                                         Coordinate carPosition,
                                         float maxHealth,
                                         float health,
-                                        float fuel,
+                                        float fuelCost,
+                                        float velocity,
                                         WorldSpatial.Direction carDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> heals = map.getCoordinates(ITileAdapter.TileType.WATER);
@@ -50,7 +51,8 @@ public class HealStrategy implements IStrategy {
                 carPosition,
                 maxHealth,
                 health,
-                fuel,
+                fuelCost,
+                velocity,
                 carDirection,
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));

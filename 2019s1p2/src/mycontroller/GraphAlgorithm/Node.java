@@ -28,22 +28,25 @@ public class Node {
     /**
      * cost for the car at the node
      */
-    private float fuel;
+    private float fuelCost;
 
     private float maxHealth;
 
     private WorldSpatial.Direction direction;
 
+    private float velocity;
+
     /**
      * @param c :      current coordinate
      * @param health : the remaining health at current coordinate
-     * @param fuel :   the remaining fuel at current coordinate
+     * @param fuelCost :   the remaining fuel at current coordinate
      */
-    public Node(Coordinate c, float health, float fuel, float maxHealth, WorldSpatial.Direction direction) {
-        this.c = c;
-        this.health = health;
-        this.fuel = fuel;
+    public Node(Coordinate c, float health, float fuelCost, float maxHealth, float velocity, WorldSpatial.Direction direction) {
+        this.c         = c;
+        this.health    = health;
+        this.fuelCost  = fuelCost;
         this.maxHealth = maxHealth;
+        this.velocity  = velocity;
         this.direction = direction;
     }
 
@@ -61,11 +64,8 @@ public class Node {
         return health;
     }
 
-    /**
-     * @return remaining fuel
-     */
-    public float getFuel() {
-        return fuel;
+    public float getFuelCost() {
+        return fuelCost;
     }
 
     public float getMaxHealth() {
@@ -74,6 +74,7 @@ public class Node {
 
     public ArrayList<Node> getNeighbors(MapRecorder map,
                                         ArrayList<Coordinate> adjacentCoordinates) {
+        ArrayList<Node> res = new ArrayList<>();
         /*
         * up
         * down
@@ -93,7 +94,7 @@ public class Node {
 
         // move toward reverse direction
         /* update c, health(negative * 2, ice * 2, otherwise + health delta), fuel + 1, max health + positive(health delta, 0), direction */
-        return null;
+        return res;
     }
 
     /**
@@ -195,6 +196,7 @@ public class Node {
     public String toString() {
         return "(" + c.toString() + "), " +
                 "health: " + Float.toString(health) + ", " +
-                "fuel: " + Float.toString(fuel);
+                "fuelCost: " + Float.toString(fuelCost) + ", " +
+                "velocity: " + Float.toString(velocity) + "(" + direction + ")";
     }
 }
