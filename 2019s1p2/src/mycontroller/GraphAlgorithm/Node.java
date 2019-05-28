@@ -89,10 +89,27 @@ public class Node {
         for (Coordinate adj : adjacentCoordinates){
             // get the tile type the adjacent tile type
             ITileAdapter.TileType adjacentTileType = map.getTileAdapter(adj).getType();
+            ITileAdapter.TileType currentTileType = map.getTileAdapter(c).getType();
             world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(adj);
 
             if (isNeedBrake(nextMovingDirection)) {
-                res.add(new Node());
+                float nextMoveHealth  = this.health;
+                float nextMoveMaxHealth = this.maxHealth;
+                float nextMoveFuleCost = this.fuelCost + 1;
+                float nextMoveVelocity = 1;
+
+                // healing applied
+                if (adjacentTileType== ITileAdapter.TileType.WATER){
+                    nextMoveHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(ITileAdapter.TileType.WATER);
+                    nextMoveMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(ITileAdapter.TileType.WATER);
+                }else if (adjacentTileType== ITileAdapter.TileType.HEALTH){
+                    // damage applied
+                }else if (adjacentTileType== ITileAdapter.TileType.LAVA){
+
+                }
+
+
+                res.add(new Node(adj, ?, this.fuelCost +1, ?, nextMoveVelocity, nextMovingDirection));
             } else {
                 res.add(new Node());
             }
