@@ -52,9 +52,9 @@ public class Dijkstra {
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
 
-            if (frontier.size() < 50) {
-                System.out.println(current.toString() + " " + frontier.size());
-            }
+//            if (frontier.size() < 50) {
+//                System.out.println(current.toString() + " " + frontier.size());
+//            }
 //            tmp = frontier.isEmpty();
 //
 //            if (tmp) {
