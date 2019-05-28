@@ -83,6 +83,7 @@ public class MyAutoController extends CarController {
                                                           getMovingDirection(carPosition),
                                                           numParcels() == numParcelsFound());
 		previousPosition = carPosition;
+//		makeMove2(carPosition, next);
 		makeMove(carPosition, next);
 	}
 
@@ -150,6 +151,7 @@ public class MyAutoController extends CarController {
             // TODO a constant 1?
 //            carFuel += 1;
             return;
+        // move to EAST
         } else if (from.x < to.x) {
             switch (getOrientation()) {
                 case NORTH:
@@ -171,7 +173,7 @@ public class MyAutoController extends CarController {
                     applyReverseAcceleration();
                     return;
             }
-
+        // move to WEST
         } else if (from.x > to.x) {
             switch (getOrientation()) {
                 case NORTH:
@@ -193,7 +195,7 @@ public class MyAutoController extends CarController {
                     applyForwardAcceleration();
                     return;
             }
-
+        // move to North
         } else if (from.y < to.y) {
             switch (getOrientation()) {
 
@@ -216,7 +218,7 @@ public class MyAutoController extends CarController {
                     turnRight();
                     return;
             }
-
+        // move to South
         } else if (from.y > to.y) {
             switch (getOrientation()) {
 
