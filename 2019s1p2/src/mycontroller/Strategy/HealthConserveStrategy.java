@@ -135,25 +135,15 @@ public class HealthConserveStrategy implements IStrategy {
 
         @Override
         public int compare(Node o1, Node o2) {
-            assert(o1.getMaxHealth() == o2.getMaxHealth());
+//            assert(o1.getMaxHealth() == o2.getMaxHealth());
 
-            if (o1.getMaxHealth() > o2.getMaxHealth()) {
-                return -1;
-            } else if (o1.getMaxHealth() < o2.getMaxHealth()) {
-                return 1;
-            } else if (o1.getHealth() > o2.getHealth()) {
-                return 1;
-            } else if (o1.getHealth() < o2.getHealth()) {
-                return -1;
-            } else if (o1.getFuelCost() < o2.getFuelCost()) {
-                return 1;
-            } else if (o1.getFuelCost() > o2.getFuelCost()) {
-                return -1;
-            } else {
-                return 0;
-            }
-
-//            if (o1.getHealth() < o2.getHealth()) {
+//            if (o1.getMaxHealth() > o2.getMaxHealth()) {
+//                return -1;
+//            } else if (o1.getMaxHealth() < o2.getMaxHealth()) {
+//                return 1;
+//            } else if (o1.getHealth() > o2.getHealth()) {
+//                return 1;
+//            } else if (o1.getHealth() < o2.getHealth()) {
 //                return -1;
 //            } else if (o1.getFuelCost() < o2.getFuelCost()) {
 //                return 1;
@@ -162,6 +152,20 @@ public class HealthConserveStrategy implements IStrategy {
 //            } else {
 //                return 0;
 //            }
+            if (o1.getMaxHealth() > o2.getMaxHealth()) {
+                return -1;
+            }
+            else if (o1.getHealth() < o2.getHealth()) {
+                return -1;
+            } else if (o1.getFuelCost() < o2.getFuelCost()) {
+                return 1;
+            } else if (o1.getFuelCost() > o2.getFuelCost()) {
+                return -1;
+            } else if (o1.getHealth() > o2.getHealth()) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
 }
