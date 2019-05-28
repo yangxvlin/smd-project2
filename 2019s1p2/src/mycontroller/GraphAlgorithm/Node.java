@@ -6,6 +6,7 @@ import utilities.Coordinate;
 import world.WorldSpatial;
 
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 /**
  * Xulin Yang, 904904
@@ -32,7 +33,7 @@ public class Node {
 
     private float maxHealth;
 
-    private WorldSpatial.Direction direction;
+    private WorldSpatial.Direction movingDirection;
 
     private float velocity;
 
@@ -41,13 +42,13 @@ public class Node {
      * @param health : the remaining health at current coordinate
      * @param fuelCost :   the remaining fuel at current coordinate
      */
-    public Node(Coordinate c, float health, float fuelCost, float maxHealth, float velocity, WorldSpatial.Direction direction) {
+    public Node(Coordinate c, float health, float fuelCost, float maxHealth, float velocity, WorldSpatial.Direction movingDirection) {
         this.c         = c;
         this.health    = health;
         this.fuelCost  = fuelCost;
         this.maxHealth = maxHealth;
         this.velocity  = velocity;
-        this.direction = direction;
+        this.movingDirection = movingDirection;
     }
 
     /**
@@ -83,12 +84,12 @@ public class Node {
         * self
         * */
 
+        //
 
         for (Coordinate c : adjacentCoordinates){
             // get the tile type the adjacent tile type
             ITileAdapter.TileType adjacentTileType = map.getTileAdapter(c).getType();
-            world.WorldSpatial.Direction adjacentDirection = nextDirection(c);
-
+            world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(c);
 
         }
 
@@ -99,28 +100,33 @@ public class Node {
 
     /**
      *
-     * Decide whether the car is moving backward
+     * Decide whether the car need to brake.
      *
      * */
-    private boolean isMoveBackward(WorldSpatial.Direction nextDirection, Coordinate adjacentCoordinate){
-        if (this.direction == nextDirection){
-            if (this.direction == WorldSpatial.Direction.EAST){
-                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x + 1){
+    private boolean isNeedBrake(WorldSpatial.Direction nextMovingDirection){
+        // if the car has already stop then no need brake.
+        if (velocity == 0){
+            return false;
+        }
+
+        // if the car want to move to the reverse direction, then brake is needed.
+        switch (movingDirection){
+            case EAST:
+                if (nextMovingDirection == WorldSpatial.Direction.WEST){
                     return true;
                 }
-            }else if (this.direction == WorldSpatial.Direction.WEST){
-                if (this.c.y == adjacentCoordinate.y && this.c.x == adjacentCoordinate.x -1){
+            case WEST:
+                if (nextMovingDirection == WorldSpatial.Direction.EAST){
                     return true;
                 }
-            }else if (this.direction == WorldSpatial.Direction.NORTH){
-                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y + 1){
+            case NORTH:
+                if (nextMovingDirection == WorldSpatial.Direction.SOUTH){
                     return true;
                 }
-            }else if (this.direction == WorldSpatial.Direction.NORTH){
-                if (this.c.x == adjacentCoordinate.x && this.c.y == adjacentCoordinate.y -1){
+            case SOUTH:
+                if (nextMovingDirection == WorldSpatial.Direction.NORTH){
                     return true;
                 }
-            }
         }
 
         return false;
@@ -130,7 +136,7 @@ public class Node {
      * @param adj : adjacent tile's coordinate
      * @return direction based on move from current coordinate to adjacent coordinate
      */
-    private WorldSpatial.Direction nextDirection(Coordinate adj){
+    private WorldSpatial.Direction nextMoveDirection(Coordinate adj){
         switch (direction) {
             case NORTH:
                 if (c.x > adj.x) {

@@ -85,7 +85,7 @@ public class MyAutoController extends CarController {
 	}
 
 	/**
-     * This methods responses for calculating the velocity(vector) of the car.
+     * This methods is responsible for calculating the velocity(vector) of the car.
      *
      * */
 	private float getVelocity() {
@@ -105,7 +105,7 @@ public class MyAutoController extends CarController {
         }
     }
     /**
-     * This methods responses for determining the current moving direction of the car,
+     * This methods is responsible for determining the current moving direction of the car,
      * by calculating the relative direction of the current position to the previous position.
      *
      * */
