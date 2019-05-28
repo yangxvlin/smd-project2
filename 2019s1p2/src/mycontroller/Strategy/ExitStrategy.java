@@ -53,18 +53,18 @@ public class ExitStrategy implements IStrategy {
 
         Coordinate next = choosePath(finishes, res, comparator, maxHealth);
         System.out.println(" --- ");
-        if (next == null) {
-            res = Dijkstra.dijkstra(map,
-                    carPosition,
-                    maxHealth,
-                    health,
-                    fuelCost,
-                    speed,
-                    movingDirection,
-                    comparator,
-                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-            next = choosePath(finishes, res, comparator, maxHealth);
-        }
+//        if (next == null) {
+//            res = Dijkstra.dijkstra(map,
+//                    carPosition,
+//                    maxHealth,
+//                    health,
+//                    fuelCost,
+//                    speed,
+//                    movingDirection,
+//                    comparator,
+//                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+//            next = choosePath(finishes, res, comparator, maxHealth);
+//        }
 
         return next;
     }

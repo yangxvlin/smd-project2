@@ -3,6 +3,7 @@ package mycontroller;
 import controller.CarController;
 import mycontroller.Strategy.IStrategy;
 import mycontroller.Strategy.StrategyFactory;
+import mycontroller.TileAdapter.ITileAdapter;
 import swen30006.driving.Simulation;
 import utilities.Coordinate;
 import world.Car;
@@ -71,7 +72,7 @@ public class MyAutoController extends CarController {
         System.out.println();
 //	    mapRecorder.print();
 
-        System.out.println("previous: " + previousPosition + " ");
+        System.out.println("previous: " + previousPosition + " " + Integer.toString(numParcelsFound()));
         Coordinate carPosition = new Coordinate(getPosition());
 
 		Coordinate next = driveStrategy.getNextCoordinate(mapRecorder,
@@ -81,32 +82,10 @@ public class MyAutoController extends CarController {
                                                           0,
                                                           getSpeed(),
                                                           getMovingDirection(carPosition),
-                                                          numParcels() == numParcelsFound());
+                                                          numParcels() <= numParcelsFound());
 		previousPosition = carPosition;
-//		makeMove2(carPosition, next);
 		makeMove(carPosition, next);
 	}
-
-//	/**
-//     * This methods is responsible for calculating the velocity(vector) of the car.
-//     *
-//     * */
-//	private float getVelocity() {
-//        if (getSpeed() == 0) {
-//            return 0;
-//        }
-//
-//        WorldSpatial.Direction movingDirection = getMovingDirection();
-//        WorldSpatial.Direction currentOrientation = getOrientation();
-//
-//        // Because moving direction and car's orientation are always on the same axis
-//        // then if they are same the car is moving forward, otherwise it is moving backward
-//        if (currentOrientation == movingDirection){
-//            return getSpeed();
-//        }else{
-//            return -1 * getSpeed();
-//        }
-//    }
 
     /**
      * This methods is responsible for determining the current moving direction of the car,
@@ -129,6 +108,22 @@ public class MyAutoController extends CarController {
 	    return movingDirection;
     }
 
+    private Coordinate getForward(Coordinate carPosition) {
+        switch (getOrientation()) {
+            case NORTH:
+                return new Coordinate(carPosition.x, carPosition.y + 1);
+            case SOUTH:
+                return new Coordinate(carPosition.x, carPosition.y - 1);
+            case EAST:
+                return new Coordinate(carPosition.x + 1, carPosition.y);
+            case WEST:
+                return new Coordinate(carPosition.x - 1, carPosition.y);
+        }
+
+        /* for completeness */
+        return null;
+    }
+
     /**
      * based on the current location and next location to go, apply the car's
      * reaction to the next location to go to
@@ -139,7 +134,8 @@ public class MyAutoController extends CarController {
 	    assert(to != null);
 
         System.out.println(from.toString() + " -> " + to.toString() +
-                "(" + mapRecorder.getTileAdapter(to).getType().toString() + ")");
+                "(" + mapRecorder.getTileAdapter(to).getType().toString() + ") " +
+                getOrientation() + " " + getMovingDirection(from));
 
         /* spend 1 fuel for an attempt move */
         // TODO a constant 1?
@@ -151,95 +147,108 @@ public class MyAutoController extends CarController {
             // TODO a constant 1?
 //            carFuel += 1;
             return;
-        // move to EAST
-        } else if (from.x < to.x) {
-            switch (getOrientation()) {
-                case NORTH:
-                    applyForwardAcceleration();
-                    turnRight();
-                    return;
-
-                case SOUTH:
-                    applyForwardAcceleration();
-                    turnLeft();
-                    return;
-
-                case EAST:
-                    applyForwardAcceleration();
-                    return;
-
-                case WEST:
-//                    applyBrake();
+        } else {
+            if (getSpeed() == 0) {
+                if (mapRecorder.getTileAdapter(getForward(from)).isType(ITileAdapter.TileType.WALL)) {
                     applyReverseAcceleration();
-                    return;
+                } else {
+                    applyForwardAcceleration();
+                }
             }
-        // move to WEST
-        } else if (from.x > to.x) {
-            switch (getOrientation()) {
-                case NORTH:
-                    applyForwardAcceleration();
-                    turnLeft();
-                    return;
 
-                case SOUTH:
-                    applyForwardAcceleration();
-                    turnRight();
-                    return;
+            if (from.x < to.x) {
+                switch (getOrientation()) {
+                    case NORTH:
+                        //                    applyForwardAcceleration();
+                        turnRight();
+                        return;
 
-                case EAST:
-//                    applyBrake();
-                    applyReverseAcceleration();
-                    return;
+                    case SOUTH:
+                        //                    applyForwardAcceleration();
+                        turnLeft();
+                        return;
 
-                case WEST:
-                    applyForwardAcceleration();
-                    return;
-            }
-        // move to North
-        } else if (from.y < to.y) {
-            switch (getOrientation()) {
+                    case EAST:
+                        applyForwardAcceleration();
+                        return;
 
-                case NORTH:
-                    applyForwardAcceleration();
-                    return;
+                    case WEST:
+                        //                    applyBrake();
+                        //                    applyReverseAcceleration();
+                        applyReverseAcceleration();
+                        return;
+                }
 
-                case SOUTH:
-//                    applyBrake();
-                    applyReverseAcceleration();
-                    return;
+            } else if (from.x > to.x) {
+                switch (getOrientation()) {
+                    case NORTH:
+                        //                    applyForwardAcceleration();
+                        turnLeft();
+                        return;
 
-                case EAST:
-                    applyForwardAcceleration();
-                    turnLeft();
-                    return;
+                    case SOUTH:
+                        //                    applyForwardAcceleration();
+                        turnRight();
+                        return;
 
-                case WEST:
-                    applyForwardAcceleration();
-                    turnRight();
-                    return;
-            }
-        // move to South
-        } else if (from.y > to.y) {
-            switch (getOrientation()) {
+                    case EAST:
+                        //                    applyBrake();
+                        //                    applyReverseAcceleration();
+                        applyReverseAcceleration();
+                        return;
 
-                case NORTH:
-//                    applyBrake();
-                    applyReverseAcceleration();
-                    return;
+                    case WEST:
+                        applyForwardAcceleration();
+                        return;
+                }
 
-                case SOUTH:
-                    applyForwardAcceleration();
-                    return;
+            } else if (from.y < to.y) {
+                switch (getOrientation()) {
 
-                case EAST:
-                    applyForwardAcceleration();
-                    turnRight();
-                    return;
+                    case NORTH:
+                        applyForwardAcceleration();
+                        return;
 
-                case WEST:
-                    applyForwardAcceleration();
-                    turnLeft();
-                    return;
+                    case SOUTH:
+                        //                    applyBrake();
+                        //                    applyReverseAcceleration();
+                        applyReverseAcceleration();
+                        return;
+
+                    case EAST:
+                        //                    applyForwardAcceleration();
+                        turnLeft();
+                        return;
+
+                    case WEST:
+                        //                    applyForwardAcceleration();
+                        turnRight();
+                        return;
+                }
+
+            } else if (from.y > to.y) {
+                switch (getOrientation()) {
+
+                    case NORTH:
+                        //                    applyBrake();
+                        //                    applyReverseAcceleration();
+                        applyReverseAcceleration();
+                        return;
+
+                    case SOUTH:
+                        applyForwardAcceleration();
+                        return;
+
+                    case EAST:
+                        //                    applyForwardAcceleration();
+                        turnRight();
+                        return;
+
+                    case WEST:
+                        //                    applyForwardAcceleration();
+                        turnLeft();
+                        return;
+                }
             }
         }
 

@@ -183,7 +183,7 @@ public class Node {
     @Override
     public String toString() {
         return "(" + c.toString() + "), " +
-                "health: " + Float.toString(health) + ", " +
+                "health: " + Float.toString(health) +"(" + maxHealth + ")" + ", " +
                 "fuelCost: " + Float.toString(fuelCost) + ", " +
                 "speed: " + Float.toString(speed) + "(" + movingDirection + ")";
     }
