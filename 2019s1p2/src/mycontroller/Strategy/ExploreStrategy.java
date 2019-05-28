@@ -10,7 +10,6 @@ import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 /**
@@ -34,7 +33,7 @@ public class ExploreStrategy implements IStrategy {
                                         float health,
                                         float fuelCost,
                                         float velocity,
-                                        WorldSpatial.Direction carDirection,
+                                        WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 
@@ -49,7 +48,7 @@ public class ExploreStrategy implements IStrategy {
                 health,
                 fuelCost,
                 velocity,
-                carDirection,
+                movingDirection,
                 comparator,
                 new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
 

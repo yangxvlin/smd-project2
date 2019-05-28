@@ -24,7 +24,7 @@ public class RandomMoveStrategy implements IStrategy {
                                         float health,
                                         float fuelCost,
                                         float velocity,
-                                        WorldSpatial.Direction carDirection,
+                                        WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
                 new ArrayList<>(Arrays.asList(TileStatus.EXPLORED, TileStatus.UNEXPLORED)));

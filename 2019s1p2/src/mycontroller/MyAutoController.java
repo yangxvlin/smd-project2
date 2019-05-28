@@ -79,7 +79,7 @@ public class MyAutoController extends CarController {
                                                           getHealth(),
                                                           0,
                                                           getVelocity(),
-                                                          getOrientation(),
+                                                          getMovingDirection(),
                                                           numParcels() == numParcelsFound());
 		makeMove(carPosition, next);
 	}

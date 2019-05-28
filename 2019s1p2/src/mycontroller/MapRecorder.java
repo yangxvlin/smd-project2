@@ -6,6 +6,7 @@ import tiles.MapTile;
 import tiles.WaterTrap;
 import utilities.Coordinate;
 import world.World;
+import world.WorldSpatial;
 
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class MapRecorder {
     /**
      * mapping between tile type and car health cost
      */
-    public static final Map<ITileAdapter.TileType, Float> tileHealthCostMap = initMap();
+    public static final Map<ITileAdapter.TileType, Float> TILE_HEALTH_COST_MAP = initMap();
 
     /**
      * @return mapping between tile type and car health cost object
@@ -60,6 +61,40 @@ public class MapRecorder {
 
         return Collections.unmodifiableMap(map);
     }
+
+    public enum MOVE_DIRECTION{UP, DOWN, LEFT, RIGHT}
+
+//    public static final Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> TURN_DIRECTION = initDirectionMap();
+//
+//    private static Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> initDirectionMap() {
+//        Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> map = new HashMap<>();
+//
+//        map.put(WorldSpatial.Direction.NORTH, new HashMap<>());
+//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.UP, WorldSpatial.Direction.NORTH);
+//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.LEFT, WorldSpatial.Direction.WEST);
+//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.RIGHT, WorldSpatial.Direction.EAST);
+//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.DOWN, WorldSpatial.Direction.NORTH);
+//
+//        map.put(WorldSpatial.Direction.SOUTH, new HashMap<>());
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//
+//        map.put(WorldSpatial.Direction.EAST , new HashMap<>());
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//
+//        map.put(WorldSpatial.Direction.WEST , new HashMap<>());
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//        map.get(WorldSpatial.Direction.NORTH).put();
+//
+//        return Collections.unmodifiableMap(map);
+//    }
 
     /**
      * initialize map recorder object
