@@ -80,7 +80,7 @@ public class MyAutoController extends CarController {
         System.out.println("previous: " + previousPosition + " " + Integer.toString(numParcelsFound()));
         Coordinate carPosition = new Coordinate(getPosition());
 
-        if ((path.size() == 1) || path.empty()) {
+        if ((path.size() == 1) || path.empty() || true) {
             path = driveStrategy.getNextPath(mapRecorder,
                                                               carPosition,
                                                               maxHealth,
@@ -102,7 +102,7 @@ public class MyAutoController extends CarController {
      * */
     private WorldSpatial.Direction getMovingDirection(Coordinate currentPosition){
         WorldSpatial.Direction movingDirection = null;
-	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y -1) {
+	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y - 1) {
             movingDirection =  WorldSpatial.Direction.SOUTH;
         } else if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y + 1) {
             movingDirection =  WorldSpatial.Direction.NORTH;
@@ -154,14 +154,10 @@ public class MyAutoController extends CarController {
                 getOrientation() + " " + getMovingDirection(from));
 
         /* spend 1 fuel for an attempt move */
-        // TODO a constant 1?
-//        carFuel -= 1;
 
         if (from.equals(to)) {
             applyBrake();
             /* brake has no move attempt thus no fuel consumption */
-            // TODO a constant 1?
-//            carFuel += 1;
             return;
         } else {
             if (getSpeed() == 0) {
@@ -175,12 +171,10 @@ public class MyAutoController extends CarController {
             if (from.x < to.x) {
                 switch (getOrientation()) {
                     case NORTH:
-                        //                    applyForwardAcceleration();
                         turnRight();
                         return;
 
                     case SOUTH:
-                        //                    applyForwardAcceleration();
                         turnLeft();
                         return;
 
@@ -189,8 +183,6 @@ public class MyAutoController extends CarController {
                         return;
 
                     case WEST:
-                        //                    applyBrake();
-                        //                    applyReverseAcceleration();
                         applyReverseAcceleration();
                         return;
                 }
@@ -198,18 +190,14 @@ public class MyAutoController extends CarController {
             } else if (from.x > to.x) {
                 switch (getOrientation()) {
                     case NORTH:
-                        //                    applyForwardAcceleration();
                         turnLeft();
                         return;
 
                     case SOUTH:
-                        //                    applyForwardAcceleration();
                         turnRight();
                         return;
 
                     case EAST:
-                        //                    applyBrake();
-                        //                    applyReverseAcceleration();
                         applyReverseAcceleration();
                         return;
 
@@ -226,18 +214,14 @@ public class MyAutoController extends CarController {
                         return;
 
                     case SOUTH:
-                        //                    applyBrake();
-                        //                    applyReverseAcceleration();
                         applyReverseAcceleration();
                         return;
 
                     case EAST:
-                        //                    applyForwardAcceleration();
                         turnLeft();
                         return;
 
                     case WEST:
-                        //                    applyForwardAcceleration();
                         turnRight();
                         return;
                 }
@@ -246,8 +230,6 @@ public class MyAutoController extends CarController {
                 switch (getOrientation()) {
 
                     case NORTH:
-                        //                    applyBrake();
-                        //                    applyReverseAcceleration();
                         applyReverseAcceleration();
                         return;
 
@@ -256,12 +238,10 @@ public class MyAutoController extends CarController {
                         return;
 
                     case EAST:
-                        //                    applyForwardAcceleration();
                         turnRight();
                         return;
 
                     case WEST:
-                        //                    applyForwardAcceleration();
                         turnLeft();
                         return;
                 }
