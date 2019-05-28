@@ -51,6 +51,7 @@ public class Dijkstra {
         /* update the graph when not finished traversing */
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
+//            System.out.println(current.toString() + " " + frontier.size());
 //            tmp = frontier.isEmpty();
 //
 //            if (tmp) {
