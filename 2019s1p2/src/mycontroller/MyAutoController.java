@@ -79,7 +79,7 @@ public class MyAutoController extends CarController {
                                                           getHealth(),
                                                           0,
                                                           getSpeed(),
-                                                          getMovingDirection(),
+                                                          getMovingDirection(carPosition),
                                                           numParcels() == numParcelsFound());
 		makeMove(carPosition, next);
 	}
@@ -110,8 +110,7 @@ public class MyAutoController extends CarController {
      * by calculating the relative direction of the current position to the previous position.
      *
      * */
-    private WorldSpatial.Direction getMovingDirection(){
-	    Coordinate currentPosition = new Coordinate(getPosition());
+    private WorldSpatial.Direction getMovingDirection(Coordinate currentPosition){
         WorldSpatial.Direction movingDirection = null;
 	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y -1) {
             movingDirection =  WorldSpatial.Direction.SOUTH;
@@ -121,6 +120,8 @@ public class MyAutoController extends CarController {
             movingDirection =  WorldSpatial.Direction.WEST;
         } else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x + 1) {
             movingDirection =  WorldSpatial.Direction.EAST;
+        } else if (getSpeed() == 0) {
+	        movingDirection = getOrientation();
         }
 	    return movingDirection;
     }

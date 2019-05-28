@@ -6,7 +6,6 @@ import utilities.Coordinate;
 import world.WorldSpatial;
 
 import java.util.ArrayList;
-import java.util.WeakHashMap;
 
 /**
  * Xulin Yang, 904904
@@ -35,7 +34,7 @@ public class Node {
 
     private WorldSpatial.Direction movingDirection;
 
-    private float velocity;
+    private float speed;
 
     private static final float FORWARD_VELOCITY = 1;
 
@@ -44,12 +43,12 @@ public class Node {
      * @param health : the remaining health at current coordinate
      * @param fuelCost :   the remaining fuel at current coordinate
      */
-    public Node(Coordinate c, float health, float fuelCost, float maxHealth, float velocity, WorldSpatial.Direction movingDirection) {
+    public Node(Coordinate c, float health, float fuelCost, float maxHealth, float speed, WorldSpatial.Direction movingDirection) {
         this.c         = c;
         this.health    = health;
         this.fuelCost  = fuelCost;
         this.maxHealth = maxHealth;
-        this.velocity  = velocity;
+        this.speed = speed;
         this.movingDirection = movingDirection;
     }
 
@@ -131,7 +130,7 @@ public class Node {
      * */
     private boolean isNeedBrake(WorldSpatial.Direction nextMovingDirection){
         // if the car has already stop then no need brake.
-        if (velocity == 0){
+        if (speed == 0){
             return false;
         }
 
@@ -186,6 +185,6 @@ public class Node {
         return "(" + c.toString() + "), " +
                 "health: " + Float.toString(health) + ", " +
                 "fuelCost: " + Float.toString(fuelCost) + ", " +
-                "velocity: " + Float.toString(velocity) + "(" + direction + ")";
+                "speed: " + Float.toString(speed) + "(" + movingDirection + ")";
     }
 }
