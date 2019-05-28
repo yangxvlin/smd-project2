@@ -12,6 +12,7 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -28,14 +29,14 @@ public class ParcelPickupStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map,
-                                        Coordinate carPosition,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        boolean enoughParcel) {
+    public Stack<Coordinate> getNextPath(MapRecorder map,
+                                         Coordinate carPosition,
+                                         float maxHealth,
+                                         float health,
+                                         float fuelCost,
+                                         float speed,
+                                         WorldSpatial.Direction movingDirection,
+                                         boolean enoughParcel) {
         ArrayList<Coordinate> parcels = map.getCoordinates(ITileAdapter.TileType.PARCEL);
         if (parcels.isEmpty()) {
             return null;

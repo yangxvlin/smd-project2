@@ -37,7 +37,7 @@ public class DijkstraPair {
      * @param destination : destination of coordinate to go to
      * @return the next coordinate in the path from source to destination
      */
-    public Coordinate getNext(Coordinate destination) {
+    public Stack<Coordinate> getNextPath(Coordinate destination) {
         Stack<Coordinate> path = new Stack<>();
 
         /* backtrack the path */
@@ -56,10 +56,11 @@ public class DijkstraPair {
         /* destination is source */
         if (path.empty()) {
             assert(cameFrom.get(destination) == null);
-            return destination;
+            path.push(destination);
+            return path;
         /* the next coordinate */
         } else {
-            return path.pop();
+            return path;
         }
     }
 

@@ -9,10 +9,7 @@ import mycontroller.TileStatus;
 import utilities.Coordinate;
 import world.WorldSpatial;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Xulin Yang, 904904
@@ -29,14 +26,14 @@ public class ExitStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map,
-                                        Coordinate carPosition,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        boolean enoughParcel) {
+    public Stack<Coordinate> getNextPath(MapRecorder map,
+                                         Coordinate carPosition,
+                                         float maxHealth,
+                                         float health,
+                                         float fuelCost,
+                                         float speed,
+                                         WorldSpatial.Direction movingDirection,
+                                         boolean enoughParcel) {
         ArrayList<Coordinate> finishes = map.getCoordinates(ITileAdapter.TileType.FINISH);
         assert(!finishes.isEmpty());
 
@@ -51,20 +48,20 @@ public class ExitStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        Coordinate next = choosePath(finishes, res, comparator, maxHealth);
+        Stack<Coordinate> next = choosePath(finishes, res, comparator, maxHealth);
         System.out.println(" --- ");
-//        if (next == null) {
-//            res = Dijkstra.dijkstra(map,
-//                    carPosition,
-//                    maxHealth,
-//                    health,
-//                    fuelCost,
-//                    speed,
-//                    movingDirection,
-//                    comparator,
-//                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-//            next = choosePath(finishes, res, comparator, maxHealth);
-//        }
+        if (next == null) {
+            res = Dijkstra.dijkstra(map,
+                    carPosition,
+                    maxHealth,
+                    health,
+                    fuelCost,
+                    speed,
+                    movingDirection,
+                    comparator,
+                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+            next = choosePath(finishes, res, comparator, maxHealth);
+        }
 
         return next;
     }

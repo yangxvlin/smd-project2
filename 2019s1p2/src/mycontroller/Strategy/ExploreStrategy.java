@@ -8,10 +8,7 @@ import mycontroller.TileStatus;
 import utilities.Coordinate;
 import world.WorldSpatial;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Xulin Yang, 904904
@@ -28,14 +25,14 @@ public class ExploreStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map,
-                                        Coordinate carPosition,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        boolean enoughParcel) {
+    public Stack<Coordinate> getNextPath(MapRecorder map,
+                                         Coordinate carPosition,
+                                         float maxHealth,
+                                         float health,
+                                         float fuelCost,
+                                         float speed,
+                                         WorldSpatial.Direction movingDirection,
+                                         boolean enoughParcel) {
 
 //        ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 //

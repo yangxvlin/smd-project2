@@ -7,6 +7,7 @@ import world.WorldSpatial;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -33,15 +34,15 @@ public class HealthConserveStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map,
-                                        Coordinate carPosition,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        boolean enoughParcel) {
-        Coordinate next = null;
+    public Stack<Coordinate> getNextPath(MapRecorder map,
+                                         Coordinate carPosition,
+                                         float maxHealth,
+                                         float health,
+                                         float fuelCost,
+                                         float speed,
+                                         WorldSpatial.Direction movingDirection,
+                                         boolean enoughParcel) {
+        Stack<Coordinate> next = null;
 
 //        System.out.println(strategies.get(StrategyType.EXIT)
 ////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
@@ -70,33 +71,34 @@ public class HealthConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("parcels ");
             next = strategies.get(StrategyType.PICKUP)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
             /* go to finish */
         } else {
             System.out.println("finish: ");
             next = strategies.get(StrategyType.EXIT)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
             System.out.println("explore: ");
             next = strategies.get(StrategyType.EXPLORE)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
             System.out.println("healing: ");
             next = strategies.get(StrategyType.HEAL)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         if (next == null) {
             System.out.println("random: ");
 //            IStrategy random = new RandomMoveStrategy();
 //            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            next = carPosition;
+            next = new Stack<>();
+            next.push(carPosition);
         }
 
         /* debug */
@@ -117,14 +119,14 @@ public class HealthConserveStrategy implements IStrategy {
         public int compare(Node o1, Node o2) {
             assert(o1.getMaxHealth() == o2.getMaxHealth());
 
-            if (o1.getHealth() > o2.getHealth()) {
-                return 1;
-            } else if (o1.getHealth() < o2.getHealth()) {
+            if (o1.getHealth() < o2.getHealth()) {
                 return -1;
             } else if (o1.getFuelCost() < o2.getFuelCost()) {
                 return 1;
             } else if (o1.getFuelCost() > o2.getFuelCost()) {
                 return -1;
+            } else if (o1.getHealth() > o2.getHealth()) {
+                return 1;
             } else {
                 return 0;
             }
@@ -170,14 +172,10 @@ public class HealthConserveStrategy implements IStrategy {
 //            }
             if (o1.getMaxHealth() > o2.getMaxHealth()) {
                 return -1;
-            } else if (o1.getHealth() < o2.getHealth()) {
-                return -1;
             } else if (o1.getFuelCost() < o2.getFuelCost()) {
                 return 1;
             } else if (o1.getFuelCost() > o2.getFuelCost()) {
                 return -1;
-            } else if (o1.getHealth() > o2.getHealth()) {
-                return 1;
             } else {
                 return 0;
             }
