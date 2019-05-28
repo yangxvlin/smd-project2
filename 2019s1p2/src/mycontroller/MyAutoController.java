@@ -71,6 +71,7 @@ public class MyAutoController extends CarController {
         System.out.println();
 //	    mapRecorder.print();
 
+        System.out.println("previous: " + previousPosition + " ");
         Coordinate carPosition = new Coordinate(getPosition());
 
 		Coordinate next = driveStrategy.getNextCoordinate(mapRecorder,
@@ -81,6 +82,7 @@ public class MyAutoController extends CarController {
                                                           getSpeed(),
                                                           getMovingDirection(carPosition),
                                                           numParcels() == numParcelsFound());
+		previousPosition = carPosition;
 		makeMove(carPosition, next);
 	}
 

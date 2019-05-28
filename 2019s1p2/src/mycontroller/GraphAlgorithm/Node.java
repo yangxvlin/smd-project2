@@ -110,7 +110,7 @@ public class Node {
                         break;
 
                     case LAVA:
-                        adjHealth -= MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(c).getType());
+                        adjHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(c).getType());
                         break;
                 }
             }
