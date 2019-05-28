@@ -7,6 +7,7 @@ import swen30006.driving.Simulation;
 import utilities.Coordinate;
 import world.Car;
 import world.World;
+import world.WorldSpatial;
 
 /**
  * Xulin Yang, 904904
@@ -83,20 +84,44 @@ public class MyAutoController extends CarController {
 		makeMove(carPosition, next);
 	}
 
+	/**
+     * This methods responses for calculating the velocity(vector) of the car.
+     *
+     * */
 	private float getVelocity() {
         if (getSpeed() == 0) {
             return 0;
         }
 
-	    switch (getOrientation()) {
-            case NORTH:
+        WorldSpatial.Direction movingDirection = getMovingDirection();
+        WorldSpatial.Direction currentOrientation = getOrientation();
 
-            case SOUTH:
-
-            case WEST:
-
-            case EAST:
+        // Because moving direction and car's orientation are always on the same axis
+        // then if they are same the car is moving forward, otherwise it is moving backward
+        if (currentOrientation == movingDirection){
+            return getSpeed();
+        }else{
+            return -1*getSpeed();
         }
+    }
+    /**
+     * This methods responses for determining the current moving direction of the car,
+     * by calculating the relative direction of the current position to the previous position.
+     *
+     * */
+    private WorldSpatial.Direction getMovingDirection(){
+	    Coordinate currentPosition = new Coordinate(getPosition());
+        WorldSpatial.Direction movingDirection = null;
+	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y -1){
+            movingDirection =  WorldSpatial.Direction.SOUTH;
+        }else if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y + 1){
+            movingDirection =  WorldSpatial.Direction.NORTH;
+        }else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x - 1){
+            movingDirection =  WorldSpatial.Direction.WEST;
+        }else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x + 1){
+            movingDirection =  WorldSpatial.Direction.EAST;
+        }
+	    return movingDirection;
     }
 
     /**
