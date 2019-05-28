@@ -101,9 +101,10 @@ public class MyAutoController extends CarController {
         if (currentOrientation == movingDirection){
             return getSpeed();
         }else{
-            return -1*getSpeed();
+            return -1 * getSpeed();
         }
     }
+
     /**
      * This methods responses for determining the current moving direction of the car,
      * by calculating the relative direction of the current position to the previous position.
@@ -112,13 +113,13 @@ public class MyAutoController extends CarController {
     private WorldSpatial.Direction getMovingDirection(){
 	    Coordinate currentPosition = new Coordinate(getPosition());
         WorldSpatial.Direction movingDirection = null;
-	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y -1){
+	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y -1) {
             movingDirection =  WorldSpatial.Direction.SOUTH;
-        }else if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y + 1){
+        } else if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y + 1) {
             movingDirection =  WorldSpatial.Direction.NORTH;
-        }else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x - 1){
+        } else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x - 1) {
             movingDirection =  WorldSpatial.Direction.WEST;
-        }else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x + 1){
+        } else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x + 1) {
             movingDirection =  WorldSpatial.Direction.EAST;
         }
 	    return movingDirection;
