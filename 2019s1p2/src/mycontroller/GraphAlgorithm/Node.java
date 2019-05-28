@@ -137,58 +137,14 @@ public class Node {
      * @return direction based on move from current coordinate to adjacent coordinate
      */
     private WorldSpatial.Direction nextMoveDirection(Coordinate adj){
-        switch (direction) {
-            case NORTH:
-                if (c.x > adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.WEST;
-                } else if (c.x < adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.EAST;
-                } else if (c.y > adj.y) {
-                    return WorldSpatial.Direction.NORTH;
-                } else if (c.y < adj.y) {
-                    return WorldSpatial.Direction.NORTH;
-                }
-
-            case SOUTH:
-                if (c.x > adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.WEST;
-                } else if (c.x < adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.EAST;
-                } else if (c.y > adj.y) {
-                    return WorldSpatial.Direction.SOUTH;
-                } else if (c.y < adj.y) {
-                    return WorldSpatial.Direction.SOUTH;
-                }
-
-            case EAST:
-                if (c.x > adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.EAST;
-                } else if (c.x < adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.EAST;
-                } else if (c.y > adj.y) {
-                    return WorldSpatial.Direction.SOUTH;
-                } else if (c.y < adj.y) {
-                    return WorldSpatial.Direction.NORTH;
-                }
-
-            case WEST:
-                if (c.x > adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.WEST;
-                } else if (c.x < adj.x) {
-                    assert(c.y == adj.y);
-                    return WorldSpatial.Direction.WEST;
-                } else if (c.y > adj.y) {
-                    return WorldSpatial.Direction.NORTH;
-                } else if (c.y < adj.y) {
-                    return WorldSpatial.Direction.SOUTH;
-                }
+        if (c.x > adj.x) {
+            return WorldSpatial.Direction.WEST;
+        } else if (c.x < adj.x) {
+            return WorldSpatial.Direction.EAST;
+        } else if (c.y < adj.y) {
+            return WorldSpatial.Direction.NORTH;
+        } else if (c.y > adj.y) {
+            return WorldSpatial.Direction.SOUTH;
         }
 
         System.out.println("Invalid move in direction!");
