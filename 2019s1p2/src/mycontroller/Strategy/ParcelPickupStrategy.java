@@ -47,8 +47,8 @@ public class ParcelPickupStrategy implements IStrategy {
                                              maxHealth,
                                              health,
                                              fuelCost,
-                speed,
-                movingDirection,
+                                             speed,
+                                             movingDirection,
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
