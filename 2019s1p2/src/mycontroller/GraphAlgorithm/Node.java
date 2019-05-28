@@ -88,48 +88,35 @@ public class Node {
 
         //
 
-        for (Coordinate adj : adjacentCoordinates){
+        for (Coordinate adj : adjacentCoordinates) {
             // get the tile type the adjacent tile type
-            ITileAdapter.TileType adjacentTileType = map.getTileAdapter(adj).getType();
             ITileAdapter.TileType currentTileType = map.getTileAdapter(c).getType();
             world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(adj);
 
-            if (isNeedBrake(nextMovingDirection)) {
-                float nextMoveHealth  = this.health;
-                float nextMoveMaxHealth = this.maxHealth;
-                float nextMoveFuleCost = this.fuelCost + 1;
-                float nextMoveVelocity = 1;
-
-                // apply current tile effect, since we need to brake, the current tile would effect the car
-
-
-                // apply the adjacent tile effect to the car
-
-                // healing applied
-                if (adjacentTileType== ITileAdapter.TileType.WATER){
-                    nextMoveHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(ITileAdapter.TileType.WATER);
-                    nextMoveMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(ITileAdapter.TileType.WATER);
-                }else if (adjacentTileType== ITileAdapter.TileType.HEALTH){
-                    // damage applied
-                }else if (adjacentTileType== ITileAdapter.TileType.LAVA){
-
-                }
-
-
-                res.add(new Node(adj, ?, this.fuelCost +1, ?, nextMoveVelocity, nextMovingDirection));
-            } else {
-                // TODO Unexplored ROAD cost = 0 now
-                float adjHealth = getHealth() + MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
-                // TODO a map with values = 1 or a constant 1?
-                float adjFuelCost = getFuelCost() + 1;
-
-                float adjMaxHealth = getMaxHealth();
-                if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType()) > 0) {
-                    adjMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
-                }
-
-                res.add(new Node(adj, adjHealth, adjFuelCost, adjMaxHealth, FORWARD_VELOCITY, nextMovingDirection));
+            // TODO Unexplored ROAD cost = 0 now
+            float adjHealth = getHealth() + MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
+            // TODO a map with values = 1 or a constant 1?
+            float adjFuelCost = getFuelCost() + 1;
+            float adjMaxHealth = getMaxHealth();
+            if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType()) > 0) {
+                adjMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
             }
+
+            if (isNeedBrake(nextMovingDirection)) {
+                /* braked tile's effect */
+                switch (currentTileType) {
+                    case HEALTH:
+                        adjHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(c).getType());
+                        adjMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(c).getType());
+                        break;
+
+                    case LAVA:
+                        adjHealth -= MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(c).getType());
+                        break;
+                }
+            }
+
+            res.add(new Node(adj, adjHealth, adjFuelCost, adjMaxHealth, FORWARD_VELOCITY, nextMovingDirection));
         }
 
         // move toward reverse direction
