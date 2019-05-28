@@ -277,6 +277,22 @@ public class MapRecorder {
         return res;
     }
 
+    public ArrayList<Coordinate> getOutMostExploredCoordinates() {
+        ArrayList<Coordinate> res = new ArrayList<>();
+
+        for (Coordinate c: mapStatus.keySet()) {
+            if (mapStatus.get(c) == TileStatus.EXPLORED) {
+                ArrayList<Coordinate> neighbors = tileNeighbors(c, new ArrayList<>(Collections.singletonList(TileStatus.UNEXPLORED)));
+                if (!neighbors.isEmpty() && !res.contains(c)){
+                    res.add(c);
+                }
+            }
+        }
+
+//        System.out.println(Arrays.toString(res.toArray()));
+        return res;
+    }
+
     public TileStatus getTileStatus(Coordinate c) {
         return mapStatus.get(c);
     }

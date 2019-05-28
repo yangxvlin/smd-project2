@@ -10,6 +10,7 @@ import world.WorldSpatial;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
@@ -35,9 +36,31 @@ public class ExploreStrategy implements IStrategy {
                                         float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
-        ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 
-        if (unexplored.isEmpty()) {
+//        ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
+//
+//        if (unexplored.isEmpty()) {
+//            return null;
+//        }
+////        System.out.println(Arrays.toString(unexplored.toArray()));
+//
+//        DijkstraPair res = Dijkstra.dijkstra(map,
+//                carPosition,
+//                maxHealth,
+//                health,
+//                fuelCost,
+//                speed,
+//                movingDirection,
+//                comparator,
+//                new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+//
+////        System.out.println(">>>>");
+//
+//        return choosePath(unexplored, res, comparator, maxHealth);
+//    }
+        ArrayList<Coordinate> outMostExplored = new ArrayList<>(map.getOutMostExploredCoordinates());
+
+        if (outMostExplored.isEmpty()) {
             return null;
         }
 //        System.out.println(Arrays.toString(unexplored.toArray()));
@@ -50,10 +73,9 @@ public class ExploreStrategy implements IStrategy {
                 speed,
                 movingDirection,
                 comparator,
-                new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-
+                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 //        System.out.println(">>>>");
 
-        return choosePath(unexplored, res, comparator, maxHealth);
+        return choosePath(outMostExplored, res, comparator, maxHealth);
     }
 }
