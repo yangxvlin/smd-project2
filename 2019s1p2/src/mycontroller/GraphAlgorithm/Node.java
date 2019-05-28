@@ -100,6 +100,10 @@ public class Node {
                 float nextMoveFuleCost = this.fuelCost + 1;
                 float nextMoveVelocity = 1;
 
+                // apply current tile effect, since we need to brake, the current tile would effect the car
+
+                // apply the adjacent tile effect to the car
+
                 // healing applied
                 if (adjacentTileType== ITileAdapter.TileType.WATER){
                     nextMoveHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(ITileAdapter.TileType.WATER);
