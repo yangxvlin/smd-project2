@@ -149,6 +149,7 @@ public class Node {
 
         System.out.println("Invalid move in direction!");
         System.exit(1);
+        return null;
     }
 
     /**
