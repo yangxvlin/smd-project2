@@ -37,6 +37,8 @@ public class Node {
 
     private float velocity;
 
+    private static final float FORWARD_VELOCITY = 1;
+
     /**
      * @param c :      current coordinate
      * @param health : the remaining health at current coordinate
@@ -111,7 +113,17 @@ public class Node {
 
                 res.add(new Node(adj, ?, this.fuelCost +1, ?, nextMoveVelocity, nextMovingDirection));
             } else {
-                res.add(new Node());
+                // TODO Unexplored ROAD cost = 0 now
+                float adjHealth = getHealth() + MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
+                // TODO a map with values = 1 or a constant 1?
+                float adjFuelCost = getFuelCost() + 1;
+
+                float adjMaxHealth = getMaxHealth();
+                if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType()) > 0) {
+                    adjMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
+                }
+
+                res.add(new Node(adj, adjHealth, adjFuelCost, adjMaxHealth, FORWARD_VELOCITY, nextMovingDirection));
             }
         }
 
