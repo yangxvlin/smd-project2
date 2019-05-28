@@ -30,7 +30,7 @@ public interface IStrategy {
                                  float health,
                                  float fuelCost,
                                  float velocity,
-                                 WorldSpatial.Direction carDirection,
+                                 WorldSpatial.Direction movingDirection,
                                  boolean enoughParcel);
 
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,

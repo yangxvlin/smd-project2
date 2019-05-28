@@ -21,6 +21,7 @@ public class Dijkstra {
      * @param source :     the start coordinate
      * @param health :     the car's current health
      * @param fuelCost :       the car's current fuel
+     * @param movingDirection
      * @param comparator : the node compare function
      * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
      * @return
@@ -31,11 +32,11 @@ public class Dijkstra {
                                         float health,
                                         float fuelCost,
                                         float velocity,
-                                        WorldSpatial.Direction carDirection,
+                                        WorldSpatial.Direction movingDirection,
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
-        Node sourceNode = new Node(source, health, fuelCost, maxHealth, velocity, carDirection);
+        Node sourceNode = new Node(source, health, fuelCost, maxHealth, velocity, movingDirection);
 
         PriorityQueue<Node> frontier = new PriorityQueue<>(comparator);
         frontier.add(sourceNode);
@@ -65,14 +66,14 @@ public class Dijkstra {
 
 //                // TODO Unexplored ROAD cost = 0 now
 //                float neighborHealth = current.getHealth() +
-//                        MapRecorder.tileHealthCostMap.get(
+//                        MapRecorder.TILE_HEALTH_COST_MAP.get(
 //                                map.getTileAdapter(neighbor).getType());
 //                // TODO a map with values = 1 or a constant 1?
 //                float neighborFuel   = current.getFuel() - 1;
 //
 //                float neighborMaxHealth = current.getMaxHealth();
-//                if (MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType()) > 0) {
-//                    neighborMaxHealth += MapRecorder.tileHealthCostMap.get(map.getTileAdapter(neighbor).getType());
+//                if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(neighbor).getType()) > 0) {
+//                    neighborMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(neighbor).getType());
 //                }
 //
 //                Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
