@@ -86,11 +86,16 @@ public class Node {
 
         //
 
-        for (Coordinate c : adjacentCoordinates){
+        for (Coordinate adj : adjacentCoordinates){
             // get the tile type the adjacent tile type
-            ITileAdapter.TileType adjacentTileType = map.getTileAdapter(c).getType();
-            world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(c);
+            ITileAdapter.TileType adjacentTileType = map.getTileAdapter(adj).getType();
+            world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(adj);
 
+            if (isNeedBrake(nextMovingDirection)) {
+                res.add(new Node());
+            } else {
+                res.add(new Node());
+            }
         }
 
         // move toward reverse direction
