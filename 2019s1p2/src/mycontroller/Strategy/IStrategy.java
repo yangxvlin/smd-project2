@@ -52,13 +52,13 @@ public interface IStrategy {
         Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, maxHealth, 0, null);
 //        System.out.println(Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 //        System.out.println(Arrays.toString(searchResult.getCostSoFar().keySet().toArray()));
-        for (Coordinate c: searchResult.getCameFrom().keySet()) {
-            System.out.println(c.toString() + " " + searchResult.getCameFrom().get(c) + " " + searchResult.getCostSoFar().get(c));
-        }
+//        for (Coordinate c: searchResult.getCameFrom().keySet()) {
+//            System.out.println(c.toString() + " " + searchResult.getCameFrom().get(c) + " " + searchResult.getCostSoFar().get(c));
+//        }
 
         /* go to closest reachable parcel */
         for (Coordinate destination : destinations) {
-            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
+//            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 
             if (isPossible(searchResult.getCostSoFar(), destination)) {
                 Node newNode = new Node(searchResult.getNext(destination),
