@@ -8,6 +8,7 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -18,14 +19,14 @@ import java.util.Random;
 
 public class RandomMoveStrategy implements IStrategy {
     @Override
-    public Coordinate getNextCoordinate(MapRecorder map,
-                                        Coordinate carPosition,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        boolean enoughParcel) {
+    public Stack<Coordinate> getNextPath(MapRecorder map,
+                                         Coordinate carPosition,
+                                         float maxHealth,
+                                         float health,
+                                         float fuelCost,
+                                         float speed,
+                                         WorldSpatial.Direction movingDirection,
+                                         boolean enoughParcel) {
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
                 new ArrayList<>(Arrays.asList(TileStatus.EXPLORED, TileStatus.UNEXPLORED)));
 
@@ -34,6 +35,9 @@ public class RandomMoveStrategy implements IStrategy {
         }
 
         Random rand = new Random();
-        return neighbors.get(rand.nextInt(neighbors.size()));
+
+        Stack<Coordinate> path = new Stack<>();
+        path.push(neighbors.get(rand.nextInt(neighbors.size())));
+        return path;
     }
 }

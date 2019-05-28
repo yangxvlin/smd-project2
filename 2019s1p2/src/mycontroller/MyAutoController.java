@@ -7,8 +7,9 @@ import mycontroller.TileAdapter.ITileAdapter;
 import swen30006.driving.Simulation;
 import utilities.Coordinate;
 import world.Car;
-import world.World;
 import world.WorldSpatial;
+
+import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -39,6 +40,8 @@ public class MyAutoController extends CarController {
 
     private float maxHealth;
 
+    private Stack<Coordinate> path;
+
 	/**
 	 * @param car : car object
 	 */
@@ -57,6 +60,8 @@ public class MyAutoController extends CarController {
         maxHealth = getHealth();
 
         previousPosition = new Coordinate(getPosition());
+
+        path = new Stack<>();
 	}
 
     /**
@@ -75,16 +80,19 @@ public class MyAutoController extends CarController {
         System.out.println("previous: " + previousPosition + " " + Integer.toString(numParcelsFound()));
         Coordinate carPosition = new Coordinate(getPosition());
 
-		Coordinate next = driveStrategy.getNextCoordinate(mapRecorder,
-                                                          carPosition,
-                                                          maxHealth,
-                                                          getHealth(),
-                                                          0,
-                                                          getSpeed(),
-                                                          getMovingDirection(carPosition),
-                                                          numParcels() <= numParcelsFound());
+        if ((path.size() == 1) || path.empty()) {
+            path = driveStrategy.getNextPath(mapRecorder,
+                                                              carPosition,
+                                                              maxHealth,
+                                                              getHealth(),
+                                                              0,
+                                                              getSpeed(),
+                                                              getMovingDirection(carPosition),
+                                                              numParcels() <= numParcelsFound());
+
+        }
 		previousPosition = carPosition;
-		makeMove(carPosition, next);
+		makeMove(carPosition);
 	}
 
     /**
@@ -128,10 +136,18 @@ public class MyAutoController extends CarController {
      * based on the current location and next location to go, apply the car's
      * reaction to the next location to go to
      * @param from : current location
-     * @param to :   next location to go
      */
-	private void makeMove(Coordinate from, Coordinate to) {
+	private void makeMove(Coordinate from) {
+	    Coordinate to = path.peek();
 	    assert(to != null);
+
+	    if (to.equals(from)) {
+            path.pop();
+
+            if (!path.empty()) {
+                to = path.peek();
+            }
+        }
 
         System.out.println(from.toString() + " -> " + to.toString() +
                 "(" + mapRecorder.getTileAdapter(to).getType().toString() + ") " +
