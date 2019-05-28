@@ -33,6 +33,8 @@ public class MyAutoController extends CarController {
      */
 //    private float carFuel;
 
+    private Coordinate previousPosition;
+
     private float maxHealth;
 
 	/**
@@ -51,6 +53,8 @@ public class MyAutoController extends CarController {
 //        carFuel = car.getFuel();
 
         maxHealth = getHealth();
+
+        previousPosition = new Coordinate(getPosition());
 	}
 
     /**
@@ -77,6 +81,22 @@ public class MyAutoController extends CarController {
                                                           numParcels() == numParcelsFound());
 		makeMove(carPosition, next);
 	}
+
+	private float getVelocity() {
+        if (getSpeed() == 0) {
+            return 0;
+        }
+
+	    switch (getOrientation()) {
+            case NORTH:
+
+            case SOUTH:
+
+            case WEST:
+
+            case EAST:
+        }
+    }
 
     /**
      * based on the current location and next location to go, apply the car's
