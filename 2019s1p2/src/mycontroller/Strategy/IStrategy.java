@@ -28,7 +28,8 @@ public interface IStrategy {
                                  Coordinate carPosition,
                                  float maxHealth,
                                  float health,
-                                 float fuel,
+                                 float fuelCost,
+                                 float velocity,
                                  WorldSpatial.Direction carDirection,
                                  boolean enoughParcel);
 
