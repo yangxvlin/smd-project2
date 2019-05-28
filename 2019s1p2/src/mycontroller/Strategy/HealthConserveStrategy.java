@@ -38,7 +38,7 @@ public class HealthConserveStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         Coordinate next = null;
@@ -70,26 +70,26 @@ public class HealthConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("parcels ");
             next = strategies.get(StrategyType.PICKUP)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
             /* go to finish */
         } else {
             System.out.println("finish: ");
             next = strategies.get(StrategyType.EXIT)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
             System.out.println("explore: ");
             next = strategies.get(StrategyType.EXPLORE)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
             System.out.println("healing: ");
             next = strategies.get(StrategyType.HEAL)
-                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                    .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         if (next == null) {

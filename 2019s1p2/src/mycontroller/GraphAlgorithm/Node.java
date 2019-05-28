@@ -102,6 +102,7 @@ public class Node {
 
                 // apply current tile effect, since we need to brake, the current tile would effect the car
 
+
                 // apply the adjacent tile effect to the car
 
                 // healing applied

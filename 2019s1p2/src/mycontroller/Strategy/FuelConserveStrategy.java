@@ -34,7 +34,7 @@ public class FuelConserveStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         Coordinate next;
@@ -42,13 +42,13 @@ public class FuelConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("Parcels: ");
             next = strategies.get(StrategyType.PICKUP)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, ITileAdapter.TileType.PARCEL);
         /* go to finish */
         } else {
             System.out.println("Finishs");
             next = strategies.get(StrategyType.EXIT)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
 //            next = closestPath(map, carPosition, health, fuel, map.getCoordinates(ITileAdapter.TileType.FINISH),
 //                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
         }
@@ -57,7 +57,7 @@ public class FuelConserveStrategy implements IStrategy {
         if (next == null) {
             System.out.println("Unexplored: ");
             next = strategies.get(StrategyType.EXPLORE)
-                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, velocity, movingDirection, enoughParcel);
+                                .getNextCoordinate(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
 //            next = choosePath(map, carPosition, health, fuel, TileStatus.UNEXPLORED);
         }
 

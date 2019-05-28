@@ -29,7 +29,7 @@ public interface IStrategy {
                                  float maxHealth,
                                  float health,
                                  float fuelCost,
-                                 float velocity,
+                                 float speed,
                                  WorldSpatial.Direction movingDirection,
                                  boolean enoughParcel);
 

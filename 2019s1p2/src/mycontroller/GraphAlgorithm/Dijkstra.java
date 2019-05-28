@@ -21,6 +21,7 @@ public class Dijkstra {
      * @param source :     the start coordinate
      * @param health :     the car's current health
      * @param fuelCost :       the car's current fuel
+     * @param speed
      * @param movingDirection
      * @param comparator : the node compare function
      * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
@@ -31,12 +32,12 @@ public class Dijkstra {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         Comparator<Node> comparator,
                                         ArrayList<TileStatus> allowableNeighborTileStatus) {
 
-        Node sourceNode = new Node(source, health, fuelCost, maxHealth, velocity, movingDirection);
+        Node sourceNode = new Node(source, health, fuelCost, maxHealth, speed, movingDirection);
 
         PriorityQueue<Node> frontier = new PriorityQueue<>(comparator);
         frontier.add(sourceNode);

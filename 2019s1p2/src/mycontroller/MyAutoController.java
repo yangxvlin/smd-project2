@@ -78,32 +78,32 @@ public class MyAutoController extends CarController {
                                                           maxHealth,
                                                           getHealth(),
                                                           0,
-                                                          getVelocity(),
+                                                          getSpeed(),
                                                           getMovingDirection(),
                                                           numParcels() == numParcelsFound());
 		makeMove(carPosition, next);
 	}
 
-	/**
-     * This methods is responsible for calculating the velocity(vector) of the car.
-     *
-     * */
-	private float getVelocity() {
-        if (getSpeed() == 0) {
-            return 0;
-        }
-
-        WorldSpatial.Direction movingDirection = getMovingDirection();
-        WorldSpatial.Direction currentOrientation = getOrientation();
-
-        // Because moving direction and car's orientation are always on the same axis
-        // then if they are same the car is moving forward, otherwise it is moving backward
-        if (currentOrientation == movingDirection){
-            return getSpeed();
-        }else{
-            return -1 * getSpeed();
-        }
-    }
+//	/**
+//     * This methods is responsible for calculating the velocity(vector) of the car.
+//     *
+//     * */
+//	private float getVelocity() {
+//        if (getSpeed() == 0) {
+//            return 0;
+//        }
+//
+//        WorldSpatial.Direction movingDirection = getMovingDirection();
+//        WorldSpatial.Direction currentOrientation = getOrientation();
+//
+//        // Because moving direction and car's orientation are always on the same axis
+//        // then if they are same the car is moving forward, otherwise it is moving backward
+//        if (currentOrientation == movingDirection){
+//            return getSpeed();
+//        }else{
+//            return -1 * getSpeed();
+//        }
+//    }
 
     /**
      * This methods is responsible for determining the current moving direction of the car,

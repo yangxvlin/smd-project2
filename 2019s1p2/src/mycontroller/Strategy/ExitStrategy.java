@@ -34,7 +34,7 @@ public class ExitStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> finishes = map.getCoordinates(ITileAdapter.TileType.FINISH);
@@ -46,7 +46,7 @@ public class ExitStrategy implements IStrategy {
                 maxHealth,
                 health,
                 fuelCost,
-                velocity,
+                speed,
                 movingDirection,
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
@@ -59,7 +59,7 @@ public class ExitStrategy implements IStrategy {
                     maxHealth,
                     health,
                     fuelCost,
-                    velocity,
+                    speed,
                     movingDirection,
                     comparator,
                     new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));

@@ -33,7 +33,7 @@ public class ParcelPickupStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> parcels = map.getCoordinates(ITileAdapter.TileType.PARCEL);
@@ -47,7 +47,7 @@ public class ParcelPickupStrategy implements IStrategy {
                                              maxHealth,
                                              health,
                                              fuelCost,
-                                             velocity,
+                speed,
                 movingDirection,
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));

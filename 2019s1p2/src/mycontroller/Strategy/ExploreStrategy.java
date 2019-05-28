@@ -32,7 +32,7 @@ public class ExploreStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
@@ -47,7 +47,7 @@ public class ExploreStrategy implements IStrategy {
                 maxHealth,
                 health,
                 fuelCost,
-                velocity,
+                speed,
                 movingDirection,
                 comparator,
                 new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));

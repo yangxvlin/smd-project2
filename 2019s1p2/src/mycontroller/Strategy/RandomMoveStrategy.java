@@ -23,7 +23,7 @@ public class RandomMoveStrategy implements IStrategy {
                                         float maxHealth,
                                         float health,
                                         float fuelCost,
-                                        float velocity,
+                                        float speed,
                                         WorldSpatial.Direction movingDirection,
                                         boolean enoughParcel) {
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
