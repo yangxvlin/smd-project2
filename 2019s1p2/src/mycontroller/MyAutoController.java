@@ -9,8 +9,6 @@ import utilities.Coordinate;
 import world.Car;
 import world.WorldSpatial;
 
-import java.util.Stack;
-
 /**
  * Xulin Yang, 904904
  *
@@ -19,8 +17,6 @@ import java.util.Stack;
  **/
 
 public class MyAutoController extends CarController {
-
-
     /**
      * customized map information holder and updater
      */
@@ -32,17 +28,27 @@ public class MyAutoController extends CarController {
     private IStrategy driveStrategy;
 
     /**
-     * car's remaining fuel
+     * car's location at previous time frame
      */
-//    private float carFuel;
-
     private Coordinate previousPosition;
 
-    private float maxHealth;
+    /**
+     * the health that the car has used in the history
+     */
+    private float healthUsage;
 
-    private Stack<Coordinate> path;
+    /**
+     * when search started car has no fuel usage
+     */
+    private static final int INITIAL_FUEL_COST = 0;
+
+    /**
+     * car is stationary when speed = 0
+     */
+    private static final int STATIONARY_SPEED = 0;
 
 	/**
+     * initialize our car drive controller object
 	 * @param car : car object
 	 */
 	public MyAutoController(Car car) {
@@ -52,70 +58,89 @@ public class MyAutoController extends CarController {
 	    this.mapRecorder.updateInitialMap(super.getMap());
 
         driveStrategy = StrategyFactory.getInstance()
-                                        .createConserveStrategy(
-                                                Simulation.toConserve());
+                                        .createConserveStrategy(Simulation.toConserve());
 
-//        carFuel = car.getFuel();
-
-        maxHealth = getHealth();
+        healthUsage = getHealth();
 
         previousPosition = new Coordinate(getPosition());
-
-        path = new Stack<>();
 	}
 
     /**
-     * update the car status to the controller and decide car's next state
+     * update the car status to the controller and decide car's next coordinate
+     * to drive to
      */
 	@Override
 	public void update() {
-	    if (getHealth() > maxHealth) {
-	        maxHealth = getHealth();
-        }
+        updateHealthUsage();
 
 	    mapRecorder.updateMapRecorder(super.getView());
-        System.out.println();
-//	    mapRecorder.print();
 
-        System.out.println("previous: " + previousPosition + " " + Integer.toString(numParcelsFound()));
         Coordinate carPosition = new Coordinate(getPosition());
 
-
         Coordinate next = driveStrategy.getNextPath(mapRecorder,
-                                         carPosition,
-                                         maxHealth,
-                                         getHealth(),
-                                         0,
-                                         getSpeed(),
-                                         getMovingDirection(carPosition),
-                                         numParcels() <= numParcelsFound());
-
+                                                    carPosition,
+                                                    healthUsage,
+                                                    getHealth(),
+                                                    INITIAL_FUEL_COST,
+                                                    getSpeed(),
+                                                    getMovingDirection(carPosition),
+                                                    isEnoughParcel());
 
 		previousPosition = carPosition;
 		makeMove(carPosition, next);
 	}
 
+	/* ************************* helper methods below *********************** */
+    /**
+     * update car's total health usage
+     */
+	private void updateHealthUsage() {
+        if (getHealth() > healthUsage) {
+            healthUsage = getHealth();
+        }
+    }
+
+    /**
+     * @return true if the car has found enough parcels
+     */
+    private boolean isEnoughParcel() {
+	    return numParcels() <= numParcelsFound();
+    }
+
+    /**
+     * @return True if the car is moving
+     */
+    private boolean isEngineStarted() {
+        return !(getSpeed() == STATIONARY_SPEED);
+    }
+
     /**
      * This methods is responsible for determining the current moving direction of the car,
      * by calculating the relative direction of the current position to the previous position.
-     *
+     * @param carPosition : car's current's position
+     * @return the car's current direction moving toward
      * */
-    private WorldSpatial.Direction getMovingDirection(Coordinate currentPosition){
+    private WorldSpatial.Direction getMovingDirection(Coordinate carPosition){
         WorldSpatial.Direction movingDirection = null;
-	    if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y - 1) {
+	    if (carPosition.x == previousPosition.x && carPosition.y == previousPosition.y - 1) {
             movingDirection =  WorldSpatial.Direction.SOUTH;
-        } else if (currentPosition.x == previousPosition.x && currentPosition.y == previousPosition.y + 1) {
+        } else if (carPosition.x == previousPosition.x && carPosition.y == previousPosition.y + 1) {
             movingDirection =  WorldSpatial.Direction.NORTH;
-        } else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x - 1) {
+        } else if (carPosition.y == previousPosition.y && carPosition.x == previousPosition.x - 1) {
             movingDirection =  WorldSpatial.Direction.WEST;
-        } else if (currentPosition.y == previousPosition.y && currentPosition.x == previousPosition.x + 1) {
+        } else if (carPosition.y == previousPosition.y && carPosition.x == previousPosition.x + 1) {
             movingDirection =  WorldSpatial.Direction.EAST;
-        } else if (getSpeed() == 0) {
+        } else if (isEngineStarted()) {
 	        movingDirection = getOrientation();
         }
 	    return movingDirection;
     }
 
+    /**
+     * @param carPosition : car's current coordinate location
+     * @return the coordinate forward the current car position based on the car's
+     * orientation
+     */
     private Coordinate getForward(Coordinate carPosition) {
         switch (getOrientation()) {
             case NORTH:
@@ -136,31 +161,14 @@ public class MyAutoController extends CarController {
      * based on the current location and next location to go, apply the car's
      * reaction to the next location to go to
      * @param from : current location
+     * @param to   : next location to go to
      */
 	private void makeMove(Coordinate from, Coordinate to) {
-//	    Coordinate to = path.peek();
-//	    assert(to != null);
-//
-//	    if (to.equals(from)) {
-//            path.pop();
-//
-//            if (!path.empty()) {
-//                to = path.peek();
-//            }
-//        }
-
-        System.out.println(from.toString() + " -> " + to.toString() +
-                "(" + mapRecorder.getTileAdapter(to).getType().toString() + ") " +
-                getOrientation() + " " + getMovingDirection(from));
-
-        /* spend 1 fuel for an attempt move */
-
         if (from.equals(to)) {
             applyBrake();
-            /* brake has no move attempt thus no fuel consumption */
             return;
         } else {
-            if (getSpeed() == 0) {
+            if (!isEngineStarted()) {
                 if (mapRecorder.getTileAdapter(getForward(from)).isType(ITileAdapter.TileType.WALL)) {
                     applyReverseAcceleration();
                 } else {
@@ -173,15 +181,12 @@ public class MyAutoController extends CarController {
                     case NORTH:
                         turnRight();
                         return;
-
                     case SOUTH:
                         turnLeft();
                         return;
-
                     case EAST:
                         applyForwardAcceleration();
                         return;
-
                     case WEST:
                         applyReverseAcceleration();
                         return;
@@ -192,15 +197,12 @@ public class MyAutoController extends CarController {
                     case NORTH:
                         turnLeft();
                         return;
-
                     case SOUTH:
                         turnRight();
                         return;
-
                     case EAST:
                         applyReverseAcceleration();
                         return;
-
                     case WEST:
                         applyForwardAcceleration();
                         return;
@@ -208,19 +210,15 @@ public class MyAutoController extends CarController {
 
             } else if (from.y < to.y) {
                 switch (getOrientation()) {
-
                     case NORTH:
                         applyForwardAcceleration();
                         return;
-
                     case SOUTH:
                         applyReverseAcceleration();
                         return;
-
                     case EAST:
                         turnLeft();
                         return;
-
                     case WEST:
                         turnRight();
                         return;
@@ -228,19 +226,15 @@ public class MyAutoController extends CarController {
 
             } else if (from.y > to.y) {
                 switch (getOrientation()) {
-
                     case NORTH:
                         applyReverseAcceleration();
                         return;
-
                     case SOUTH:
                         applyForwardAcceleration();
                         return;
-
                     case EAST:
                         turnRight();
                         return;
-
                     case WEST:
                         turnLeft();
                         return;
@@ -248,7 +242,7 @@ public class MyAutoController extends CarController {
             }
         }
 
-        /* debug */
+        /* for completeness */
         System.out.println("Invalid");
         System.exit(1);
     }
