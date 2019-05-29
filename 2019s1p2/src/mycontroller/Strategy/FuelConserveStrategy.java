@@ -29,15 +29,15 @@ public class FuelConserveStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
-        Stack<Coordinate> next;
+    public Coordinate getNextPath(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
+        Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
             System.out.println("Parcels: ");
@@ -71,8 +71,9 @@ public class FuelConserveStrategy implements IStrategy {
         if (next == null) {
 //            IStrategy random = new RandomMoveStrategy();
 //            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            next = new Stack<>();
-            next.push(carPosition);
+//            next = new Stack<>();
+//            next.push(carPosition);
+            next = carPosition;
         }
 
         /* debug */

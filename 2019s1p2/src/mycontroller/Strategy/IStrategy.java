@@ -24,14 +24,14 @@ public interface IStrategy {
 
 //    void updateCost(MapRecorder mapRecorder);
 
-    Stack<Coordinate> getNextPath(MapRecorder map,
-                                  Coordinate carPosition,
-                                  float maxHealth,
-                                  float health,
-                                  float fuelCost,
-                                  float speed,
-                                  WorldSpatial.Direction movingDirection,
-                                  boolean enoughParcel);
+    Coordinate getNextPath(MapRecorder map,
+                           Coordinate carPosition,
+                           float maxHealth,
+                           float health,
+                           float fuelCost,
+                           float speed,
+                           WorldSpatial.Direction movingDirection,
+                           boolean enoughParcel);
 
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
@@ -45,7 +45,7 @@ public interface IStrategy {
         return false;
     }
 
-    default Stack<Coordinate> choosePath(ArrayList<Coordinate> destinations,
+    default Coordinate choosePath(ArrayList<Coordinate> destinations,
                                          DijkstraPair searchResult,
                                          Comparator<Node> comparator,
                                          float maxHealth) {
@@ -62,24 +62,24 @@ public interface IStrategy {
 //            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 
             if (isPossible(searchResult.getCostSoFar(), destination)) {
-                Node newNode = new Node(null,
+                Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
                         searchResult.getCostSoFar().get(destination).getFuelCost(),
                         maxHealth,
                         0,
                         null);
-                Stack<Coordinate> newPath = searchResult.getNextPath(destination);
+//                Stack<Coordinate> newPath = searchResult.getNextPath(destination);
 
 //                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
-                    path = newPath;
+//                    path = newPath;
                 }
             }
 
 //            System.out.println(nextNode);
         }
 
-        return path;
+        return nextNode.getC();
     }
 }

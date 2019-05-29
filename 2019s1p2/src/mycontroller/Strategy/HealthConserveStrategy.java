@@ -34,39 +34,15 @@ public class HealthConserveStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
-        Stack<Coordinate> next = null;
-
-//        System.out.println(strategies.get(StrategyType.EXIT)
-////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
-////        if (strategies.get(StrategyType.EXIT)
-////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel) != null) {
-////            /* go to parcels */
-////            if (!enoughParcel) {
-////                System.out.println("parcels ");
-////                next = strategies.get(StrategyType.PICKUP)
-////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-////            /* go to finish */
-////            } else {
-////                System.out.println("finish: ");
-////                next = strategies.get(StrategyType.EXIT)
-////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-////            }
-////
-////            /* still no where to go, so go to closest unexplored */
-////            if (next == null) {
-////                System.out.println("explore: ");
-////                next = strategies.get(StrategyType.EXPLORE)
-////                        .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-////            }
-////        }
+    public Coordinate getNextPath(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
+        Coordinate next = null;
         /* go to parcels */
         if (!enoughParcel) {
             System.out.println("parcels ");
@@ -97,8 +73,9 @@ public class HealthConserveStrategy implements IStrategy {
             System.out.println("random: ");
 //            IStrategy random = new RandomMoveStrategy();
 //            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            next = new Stack<>();
-            next.push(carPosition);
+//            next = new Stack<>();
+//            next.push(carPosition);
+            next = carPosition;
         }
 
         /* debug */

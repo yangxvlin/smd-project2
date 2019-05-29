@@ -25,14 +25,14 @@ public class ExploreStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
+    public Coordinate getNextPath(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
 
 //        ArrayList<Coordinate> unexplored = new ArrayList<>(map.getSurroundingUnExploredCoordinates());
 //

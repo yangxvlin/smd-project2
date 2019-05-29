@@ -80,19 +80,19 @@ public class MyAutoController extends CarController {
         System.out.println("previous: " + previousPosition + " " + Integer.toString(numParcelsFound()));
         Coordinate carPosition = new Coordinate(getPosition());
 
-        if ((path.size() == 1) || path.empty() || true) {
-            path = driveStrategy.getNextPath(mapRecorder,
-                                             carPosition,
-                                             maxHealth,
-                                             getHealth(),
-                                             0,
-                                             getSpeed(),
-                                             getMovingDirection(carPosition),
-                                             numParcels() <= numParcelsFound());
 
-        }
+        Coordinate next = driveStrategy.getNextPath(mapRecorder,
+                                         carPosition,
+                                         maxHealth,
+                                         getHealth(),
+                                         0,
+                                         getSpeed(),
+                                         getMovingDirection(carPosition),
+                                         numParcels() <= numParcelsFound());
+
+
 		previousPosition = carPosition;
-		makeMove(carPosition);
+		makeMove(carPosition, next);
 	}
 
     /**
@@ -137,17 +137,17 @@ public class MyAutoController extends CarController {
      * reaction to the next location to go to
      * @param from : current location
      */
-	private void makeMove(Coordinate from) {
-	    Coordinate to = path.peek();
-	    assert(to != null);
-
-	    if (to.equals(from)) {
-            path.pop();
-
-            if (!path.empty()) {
-                to = path.peek();
-            }
-        }
+	private void makeMove(Coordinate from, Coordinate to) {
+//	    Coordinate to = path.peek();
+//	    assert(to != null);
+//
+//	    if (to.equals(from)) {
+//            path.pop();
+//
+//            if (!path.empty()) {
+//                to = path.peek();
+//            }
+//        }
 
         System.out.println(from.toString() + " -> " + to.toString() +
                 "(" + mapRecorder.getTileAdapter(to).getType().toString() + ") " +
