@@ -1,8 +1,6 @@
 package mycontroller.Strategy;
 
-import mycontroller.GraphAlgorithm.Dijkstra;
-import mycontroller.GraphAlgorithm.DijkstraResult;
-import mycontroller.GraphAlgorithm.Node;
+import mycontroller.GraphAlgorithm.*;
 import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
 import mycontroller.TileStatus;
@@ -20,8 +18,13 @@ import java.util.*;
  **/
 
 public class ExitStrategy implements IStrategy {
-    /* The comparator for choosing path */
+    /** The comparator for choosing path */
     private Comparator<Node> comparator;
+
+    /**
+     * graph algorithm used to search next coordinate to drive to
+     */
+    private ISearchAlgorithm searchAlgorithm;
 
     /**
      * The constructor for ExitStrategy
@@ -59,30 +62,30 @@ public class ExitStrategy implements IStrategy {
         assert(!finishes.isEmpty());
 
         /* search the map by Dijkstra within Explored tiles, which is used for determining whether Exit tiles are reachable or not. */
-        DijkstraResult res = Dijkstra.dijkstra(map,
-                carPosition,
-                healthUsage,
-                health,
-                fuelCost,
-                speed,
-                movingDirection,
-                comparator,
-                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
+        ISearchResult res = searchAlgorithm.search(map,
+                                                   carPosition,
+                                                   healthUsage,
+                                                   health,
+                                                   fuelCost,
+                                                   speed,
+                                                   movingDirection,
+                                                   comparator,
+                                                   new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
         /* Choose the best Coordinate on the path to the Exit tile depends on the given comparator. */
         Coordinate next = choosePath(finishes, res, comparator, healthUsage);
 
+        /* If there is no way to Exit in current situation, search the map within both Explored and Unexplored tiles. */
         if (next == null) {
-            /* If there is no way to Exit in current situation, search the map within both Explored and Unexplored tiles. */
-            res = Dijkstra.dijkstra(map,
-                    carPosition,
-                    healthUsage,
-                    health,
-                    fuelCost,
-                    speed,
-                    movingDirection,
-                    comparator,
-                    new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
+            res = searchAlgorithm.search(map,
+                                         carPosition,
+                                         healthUsage,
+                                         health,
+                                         fuelCost,
+                                         speed,
+                                         movingDirection,
+                                         comparator,
+                                         new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
             next = choosePath(finishes, res, comparator, healthUsage);
         }
 
@@ -100,5 +103,15 @@ public class ExitStrategy implements IStrategy {
     @Override
     public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
         // do nothing, since there is no need to registering.
+    }
+
+    /**
+     * add graph search algorithm to the car drive strategy
+     *
+     * @param searchAlgorithm : graph algorithm used to search next coordinate to drive to
+     */
+    @Override
+    public void registerISearchAlgorithm(ISearchAlgorithm searchAlgorithm) {
+        this.searchAlgorithm = searchAlgorithm;
     }
 }

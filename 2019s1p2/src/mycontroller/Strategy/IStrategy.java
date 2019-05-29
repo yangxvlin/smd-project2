@@ -1,6 +1,8 @@
 package mycontroller.Strategy;
 
 import mycontroller.GraphAlgorithm.DijkstraResult;
+import mycontroller.GraphAlgorithm.ISearchAlgorithm;
+import mycontroller.GraphAlgorithm.ISearchResult;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
@@ -19,11 +21,16 @@ import java.util.HashMap;
 
 public interface IStrategy {
     /**
+     * if car's health is less then 0.5, then the car game over
+     */
+    float GAME_OVER_HEALTH = 0.5f;
+
+    /**
      *
      * PICKUP refers to a strategy for picking up a parcel
-     * EXIT refers tot a strategy for going to the finish place
-     * EXPLORE refers tot a strategy for going to unexplored places
-     * HEAL refers tot a strategy for going to healing tiles.
+     * EXIT refers to a strategy for going to the finish place
+     * EXPLORE refers to a strategy for going to unexplored places
+     * HEAL refers to a strategy for going to healing tiles.
      *
      */
     enum StrategyType {PICKUP, EXIT, EXPLORE, HEAL}
@@ -63,7 +70,7 @@ public interface IStrategy {
                                Coordinate destination) {
         /* those destination with remaining health more than 0.5 is possible. */
         if (costSoFar.containsKey(destination) &&
-                costSoFar.get(destination).getHealth() >= 0.5) {
+                costSoFar.get(destination).getHealth() >= GAME_OVER_HEALTH) {
             return true;
         }
         return false;
@@ -79,11 +86,11 @@ public interface IStrategy {
      * @return : A Coordinate to go.
      */
     default Coordinate choosePath(ArrayList<Coordinate> destinations,
-                                  DijkstraResult searchResult,
+                                  ISearchResult searchResult,
                                   Comparator<Node> comparator,
                                   float healthUsage) {
         /* create a Node variable for storing the node to go. */
-        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, healthUsage, 0, null);
+        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, healthUsage, 0, null); // 0 has no meaning, just a random input
 
 
         /* go to closest reachable parcel */
@@ -96,7 +103,7 @@ public interface IStrategy {
                         searchResult.getCostSoFar().get(destination).getFuelCost(),
                         healthUsage,
                         0,
-                        null);
+                        null); // 0 has no meaning, just a random input
                 /*
                  Compare two destinations by the given comparator, if the newNode is better,
                  replace the nextNode with newNode
@@ -117,4 +124,11 @@ public interface IStrategy {
      * @param strategy : The strategy for adding.
      */
     void registerIStrategy(StrategyType strategyType, IStrategy strategy);
+
+    /**
+     * add graph search algorithm to the car drive strategy
+     *
+     * @param searchAlgorithm : graph algorithm used to search next coordinate to drive to
+     */
+    void registerISearchAlgorithm(ISearchAlgorithm searchAlgorithm);
 }

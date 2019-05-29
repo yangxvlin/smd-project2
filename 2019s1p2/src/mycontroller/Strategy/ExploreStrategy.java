@@ -1,8 +1,6 @@
 package mycontroller.Strategy;
 
-import mycontroller.GraphAlgorithm.Dijkstra;
-import mycontroller.GraphAlgorithm.DijkstraResult;
-import mycontroller.GraphAlgorithm.Node;
+import mycontroller.GraphAlgorithm.*;
 import mycontroller.MapRecorder;
 import mycontroller.TileStatus;
 import utilities.Coordinate;
@@ -19,8 +17,13 @@ import java.util.*;
  **/
 
 public class ExploreStrategy implements IStrategy {
-    /* The comparator for choosing path */
+    /** The comparator for choosing path */
     private Comparator<Node> comparator;
+
+    /**
+     * graph algorithm used to search next coordinate to drive to
+     */
+    private ISearchAlgorithm searchAlgorithm;
 
     /**
      * The constructor for ExploreStrategy
@@ -63,20 +66,21 @@ public class ExploreStrategy implements IStrategy {
         if (outMostExplored.isEmpty()) {
             return null;
         }
+
         /*
         search the map by Dijkstra within Explored tiles,
          which is used for determining whether the out most tiles are reachable or not.
         */
-        DijkstraResult res = Dijkstra.dijkstra(map,
-                carPosition,
-                healthUsage,
-                health,
-                fuelCost,
-                speed,
-                movingDirection,
-                comparator,
-                new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
-
+        ISearchResult res = searchAlgorithm.search(map,
+                                                   carPosition,
+                                                   healthUsage,
+                                                   health,
+                                                   fuelCost,
+                                                   speed,
+                                                   movingDirection,
+                                                   comparator,
+                                                   new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
+        System.out.println(res.getCostSoFar().size());
         /* return the Coordinates fot the car to go. */
         return choosePath(outMostExplored, res, comparator, healthUsage);
     }
@@ -91,5 +95,15 @@ public class ExploreStrategy implements IStrategy {
     @Override
     public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
         // do nothing, since there is no need to registering.
+    }
+
+    /**
+     * add graph search algorithm to the car drive strategy
+     *
+     * @param searchAlgorithm : graph algorithm used to search next coordinate to drive to
+     */
+    @Override
+    public void registerISearchAlgorithm(ISearchAlgorithm searchAlgorithm) {
+        this.searchAlgorithm = searchAlgorithm;
     }
 }

@@ -11,10 +11,10 @@ import java.util.*;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 16:19
- * description: dijkstra single source shortest path graph search algorithm
+ * description: search single source shortest path graph search algorithm
  **/
 
-public class Dijkstra {
+public class Dijkstra implements ISearchAlgorithm {
 
     /**
      * @param map : the graph to search with
@@ -25,17 +25,18 @@ public class Dijkstra {
      * @param movingDirection : car's current moving direction
      * @param comparator : the node compare function
      * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
-     * @return dijkstra searched result
+     * @return searched result
      */
-    public static DijkstraResult dijkstra(MapRecorder map,
-                                          Coordinate source,
-                                          float maxHealth,
-                                          float health,
-                                          float fuelCost,
-                                          float speed,
-                                          WorldSpatial.Direction movingDirection,
-                                          Comparator<Node> comparator,
-                                          ArrayList<TileStatus> allowableNeighborTileStatus) {
+    @Override
+    public ISearchResult search(MapRecorder map,
+                                Coordinate source,
+                                float maxHealth,
+                                float health,
+                                float fuelCost,
+                                float speed,
+                                WorldSpatial.Direction movingDirection,
+                                Comparator<Node> comparator,
+                                ArrayList<TileStatus> allowableNeighborTileStatus) {
 
         Node sourceNode = new Node(source, health, fuelCost, maxHealth, speed, movingDirection);
 
@@ -52,7 +53,7 @@ public class Dijkstra {
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
 
-            if (current.getHealth() < 0.5) {
+            if (current.getHealth() < GAME_OVER_HEALTH) {
                 continue;
             }
 

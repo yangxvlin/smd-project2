@@ -1,5 +1,6 @@
 package mycontroller.Strategy;
 
+import mycontroller.GraphAlgorithm.ISearchAlgorithm;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
@@ -53,25 +54,27 @@ public class FuelConserveStrategy implements IStrategy {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
-            /*selecting the next Coordinate to the parcel*/
+            /* selecting the next Coordinate to the parcel */
             next = strategies.get(StrategyType.PICKUP)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
             /* go to finish */
         } else {
-            /*selecting the next Coordinate to the exit*/
+            /* selecting the next Coordinate to the exit */
             next = strategies.get(StrategyType.EXIT)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
+            System.out.println("unexplored ");
             /*selecting the next Coordinate to explore*/
             next = strategies.get(StrategyType.EXPLORE)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
-        /*If the next Coordinate to go is null, stay in current position*/
+        /* If the next Coordinate to go is null, stay in current position */
         if (next == null) {
+            System.out.println("no move");
             next = carPosition;
         }
 
@@ -91,6 +94,15 @@ public class FuelConserveStrategy implements IStrategy {
         this.strategies.put(strategyType, strategy);
     }
 
+    /**
+     * don't add graph search algorithm because this strategy doesn't need it
+     *
+     * @param searchAlgorithm : graph algorithm used to search next coordinate to drive to
+     */
+    @Override
+    public void registerISearchAlgorithm(ISearchAlgorithm searchAlgorithm) {
+        /* do nothing because this doesn't require graph search algorithm */
+    }
 
     /**
      * This class is responsible for comparing Node in a fuel conserve manner

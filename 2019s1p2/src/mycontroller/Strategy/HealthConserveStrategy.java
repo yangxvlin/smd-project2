@@ -1,5 +1,6 @@
 package mycontroller.Strategy;
 
+import mycontroller.GraphAlgorithm.ISearchAlgorithm;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
@@ -96,6 +97,16 @@ public class HealthConserveStrategy implements IStrategy {
     @Override
     public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
         this.strategies.put(strategyType, strategy);
+    }
+
+    /**
+     * don't add graph search algorithm because this strategy doesn't need it
+     *
+     * @param searchAlgorithm : graph algorithm used to search next coordinate to drive to
+     */
+    @Override
+    public void registerISearchAlgorithm(ISearchAlgorithm searchAlgorithm) {
+        /* do nothing because this doesn't require graph search algorithm */
     }
 
     /**

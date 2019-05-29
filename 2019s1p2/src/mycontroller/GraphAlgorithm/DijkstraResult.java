@@ -10,10 +10,10 @@ import java.util.Stack;
  *
  * @create 2019-05-23 15:31
  *
- * description: This class is responsible for storing the result from Dijkstra.
+ * description: This class is responsible for storing the twp paired result objects from Dijkstra.
  **/
 
-public class DijkstraResult {
+public class DijkstraResult implements ISearchResult {
     /**
      * mapping of coordinates from source to any place
      */
@@ -37,10 +37,10 @@ public class DijkstraResult {
     }
 
     /**
-     *
      * @param destination : destination of coordinate to go to
      * @return the next coordinate in the path from source to destination
      */
+    @Override
     public Coordinate getNext(Coordinate destination) {
         Stack<Coordinate> path = new Stack<>();
 
@@ -63,8 +63,16 @@ public class DijkstraResult {
     /**
      * @return mapping for car status from source to any place
      */
+    @Override
     public HashMap<Coordinate, Node> getCostSoFar() {
         return costSoFar;
     }
 
+    /**
+     * @return : mapping of coordinates from source to any place
+     */
+    @Override
+    public HashMap<Coordinate, Coordinate> getCameFrom() {
+        return cameFrom;
+    }
 }
