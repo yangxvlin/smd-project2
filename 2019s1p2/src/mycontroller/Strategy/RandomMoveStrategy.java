@@ -8,25 +8,26 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
  *
  * @create 2019-05-26 13:41
- * description:
+ *
+ * description : This class is responsible for navigating the car to the randomly selected tile.
  **/
 
 public class RandomMoveStrategy implements IStrategy {
     @Override
     public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
-                                  float maxHealth,
+                                  float healthUsage,
                                   float health,
                                   float fuelCost,
                                   float speed,
                                   WorldSpatial.Direction movingDirection,
                                   boolean enoughParcel) {
+
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
                 new ArrayList<>(Arrays.asList(TileStatus.EXPLORED, TileStatus.UNEXPLORED)));
 
@@ -36,8 +37,6 @@ public class RandomMoveStrategy implements IStrategy {
 
         Random rand = new Random();
 
-//        Stack<Coordinate> path = new Stack<>();
-//        path.push();
         return neighbors.get(rand.nextInt(neighbors.size()));
     }
 }
