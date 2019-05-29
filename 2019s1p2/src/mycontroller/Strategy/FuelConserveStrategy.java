@@ -104,7 +104,8 @@ public class FuelConserveStrategy implements IStrategy {
          */
         @Override
         public int compare(Node o1, Node o2) {
-
+            /*The less fuelCost, the better a Node*/
+            /*The more health remaining, the better a Node*/
             if (o1.getFuelCost() < o2.getFuelCost()) {
                 return 1;
             } else if (o1.getFuelCost() > o2.getFuelCost()) {
