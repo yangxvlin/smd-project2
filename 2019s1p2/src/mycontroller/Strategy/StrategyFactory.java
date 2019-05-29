@@ -69,7 +69,6 @@ public class StrategyFactory {
                 return fuelConserveStrategy;
         }
 
-        System.out.println("Unsupported mode!");
         return null;
     }
 }

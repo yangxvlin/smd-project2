@@ -86,9 +86,6 @@ public interface IStrategy {
         /* create a Node variable for storing the node to go. */
         Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, healthUsage, 0, null);
 
-        for (Coordinate c: searchResult.getCameFrom().keySet()) {
-            System.out.println(c.toString() + " " + searchResult.getCameFrom().get(c) + " " + searchResult.getCostSoFar().get(c));
-        }
 
         /* go to closest reachable parcel */
         /* if the destination is reachable */

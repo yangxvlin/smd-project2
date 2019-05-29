@@ -71,7 +71,6 @@ public class ExitStrategy implements IStrategy {
 
         /* Choose the best Coordinate on the path to the Exit tile depends on the given comparator. */
         Coordinate next = choosePath(finishes, res, comparator, healthUsage);
-        System.out.println(" --- ");
 
         if (next == null) {
             /* If there is no way to Exit in current situation, search the map within both Explored and Unexplored tiles. */
