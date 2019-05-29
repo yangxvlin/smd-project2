@@ -13,7 +13,7 @@ import java.util.Stack;
  * description: This class is responsible for storing the result from Dijkstra.
  **/
 
-public class DijkstraPair {
+public class DijkstraResult {
     /**
      * mapping of coordinates from source to any place
      */
@@ -25,13 +25,13 @@ public class DijkstraPair {
     private HashMap<Coordinate, Node>       costSoFar;
 
     /**
-     * The constructor for DijkstraPair.
+     * The constructor for DijkstraResult.
      *
      * @param cameFrom :  mapping of coordinates from source to any place
      * @param costSoFar : mapping for car status from source to any place
      */
-    public DijkstraPair(HashMap<Coordinate, Coordinate> cameFrom,
-                        HashMap<Coordinate, Node>       costSoFar) {
+    public DijkstraResult(HashMap<Coordinate, Coordinate> cameFrom,
+                          HashMap<Coordinate, Node>       costSoFar) {
         this.cameFrom  = cameFrom;
         this.costSoFar = costSoFar;
     }

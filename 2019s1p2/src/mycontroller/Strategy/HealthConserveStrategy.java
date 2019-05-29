@@ -7,7 +7,6 @@ import world.WorldSpatial;
 
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -111,7 +110,7 @@ public class HealthConserveStrategy implements IStrategy {
          */
         @Override
         public int compare(Node o1, Node o2) {
-            assert(o1.getMaxHealth() == o2.getMaxHealth());
+            assert(o1.getHealthUsage() == o2.getHealthUsage());
 
             if (o1.getHealth() < o2.getHealth()) {
                 return -1;
@@ -138,7 +137,7 @@ public class HealthConserveStrategy implements IStrategy {
          */
         @Override
         public int compare(Node o1, Node o2) {
-            if (o1.getMaxHealth() > o2.getMaxHealth()) {
+            if (o1.getHealthUsage() > o2.getHealthUsage()) {
                 return -1;
             } else if (o1.getFuelCost() < o2.getFuelCost()) {
                 return 1;

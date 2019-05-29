@@ -1,6 +1,6 @@
 package mycontroller.Strategy;
 
-import mycontroller.GraphAlgorithm.DijkstraPair;
+import mycontroller.GraphAlgorithm.DijkstraResult;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import utilities.Coordinate;
@@ -9,7 +9,6 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -80,7 +79,7 @@ public interface IStrategy {
      * @return : A Coordinate to go.
      */
     default Coordinate choosePath(ArrayList<Coordinate> destinations,
-                                  DijkstraPair searchResult,
+                                  DijkstraResult searchResult,
                                   Comparator<Node> comparator,
                                   float healthUsage) {
         /* create a Node variable for storing the node to go. */

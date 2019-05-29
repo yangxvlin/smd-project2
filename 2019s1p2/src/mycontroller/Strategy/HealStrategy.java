@@ -1,7 +1,7 @@
 package mycontroller.Strategy;
 
 import mycontroller.GraphAlgorithm.Dijkstra;
-import mycontroller.GraphAlgorithm.DijkstraPair;
+import mycontroller.GraphAlgorithm.DijkstraResult;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import mycontroller.TileAdapter.ITileAdapter;
@@ -70,7 +70,7 @@ public class HealStrategy implements IStrategy {
         search the map by Dijkstra within Explored tiles,
          which is used for determining whether the healing tiles are reachable or not.
         */
-        DijkstraPair res = Dijkstra.dijkstra(map,
+        DijkstraResult res = Dijkstra.dijkstra(map,
                 carPosition,
                 healthUsage,
                 health,

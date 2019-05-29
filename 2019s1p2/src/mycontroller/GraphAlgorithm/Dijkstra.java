@@ -17,25 +17,25 @@ import java.util.*;
 public class Dijkstra {
 
     /**
-     * @param map :        the graph to search with
-     * @param source :     the start coordinate
-     * @param health :     the car's current health
-     * @param fuelCost :       the car's current fuel
-     * @param speed
-     * @param movingDirection
+     * @param map : the graph to search with
+     * @param source : the start coordinate
+     * @param health : the car's current health
+     * @param fuelCost : the car's current fuel
+     * @param speed : car speed
+     * @param movingDirection : car's current moving direction
      * @param comparator : the node compare function
      * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
      * @return
      */
-    public static DijkstraPair dijkstra(MapRecorder map,
-                                        Coordinate source,
-                                        float maxHealth,
-                                        float health,
-                                        float fuelCost,
-                                        float speed,
-                                        WorldSpatial.Direction movingDirection,
-                                        Comparator<Node> comparator,
-                                        ArrayList<TileStatus> allowableNeighborTileStatus) {
+    public static DijkstraResult dijkstra(MapRecorder map,
+                                          Coordinate source,
+                                          float maxHealth,
+                                          float health,
+                                          float fuelCost,
+                                          float speed,
+                                          WorldSpatial.Direction movingDirection,
+                                          Comparator<Node> comparator,
+                                          ArrayList<TileStatus> allowableNeighborTileStatus) {
 
         Node sourceNode = new Node(source, health, fuelCost, maxHealth, speed, movingDirection);
 
@@ -47,10 +47,10 @@ public class Dijkstra {
 
         cameFrom.put(source, null);
         costSoFar.put(source, sourceNode);
+
         /* update the graph when not finished traversing */
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
-
 
             if (current.getHealth() < 0.5) {
                 continue;
@@ -58,19 +58,16 @@ public class Dijkstra {
 
             /* expand the nodes */
             for (Node neighbor: current.getNeighbors(map, map.tileNeighbors(current.getC(), allowableNeighborTileStatus))) {
-
                 /* update when unvisited node or new node is better than old node */
-                // TODO 1 magic number? justify or become a constant?
                 if ((!costSoFar.containsKey(neighbor.getC())) ||
                         (comparator.compare(neighbor, costSoFar.get(neighbor.getC())) == 1)) {
                     costSoFar.put(neighbor.getC(), neighbor);
                     frontier.add(neighbor);
                     cameFrom.put(neighbor.getC(), current.getC());
                 }
-
             }
         }
 
-        return new DijkstraPair(cameFrom, costSoFar);
+        return new DijkstraResult(cameFrom, costSoFar);
     }
 }

@@ -1,7 +1,7 @@
 package mycontroller.Strategy;
 
 import mycontroller.GraphAlgorithm.Dijkstra;
-import mycontroller.GraphAlgorithm.DijkstraPair;
+import mycontroller.GraphAlgorithm.DijkstraResult;
 import mycontroller.GraphAlgorithm.Node;
 import mycontroller.MapRecorder;
 import mycontroller.TileStatus;
@@ -67,7 +67,7 @@ public class ExploreStrategy implements IStrategy {
         search the map by Dijkstra within Explored tiles,
          which is used for determining whether the out most tiles are reachable or not.
         */
-        DijkstraPair res = Dijkstra.dijkstra(map,
+        DijkstraResult res = Dijkstra.dijkstra(map,
                 carPosition,
                 healthUsage,
                 health,
