@@ -27,16 +27,18 @@ public class RandomMoveStrategy implements IStrategy {
                                   float speed,
                                   WorldSpatial.Direction movingDirection,
                                   boolean enoughParcel) {
-
+        /*Get all the neighbors*/
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
                 new ArrayList<>(Arrays.asList(TileStatus.EXPLORED, TileStatus.UNEXPLORED)));
 
+        /*If there is no neighbour, then put current car position in*/
         if (neighbors.isEmpty()) {
             neighbors.add(carPosition);
         }
 
         Random rand = new Random();
 
+        // return a randomly selected neighbour.
         return neighbors.get(rand.nextInt(neighbors.size()));
     }
 }
