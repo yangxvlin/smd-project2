@@ -19,14 +19,14 @@ import java.util.Stack;
 
 public class RandomMoveStrategy implements IStrategy {
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
+    public Coordinate getNextStep(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
         ArrayList<Coordinate> neighbors = map.tileNeighbors(carPosition,
                 new ArrayList<>(Arrays.asList(TileStatus.EXPLORED, TileStatus.UNEXPLORED)));
 
@@ -36,8 +36,8 @@ public class RandomMoveStrategy implements IStrategy {
 
         Random rand = new Random();
 
-        Stack<Coordinate> path = new Stack<>();
-        path.push(neighbors.get(rand.nextInt(neighbors.size())));
-        return path;
+//        Stack<Coordinate> path = new Stack<>();
+//        path.push(neighbors.get(rand.nextInt(neighbors.size())));
+        return neighbors.get(rand.nextInt(neighbors.size()));
     }
 }

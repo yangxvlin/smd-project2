@@ -81,7 +81,7 @@ public class MyAutoController extends CarController {
         Coordinate carPosition = new Coordinate(getPosition());
 
         if ((path.size() == 1) || path.empty() || true) {
-            path = driveStrategy.getNextPath(mapRecorder,
+            path = driveStrategy.getNextStep(mapRecorder,
                                              carPosition,
                                              maxHealth,
                                              getHealth(),

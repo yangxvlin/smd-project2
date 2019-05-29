@@ -12,7 +12,6 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Stack;
 
 /**
  * Xulin Yang, 904904
@@ -29,14 +28,14 @@ public class HealStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
+    public Coordinate getNextStep(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
         ArrayList<Coordinate> heals = map.getCoordinates(ITileAdapter.TileType.WATER);
         heals.addAll(map.getCoordinates(ITileAdapter.TileType.HEALTH));
 
@@ -58,6 +57,6 @@ public class HealStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        return choosePath(heals, res, comparator, maxHealth);
+        return chooseNextStep(heals, res, comparator, maxHealth);
     }
 }

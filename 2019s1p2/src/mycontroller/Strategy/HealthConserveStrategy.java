@@ -34,15 +34,15 @@ public class HealthConserveStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
-        Stack<Coordinate> next = null;
+    public Coordinate getNextStep(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
+        Coordinate next;
 
 //        System.out.println(strategies.get(StrategyType.EXIT)
 ////                .getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel));
@@ -71,34 +71,34 @@ public class HealthConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             System.out.println("parcels ");
             next = strategies.get(StrategyType.PICKUP)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextStep(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
             /* go to finish */
         } else {
             System.out.println("finish: ");
             next = strategies.get(StrategyType.EXIT)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextStep(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
             System.out.println("explore: ");
             next = strategies.get(StrategyType.EXPLORE)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextStep(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
             System.out.println("healing: ");
             next = strategies.get(StrategyType.HEAL)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextStep(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         if (next == null) {
             System.out.println("random: ");
 //            IStrategy random = new RandomMoveStrategy();
 //            next = random.getNextCoordinate(map, carPosition, maxHealth, health, fuel, enoughParcel);
-            next = new Stack<>();
-            next.push(carPosition);
+//            next = new Stack<>();
+//            next.push(carPosition);
         }
 
         /* debug */

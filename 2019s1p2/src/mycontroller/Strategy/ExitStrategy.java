@@ -26,14 +26,14 @@ public class ExitStrategy implements IStrategy {
     }
 
     @Override
-    public Stack<Coordinate> getNextPath(MapRecorder map,
-                                         Coordinate carPosition,
-                                         float maxHealth,
-                                         float health,
-                                         float fuelCost,
-                                         float speed,
-                                         WorldSpatial.Direction movingDirection,
-                                         boolean enoughParcel) {
+    public Coordinate getNextStep(MapRecorder map,
+                                  Coordinate carPosition,
+                                  float maxHealth,
+                                  float health,
+                                  float fuelCost,
+                                  float speed,
+                                  WorldSpatial.Direction movingDirection,
+                                  boolean enoughParcel) {
         ArrayList<Coordinate> finishes = map.getCoordinates(ITileAdapter.TileType.FINISH);
         assert(!finishes.isEmpty());
 
@@ -48,7 +48,7 @@ public class ExitStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        Stack<Coordinate> next = choosePath(finishes, res, comparator, maxHealth);
+        Coordinate next = chooseNextStep(finishes, res, comparator, maxHealth);
         System.out.println(" --- ");
         if (next == null) {
             res = Dijkstra.dijkstra(map,
@@ -60,7 +60,7 @@ public class ExitStrategy implements IStrategy {
                     movingDirection,
                     comparator,
                     new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-            next = choosePath(finishes, res, comparator, maxHealth);
+            next = chooseNextStep(finishes, res, comparator, maxHealth);
         }
 
         return next;
