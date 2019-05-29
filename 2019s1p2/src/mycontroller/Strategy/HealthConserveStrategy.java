@@ -34,7 +34,7 @@ public class HealthConserveStrategy implements IStrategy {
      *
      * @param map             : The map explored by the car.
      * @param carPosition     : The current coordinate of the car.
-     * @param maxHealth
+     * @param healthUsage       : The current health usage of the car
      * @param health          : The current health of the car
      * @param fuelCost        : The current fuel cost of the car
      * @param speed           : The current speed of the car.
@@ -45,7 +45,7 @@ public class HealthConserveStrategy implements IStrategy {
     @Override
     public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
-                                  float maxHealth,
+                                  float healthUsage,
                                   float health,
                                   float fuelCost,
                                   float speed,
@@ -56,26 +56,26 @@ public class HealthConserveStrategy implements IStrategy {
         if (!enoughParcel) {
             /*selecting the next Coordinate to the parcel*/
             next = strategies.get(StrategyType.PICKUP)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
             /* go to finish */
         } else {
             /*selecting the next Coordinate to the exit*/
             next = strategies.get(StrategyType.EXIT)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
             /*selecting the next Coordinate to explore*/
             next = strategies.get(StrategyType.EXPLORE)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
             /*selecting the next Coordinate to heal tile*/
             next = strategies.get(StrategyType.HEAL)
-                    .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
+                    .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /*If the next Coordinate to go is null, stay in current position*/
