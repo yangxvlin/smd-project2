@@ -82,13 +82,13 @@ public class MyAutoController extends CarController {
 
         if ((path.size() == 1) || path.empty() || true) {
             path = driveStrategy.getNextPath(mapRecorder,
-                                                              carPosition,
-                                                              maxHealth,
-                                                              getHealth(),
-                                                              0,
-                                                              getSpeed(),
-                                                              getMovingDirection(carPosition),
-                                                              numParcels() <= numParcelsFound());
+                                             carPosition,
+                                             maxHealth,
+                                             getHealth(),
+                                             0,
+                                             getSpeed(),
+                                             getMovingDirection(carPosition),
+                                             numParcels() <= numParcelsFound());
 
         }
 		previousPosition = carPosition;
