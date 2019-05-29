@@ -14,13 +14,13 @@ public interface ITileAdapter {
     enum TileType{WALL, ROAD, START, FINISH, HEALTH, LAVA, PARCEL, WATER}
 
     /**
-     * @return TileType of the object
+     * @return : TileType of the object
      */
     TileType getType();
 
     /**
-     * @param tileType: TileType
-     * @return true if object is input TileType
+     * @param tileType : TileType
+     * @return : true if object is input TileType
      */
     boolean isType(TileType tileType);
 }
