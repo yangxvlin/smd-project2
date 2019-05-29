@@ -15,29 +15,54 @@ import java.util.Stack;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 1:43
- * description:
+ * description: This interface defines APIs for strategies used for getting next step coordinate.
  **/
 
 public interface IStrategy {
-
+    /**
+     *
+     * PICKUP refers to a strategy for picking up a parcel
+     * EXIT refers tot a strategy for going to the finish place
+     * EXPLORE refers tot a strategy for going to unexplored places
+     * HEAL refers tot a strategy for going to healing tiles.
+     *
+     */
     enum StrategyType {PICKUP, EXIT, EXPLORE, HEAL}
 
-//    void updateCost(MapRecorder mapRecorder);
 
+    /**
+     *  This methods is responsible for finding the next coordinate to go depends on given information.
+     *
+     * @param map : The map explored by the car.
+     * @param carPosition : The current coordinate of the car.
+     * @param healthUsage : The current healthUsage of the car
+     * @param health : The current health of the car
+     * @param fuelCost : The current fuel cost of the car
+     * @param speed : The current speed of the car.
+     * @param movingDirection : The direction that the car is currently moving at
+     * @param enoughParcel : A boolean that indicates whether have picked enough parcels.
+     * @return : The coordinate to go.
+     */
     Coordinate getNextPath(MapRecorder map,
                            Coordinate carPosition,
-                           float maxHealth,
+                           float healthUsage,
                            float health,
                            float fuelCost,
                            float speed,
                            WorldSpatial.Direction movingDirection,
                            boolean enoughParcel);
 
+    /**
+     * This method is responsible for determine whether a destination is reachable or not.
+     *
+     * @param costSoFar : A HashMap with Coordinate as the key, Node as the value, which is used to look up the Node
+     *                  for the destination.
+     * @param destination : The coordinate of the destination.
+     * @return : A boolean, false for unreachable, true for reachable.
+     */
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
-        /* 0.5 see Car.java line 100 */
-//        System.out.println(destination + " " +
-//                Boolean.toString(costSoFar.containsKey(destination)));
+        // those destination with remaining health more than 0.5 is possible.
         if (costSoFar.containsKey(destination) &&
                 costSoFar.get(destination).getHealth() >= 0.5) {
             return true;
@@ -45,41 +70,47 @@ public interface IStrategy {
         return false;
     }
 
+    /**
+     * This method is responsible for choosing the best path depends on the given comparator.
+     *
+     * @param destinations : An ArrayList of Coordinates which represents destinations.
+     * @param searchResult : The search result from Dijkstra algorithm.
+     * @param comparator : The given comparator for ordering destinations.
+     * @param healthUsage : The current healthUsage of the car.
+     * @return : A Coordinate to go.
+     */
     default Coordinate choosePath(ArrayList<Coordinate> destinations,
-                                         DijkstraPair searchResult,
-                                         Comparator<Node> comparator,
-                                         float maxHealth) {
-        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, maxHealth, 0, null);
-        Stack<Coordinate> path = null;
-//        System.out.println(Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
-//        System.out.println(Arrays.toString(searchResult.getCostSoFar().keySet().toArray()));
+                                  DijkstraPair searchResult,
+                                  Comparator<Node> comparator,
+                                  float healthUsage) {
+        // create a Node variable for storing the node to go.
+        Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, healthUsage, 0, null);
+
         for (Coordinate c: searchResult.getCameFrom().keySet()) {
             System.out.println(c.toString() + " " + searchResult.getCameFrom().get(c) + " " + searchResult.getCostSoFar().get(c));
         }
 
         /* go to closest reachable parcel */
         for (Coordinate destination : destinations) {
-//            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
-
+            // if the destination is reachable
             if (isPossible(searchResult.getCostSoFar(), destination)) {
+                // get the Node of that destination
                 Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
                         searchResult.getCostSoFar().get(destination).getFuelCost(),
-                        maxHealth,
+                        healthUsage,
                         0,
                         null);
-//                Stack<Coordinate> newPath = searchResult.getNextPath(destination);
-
-//                System.out.println("<><><><>");
+                // Compare two destinations by the given comparator, if the newNode is better,
+                // replace the nextNode with newNode
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
-//                    path = newPath;
                 }
             }
 
-//            System.out.println(nextNode);
         }
 
+        // return the next Coordinate to go.
         return nextNode.getC();
     }
 }
