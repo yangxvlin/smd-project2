@@ -91,4 +91,15 @@ public class ExitStrategy implements IStrategy {
         /* return thr Coordinate to go, if there is no way to Exit tiles, the Coordinate would be null. */
         return next;
     }
+
+    /**
+     * This method does nothing, since there is no need to register.
+     *
+     * @param strategyType : The strategy for the strategy.
+     * @param strategy     : The strategy for adding.
+     */
+    @Override
+    public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
+        // do nothing, since there is no need to registering.
+    }
 }

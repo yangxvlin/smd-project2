@@ -80,4 +80,16 @@ public class ExploreStrategy implements IStrategy {
         /* return the Coordinates fot the car to go. */
         return choosePath(outMostExplored, res, comparator, healthUsage);
     }
+
+
+    /**
+     * This method does nothing, since there is no need to register.
+     *
+     * @param strategyType : The strategy for the strategy.
+     * @param strategy     : The strategy for adding.
+     */
+    @Override
+    public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
+        // do nothing, since there is no need to registering.
+    }
 }

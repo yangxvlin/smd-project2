@@ -62,7 +62,7 @@ public interface IStrategy {
      */
     default boolean isPossible(HashMap<Coordinate, Node> costSoFar,
                                Coordinate destination) {
-        // those destination with remaining health more than 0.5 is possible.
+        /* those destination with remaining health more than 0.5 is possible. */
         if (costSoFar.containsKey(destination) &&
                 costSoFar.get(destination).getHealth() >= 0.5) {
             return true;
@@ -83,7 +83,7 @@ public interface IStrategy {
                                   DijkstraPair searchResult,
                                   Comparator<Node> comparator,
                                   float healthUsage) {
-        // create a Node variable for storing the node to go.
+        /* create a Node variable for storing the node to go. */
         Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, healthUsage, 0, null);
 
         for (Coordinate c: searchResult.getCameFrom().keySet()) {
@@ -91,26 +91,34 @@ public interface IStrategy {
         }
 
         /* go to closest reachable parcel */
-        for (Coordinate destination : destinations) {
-            // if the destination is reachable
+        /* if the destination is reachable */
+        for (Coordinate destination : destinations)
             if (isPossible(searchResult.getCostSoFar(), destination)) {
-                // get the Node of that destination
+                /* get the Node of that destination */
                 Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
                         searchResult.getCostSoFar().get(destination).getFuelCost(),
                         healthUsage,
                         0,
                         null);
-                // Compare two destinations by the given comparator, if the newNode is better,
-                // replace the nextNode with newNode
+                /*
+                 Compare two destinations by the given comparator, if the newNode is better,
+                 replace the nextNode with newNode
+                */
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
                 }
             }
 
-        }
-
-        // return the next Coordinate to go.
+        /* return the next Coordinate to go. */
         return nextNode.getC();
     }
+
+    /**
+     * This method is responsible for registering one strategy into HashMap.
+     *
+     * @param strategyType : The strategy for the strategy.
+     * @param strategy : The strategy for adding.
+     */
+    void registerIStrategy(StrategyType strategyType, IStrategy strategy);
 }

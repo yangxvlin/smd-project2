@@ -9,7 +9,8 @@ import java.util.Comparator;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 15:49
- * description:
+ *
+ * description : This class is responsible for creating IStrategy.
  **/
 
 public class StrategyFactory {

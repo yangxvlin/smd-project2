@@ -41,4 +41,16 @@ public class RandomMoveStrategy implements IStrategy {
         // return a randomly selected neighbour.
         return neighbors.get(rand.nextInt(neighbors.size()));
     }
+
+
+    /**
+     * This method does nothing, since there is no need to register.
+     *
+     * @param strategyType : The strategy for the strategy.
+     * @param strategy     : The strategy for adding.
+     */
+    @Override
+    public void registerIStrategy(StrategyType strategyType, IStrategy strategy) {
+        // do nothing, since there is no need to registering.
+    }
 }
