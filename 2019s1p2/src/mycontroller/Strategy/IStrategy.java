@@ -24,7 +24,7 @@ public interface IStrategy {
 
 //    void updateCost(MapRecorder mapRecorder);
 
-    Coordinate getNextStep(MapRecorder map,
+    Coordinate getNextPath(MapRecorder map,
                            Coordinate carPosition,
                            float maxHealth,
                            float health,
@@ -45,11 +45,12 @@ public interface IStrategy {
         return false;
     }
 
-    default Coordinate chooseNextStep(ArrayList<Coordinate> destinations,
-                                      DijkstraPair searchResult,
-                                      Comparator<Node> comparator,
-                                      float maxHealth) {
+    default Coordinate choosePath(ArrayList<Coordinate> destinations,
+                                         DijkstraPair searchResult,
+                                         Comparator<Node> comparator,
+                                         float maxHealth) {
         Node nextNode = new Node(null, Float.MIN_VALUE, Float.MAX_VALUE, maxHealth, 0, null);
+        Stack<Coordinate> path = null;
 //        System.out.println(Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 //        System.out.println(Arrays.toString(searchResult.getCostSoFar().keySet().toArray()));
         for (Coordinate c: searchResult.getCameFrom().keySet()) {
@@ -61,17 +62,18 @@ public interface IStrategy {
 //            System.out.println(destination + " " + Arrays.toString(searchResult.getCameFrom().keySet().toArray()));
 
             if (isPossible(searchResult.getCostSoFar(), destination)) {
-                Node newNode = new Node(null,
+                Node newNode = new Node(searchResult.getNext(destination),
                         searchResult.getCostSoFar().get(destination).getHealth(),
                         searchResult.getCostSoFar().get(destination).getFuelCost(),
                         maxHealth,
                         0,
                         null);
-                Stack<Coordinate> newPath = searchResult.getNextPath(destination);
+//                Stack<Coordinate> newPath = searchResult.getNextPath(destination);
 
 //                System.out.println("<><><><>");
                 if (comparator.compare(nextNode, newNode) == -1) {
                     nextNode = newNode;
+//                    path = newPath;
                 }
             }
 

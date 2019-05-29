@@ -26,7 +26,7 @@ public class ExitStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextStep(MapRecorder map,
+    public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
                                   float maxHealth,
                                   float health,
@@ -48,7 +48,7 @@ public class ExitStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        Coordinate next = chooseNextStep(finishes, res, comparator, maxHealth);
+        Coordinate next = choosePath(finishes, res, comparator, maxHealth);
         System.out.println(" --- ");
         if (next == null) {
             res = Dijkstra.dijkstra(map,
@@ -60,7 +60,7 @@ public class ExitStrategy implements IStrategy {
                     movingDirection,
                     comparator,
                     new ArrayList<>(Arrays.asList(TileStatus.UNEXPLORED, TileStatus.EXPLORED)));
-            next = chooseNextStep(finishes, res, comparator, maxHealth);
+            next = choosePath(finishes, res, comparator, maxHealth);
         }
 
         return next;

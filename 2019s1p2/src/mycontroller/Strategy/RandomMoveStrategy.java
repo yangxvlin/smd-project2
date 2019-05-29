@@ -19,7 +19,7 @@ import java.util.Stack;
 
 public class RandomMoveStrategy implements IStrategy {
     @Override
-    public Coordinate getNextStep(MapRecorder map,
+    public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
                                   float maxHealth,
                                   float health,
@@ -37,7 +37,7 @@ public class RandomMoveStrategy implements IStrategy {
         Random rand = new Random();
 
 //        Stack<Coordinate> path = new Stack<>();
-//        path.push(neighbors.get(rand.nextInt(neighbors.size())));
+//        path.push();
         return neighbors.get(rand.nextInt(neighbors.size()));
     }
 }

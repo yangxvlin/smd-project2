@@ -28,7 +28,7 @@ public class HealStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextStep(MapRecorder map,
+    public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
                                   float maxHealth,
                                   float health,
@@ -57,6 +57,6 @@ public class HealStrategy implements IStrategy {
                 comparator,
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        return chooseNextStep(heals, res, comparator, maxHealth);
+        return choosePath(heals, res, comparator, maxHealth);
     }
 }

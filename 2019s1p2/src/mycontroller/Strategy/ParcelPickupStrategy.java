@@ -28,7 +28,7 @@ public class ParcelPickupStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextStep(MapRecorder map,
+    public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
                                   float maxHealth,
                                   float health,
@@ -52,6 +52,6 @@ public class ParcelPickupStrategy implements IStrategy {
                                              comparator,
                                              new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 
-        return chooseNextStep(parcels, res, comparator, maxHealth);
+        return choosePath(parcels, res, comparator, maxHealth);
     }
 }

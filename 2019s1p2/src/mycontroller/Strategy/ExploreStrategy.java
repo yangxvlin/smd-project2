@@ -25,7 +25,7 @@ public class ExploreStrategy implements IStrategy {
     }
 
     @Override
-    public Coordinate getNextStep(MapRecorder map,
+    public Coordinate getNextPath(MapRecorder map,
                                   Coordinate carPosition,
                                   float maxHealth,
                                   float health,
@@ -73,6 +73,6 @@ public class ExploreStrategy implements IStrategy {
                 new ArrayList<>(Collections.singletonList(TileStatus.EXPLORED)));
 //        System.out.println(">>>>");
 
-        return chooseNextStep(outMostExplored, res, comparator, maxHealth);
+        return choosePath(outMostExplored, res, comparator, maxHealth);
     }
 }
