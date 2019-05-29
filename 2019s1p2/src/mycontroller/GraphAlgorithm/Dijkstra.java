@@ -47,20 +47,10 @@ public class Dijkstra {
 
         cameFrom.put(source, null);
         costSoFar.put(source, sourceNode);
-//        boolean tmp = false;
         /* update the graph when not finished traversing */
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
 
-//            if (frontier.size() < 50) {
-//                System.out.println(current.toString() + " " + frontier.size());
-//            }
-//            tmp = frontier.isEmpty();
-//
-//            if (tmp) {
-//                System.out.println(current + " " +
-//                                Arrays.toString(map.tileNeighbors(current.getC(), allowableNeighborTileStatus).toArray()));
-//            }
 
             if (current.getHealth() < 0.5) {
                 continue;
@@ -69,25 +59,6 @@ public class Dijkstra {
             /* expand the nodes */
             for (Node neighbor: current.getNeighbors(map, map.tileNeighbors(current.getC(), allowableNeighborTileStatus))) {
 
-//                // TODO Unexplored ROAD cost = 0 now
-//                float neighborHealth = current.getHealth() +
-//                        MapRecorder.TILE_HEALTH_COST_MAP.get(
-//                                map.getTileAdapter(neighbor).getType());
-//                // TODO a map with values = 1 or a constant 1?
-//                float neighborFuel   = current.getFuel() - 1;
-//
-//                float neighborMaxHealth = current.getMaxHealth();
-//                if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(neighbor).getType()) > 0) {
-//                    neighborMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(neighbor).getType());
-//                }
-//
-//                Node newNode = new Node(neighbor, neighborHealth, neighborFuel, neighborMaxHealth);
-
-//                if (tmp){
-//                    System.out.println(neighbor + " " +
-//                            Boolean.toString(!costSoFar.containsKey(neighbor)) + " " );
-////                            Boolean.toString(comparator.compare(newNode, costSoFar.get(neighbor)) == 1));
-//                }
                 /* update when unvisited node or new node is better than old node */
                 // TODO 1 magic number? justify or become a constant?
                 if ((!costSoFar.containsKey(neighbor.getC())) ||
@@ -98,7 +69,6 @@ public class Dijkstra {
                 }
 
             }
-//            tmp = false;
         }
 
         return new DijkstraPair(cameFrom, costSoFar);

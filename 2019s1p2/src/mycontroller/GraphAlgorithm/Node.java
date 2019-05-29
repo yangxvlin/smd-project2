@@ -85,7 +85,6 @@ public class Node {
         * self
         * */
 
-        //
 
         for (Coordinate adj : adjacentCoordinates) {
             // get the tile type the adjacent tile type
@@ -118,8 +117,6 @@ public class Node {
             res.add(new Node(adj, adjHealth, adjFuelCost, adjMaxHealth, FORWARD_VELOCITY, nextMovingDirection));
         }
 
-        // move toward reverse direction
-        /* update c, health(negative * 2, ice * 2, otherwise + health delta), fuel + 1, max health + positive(health delta, 0), direction */
         return res;
     }
 

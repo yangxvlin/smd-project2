@@ -42,21 +42,15 @@ public class DijkstraPair {
 
         /* backtrack the path */
         for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
-//            System.out.print(c + "pushed, ");
 
             /* TODO problem occurs when explore for health conserve */
             assert(!path.contains(c));
-//            if(path.contains(c)) {
-//                break;
-//            }
 
             path.push(c);
         }
 
         /* destination is source */
         if (path.empty()) {
-//            assert(cameFrom.get(destination) == null);
-//            path.push(destination);
             return destination;
         /* the next coordinate */
         } else {
