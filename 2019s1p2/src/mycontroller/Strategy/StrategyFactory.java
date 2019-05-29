@@ -53,7 +53,7 @@ public class StrategyFactory {
                 healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  new ParcelPickupStrategy(healthComparator));
                 healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    new ExitStrategy(healthComparator));
                 healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, new ExploreStrategy(healthComparator));
-                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.HEAL,    new HealStrategy(new HealthConserveStrategy.HealthComparator2()));
+                healthConserveStrategy.registerIStrategy(IStrategy.StrategyType.HEAL,    new HealStrategy(new HealthConserveStrategy.HealComparator()));
 
                 return healthConserveStrategy;
             case FUEL:

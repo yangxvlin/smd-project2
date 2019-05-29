@@ -99,9 +99,9 @@ public class HealthConserveStrategy implements IStrategy {
     }
 
     /**
-     * This class is responsible for comparing Node in a fuel health manner
+     * This class is used for searching healing tile
      */
-    static class HealthComparator2 implements Comparator<Node> {
+    static class HealComparator implements Comparator<Node> {
 
         /**
          * @param o1 : The first Node
