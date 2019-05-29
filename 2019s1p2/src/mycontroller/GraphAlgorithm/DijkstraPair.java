@@ -9,7 +9,8 @@ import java.util.Stack;
  * Xulin Yang, 904904
  *
  * @create 2019-05-23 15:31
- * description: object for dijkstra search result
+ *
+ * description: This class is responsible for storing the result from Dijkstra.
  **/
 
 public class DijkstraPair {
@@ -24,6 +25,8 @@ public class DijkstraPair {
     private HashMap<Coordinate, Node>       costSoFar;
 
     /**
+     * The constructor for DijkstraPair.
+     *
      * @param cameFrom :  mapping of coordinates from source to any place
      * @param costSoFar : mapping for car status from source to any place
      */
@@ -34,6 +37,7 @@ public class DijkstraPair {
     }
 
     /**
+     *
      * @param destination : destination of coordinate to go to
      * @return the next coordinate in the path from source to destination
      */
@@ -72,18 +76,4 @@ public class DijkstraPair {
         return this.cameFrom;
     }
 
-    /* ****************************** debug use **************************** */
-    public void printPath(Coordinate destination) {
-        Stack<Coordinate> path = new Stack<>();
-
-        for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
-            path.push(c);
-        }
-
-        while (!path.empty()) {
-            System.out.print(path.pop().toString() + "->");
-        }
-
-        System.out.println();
-    }
 }
