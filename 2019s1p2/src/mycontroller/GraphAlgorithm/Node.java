@@ -38,6 +38,8 @@ public class Node {
 
     private static final float FORWARD_VELOCITY = 1;
 
+    private static final int FUEL_COST = 1;
+
     /**
      * @param c :      current coordinate
      * @param health : the remaining health at current coordinate
@@ -91,10 +93,8 @@ public class Node {
             ITileAdapter.TileType currentTileType = map.getTileAdapter(c).getType();
             world.WorldSpatial.Direction nextMovingDirection = nextMoveDirection(adj);
 
-            // TODO Unexplored ROAD cost = 0 now
             float adjHealth = getHealth() + MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
-            // TODO a map with values = 1 or a constant 1?
-            float adjFuelCost = getFuelCost() + 1;
+            float adjFuelCost = getFuelCost() + FUEL_COST;
             float adjMaxHealth = getMaxHealth();
             if (MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType()) > 0) {
                 adjMaxHealth += MapRecorder.TILE_HEALTH_COST_MAP.get(map.getTileAdapter(adj).getType());
@@ -126,12 +126,12 @@ public class Node {
      *
      * */
     private boolean isNeedBrake(WorldSpatial.Direction nextMovingDirection){
-        // if the car has already stop then no need brake.
+        /* if the car has already stop then no need brake. */
         if (speed == 0){
             return false;
         }
 
-        // if the car want to move to the reverse direction, then brake is needed.
+        /* if the car want to move to the reverse direction, then brake is needed. */
         switch (movingDirection){
             case EAST:
                 if (nextMovingDirection == WorldSpatial.Direction.WEST){
