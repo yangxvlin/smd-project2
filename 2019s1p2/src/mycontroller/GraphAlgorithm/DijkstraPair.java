@@ -47,9 +47,7 @@ public class DijkstraPair {
         /* backtrack the path */
         for (Coordinate c = destination; cameFrom.get(c) != null; c = cameFrom.get(c)) {
 
-            /* TODO problem occurs when explore for health conserve */
             assert(!path.contains(c));
-
             path.push(c);
         }
 
@@ -67,13 +65,6 @@ public class DijkstraPair {
      */
     public HashMap<Coordinate, Node> getCostSoFar() {
         return costSoFar;
-    }
-
-    /**
-     * @return mapping of coordinates from source to any place
-     */
-    public HashMap<Coordinate, Coordinate> getCameFrom() {
-        return this.cameFrom;
     }
 
 }
