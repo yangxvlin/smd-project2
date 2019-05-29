@@ -6,7 +6,6 @@ import tiles.MapTile;
 import tiles.WaterTrap;
 import utilities.Coordinate;
 import world.World;
-import world.WorldSpatial;
 
 import java.util.*;
 
@@ -62,40 +61,6 @@ public class MapRecorder {
         return Collections.unmodifiableMap(map);
     }
 
-    public enum MOVE_DIRECTION{UP, DOWN, LEFT, RIGHT}
-
-//    public static final Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> TURN_DIRECTION = initDirectionMap();
-//
-//    private static Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> initDirectionMap() {
-//        Map<WorldSpatial.Direction, Map<MOVE_DIRECTION, WorldSpatial.Direction>> map = new HashMap<>();
-//
-//        map.put(WorldSpatial.Direction.NORTH, new HashMap<>());
-//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.UP, WorldSpatial.Direction.NORTH);
-//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.LEFT, WorldSpatial.Direction.WEST);
-//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.RIGHT, WorldSpatial.Direction.EAST);
-//        map.get(WorldSpatial.Direction.NORTH).put(MOVE_DIRECTION.DOWN, WorldSpatial.Direction.NORTH);
-//
-//        map.put(WorldSpatial.Direction.SOUTH, new HashMap<>());
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//
-//        map.put(WorldSpatial.Direction.EAST , new HashMap<>());
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//
-//        map.put(WorldSpatial.Direction.WEST , new HashMap<>());
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//        map.get(WorldSpatial.Direction.NORTH).put();
-//
-//        return Collections.unmodifiableMap(map);
-//    }
-
     /**
      * initialize map recorder object
      */
@@ -117,21 +82,26 @@ public class MapRecorder {
                 ITileAdapter tileAdapter = TileAdapterFactory.getInstance()
                                                                 .createTileAdapter(t);
                 /* update two maps */
-                coordinateTileMap.put(c, tileAdapter);
-                putTileTypeCoordinatesMap(tileAdapter.getType(), c);
+                updateMapEntry(c, tileAdapter);
+//                coordinateTileMap.put(c, tileAdapter);
+//                putTileTypeCoordinatesMap(tileAdapter.getType(), c);
 
-                /* Road are unexplored tile now */
-                if (t.isType(MapTile.Type.ROAD)) {
-                    mapStatus.put(c, TileStatus.UNEXPLORED);
-                /* walls are unreachable */
-                } else if (t.isType(MapTile.Type.WALL)) {
-                    mapStatus.put(c, TileStatus.UNREACHABLE);
-                /* other MapTile (start, finish) are explored */
-                } else {
-                    mapStatus.put(c, TileStatus.EXPLORED);
-                }
+                updateCoordinateInitialStatus(c, t);
 //                System.out.println(c.toString() + " " + tileAdapter.getType() + " " + mapStatus.get(c));
             }
+        }
+    }
+
+    private void updateCoordinateInitialStatus(Coordinate c, MapTile t) {
+        /* Road are unexplored tile now */
+        if (t.isType(MapTile.Type.ROAD)) {
+            mapStatus.put(c, TileStatus.UNEXPLORED);
+            /* walls are unreachable */
+        } else if (t.isType(MapTile.Type.WALL)) {
+            mapStatus.put(c, TileStatus.UNREACHABLE);
+            /* other MapTile (start, finish) are explored */
+        } else {
+            mapStatus.put(c, TileStatus.EXPLORED);
         }
     }
 
@@ -144,7 +114,11 @@ public class MapRecorder {
             MapTile t = carView.get(c);
             /* EMPTY means this coordinate is not in the world, thus ignore it */
             if (!t.isType(MapTile.Type.EMPTY)) {
-                updateMapEntry(c, t);
+                ITileAdapter currentTileAdapter = TileAdapterFactory.getInstance()
+                                                                    .createTileAdapter(t);
+
+                updateMapEntry(c, currentTileAdapter);
+                updateCoordinateStatue(c, currentTileAdapter);
             }
         }
     }
@@ -166,12 +140,9 @@ public class MapRecorder {
      * is MapTile type change at that location. So, delete previous MapTile type
      * at that coordinate if any and add the new {coordinate: type} pair.
      * @param c
-     * @param currentTile
+     * @param currentTileAdapter
      */
-    private void updateMapEntry(Coordinate c, MapTile currentTile) {
-        assert(!currentTile.isType(MapTile.Type.EMPTY));
-        ITileAdapter currentTileAdapter  = TileAdapterFactory.getInstance()
-                                                                .createTileAdapter(currentTile);
+    private void updateMapEntry(Coordinate c, ITileAdapter currentTileAdapter) {
         ITileAdapter previousTileAdapter = this.coordinateTileMap.get(c);
 
         if (previousTileAdapter != null) {
@@ -206,9 +177,10 @@ public class MapRecorder {
 
     /**
      * @param c
+     * @param allowableTileStatuses
      * @return explored neighbor coordinates
      */
-    public ArrayList<Coordinate> tileNeighbors(Coordinate c, ArrayList<TileStatus> tileStatuses) {
+    public ArrayList<Coordinate> tileNeighbors(Coordinate c, ArrayList<TileStatus> allowableTileStatuses) {
 
         ArrayList<Coordinate> neighbors = new ArrayList<>();
 
@@ -216,7 +188,7 @@ public class MapRecorder {
         if (c.x < World.MAP_WIDTH - 1) {
             Coordinate right = new Coordinate(c.x+1, c.y);
 
-            if (tileStatuses.contains(mapStatus.get(right))) {
+            if (allowableTileStatuses.contains(mapStatus.get(right))) {
                 neighbors.add(right);
             }
         }
@@ -225,7 +197,7 @@ public class MapRecorder {
         if (c.y > 0) {
             Coordinate down = new Coordinate(c.x, c.y-1);
 
-            if (tileStatuses.contains(mapStatus.get(down))) {
+            if (allowableTileStatuses.contains(mapStatus.get(down))) {
                 neighbors.add(down);
             }
         }
@@ -234,7 +206,7 @@ public class MapRecorder {
         if (c.x > 0) {
             Coordinate left = new Coordinate(c.x-1, c.y);
 
-            if (tileStatuses.contains(mapStatus.get(left))) {
+            if (allowableTileStatuses.contains(mapStatus.get(left))) {
                 neighbors.add(left);
             }
         }
@@ -243,7 +215,7 @@ public class MapRecorder {
         if (c.y < World.MAP_HEIGHT - 1) {
             Coordinate up = new Coordinate(c.x, c.y + 1);
 
-            if (tileStatuses.contains(mapStatus.get(up))) {
+            if (allowableTileStatuses.contains(mapStatus.get(up))) {
                 neighbors.add(up);
             }
         }
