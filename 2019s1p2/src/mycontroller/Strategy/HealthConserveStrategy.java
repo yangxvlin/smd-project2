@@ -35,7 +35,7 @@ public class HealthConserveStrategy implements IStrategy {
      *
      * @param map             : The map explored by the car.
      * @param carPosition     : The current coordinate of the car.
-     * @param healthUsage       : The current health usage of the car
+     * @param healthUsage     : The current health usage of the car
      * @param health          : The current health of the car
      * @param fuelCost        : The current fuel cost of the car
      * @param speed           : The current speed of the car.
