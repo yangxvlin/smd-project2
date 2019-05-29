@@ -39,25 +39,16 @@ public class MapRecorder {
     /**
      * mapping between tile type and car health cost
      */
-    public static final Map<ITileAdapter.TileType, Float> TILE_HEALTH_COST_MAP = initMap();
-
-    /**
-     * @return mapping between tile type and car health cost object
-     */
-    private static Map<ITileAdapter.TileType, Float> initMap() {
-        Map<ITileAdapter.TileType, Float> map = new HashMap<>();
-
-        map.put(ITileAdapter.TileType.FINISH, 0f);
-        map.put(ITileAdapter.TileType.START,  0f);
-        map.put(ITileAdapter.TileType.HEALTH, 1.25f); // 5 (ICE) * 0.25
-        map.put(ITileAdapter.TileType.LAVA,   -5f); // 20 (LAVA) * 0.25 (delta)
-        map.put(ITileAdapter.TileType.PARCEL, 0f);
-        map.put(ITileAdapter.TileType.ROAD,   0f);
-        map.put(ITileAdapter.TileType.WALL,   Float.MIN_VALUE);
-        map.put(ITileAdapter.TileType.WATER,  (float) WaterTrap.Yield);
-
-        return Collections.unmodifiableMap(map);
-    }
+    public static final Map<ITileAdapter.TileType, Float> TILE_HEALTH_COST_MAP = Map.ofEntries(
+        Map.entry(ITileAdapter.TileType.FINISH, 0f),
+        Map.entry(ITileAdapter.TileType.START,  0f),
+        Map.entry(ITileAdapter.TileType.HEALTH, 1.25f), // 5 (ICE) * 0.25
+        Map.entry(ITileAdapter.TileType.LAVA,   -5f), // 20 (LAVA) * 0.25 (delta)
+        Map.entry(ITileAdapter.TileType.PARCEL, 0f),
+        Map.entry(ITileAdapter.TileType.ROAD,   0f),
+        Map.entry(ITileAdapter.TileType.WALL,   Float.MIN_VALUE),
+        Map.entry(ITileAdapter.TileType.WATER,  (float) WaterTrap.Yield)
+    );
 
     /**
      * initialize map recorder object
