@@ -70,7 +70,7 @@ public class FuelConserveStrategy implements IStrategy {
                     .getNextPath(map, carPosition, maxHealth, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
-        /*If the next Coordinate to go is null, satay in current position*/
+        /*If the next Coordinate to go is null, stay in current position*/
         if (next == null) {
             next = carPosition;
         }
