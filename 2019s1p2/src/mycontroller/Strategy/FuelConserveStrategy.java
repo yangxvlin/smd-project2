@@ -54,27 +54,22 @@ public class FuelConserveStrategy implements IStrategy {
         Coordinate next;
         /* go to parcels */
         if (!enoughParcel) {
-            /* selecting the next Coordinate to the parcel */
             next = strategies.get(StrategyType.PICKUP)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
-            /* go to finish */
+        /* go to finish */
         } else {
-            /* selecting the next Coordinate to the exit */
             next = strategies.get(StrategyType.EXIT)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
-            System.out.println("unexplored ");
-            /*selecting the next Coordinate to explore*/
             next = strategies.get(StrategyType.EXPLORE)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* If the next Coordinate to go is null, stay in current position */
         if (next == null) {
-            System.out.println("no move");
             next = carPosition;
         }
 

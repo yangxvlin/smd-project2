@@ -52,29 +52,26 @@ public class HealthConserveStrategy implements IStrategy {
                                   float speed,
                                   WorldSpatial.Direction movingDirection,
                                   boolean enoughParcel) {
+        /*The next Coordinate for the car to go.*/
         Coordinate next = null;
         /* go to parcels */
         if (!enoughParcel) {
-            /*selecting the next Coordinate to the parcel*/
             next = strategies.get(StrategyType.PICKUP)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
-            /* go to finish */
+        /* go to finish */
         } else {
-            /*selecting the next Coordinate to the exit*/
             next = strategies.get(StrategyType.EXIT)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* still no where to go, so go to closest unexplored */
         if (next == null) {
-            /*selecting the next Coordinate to explore*/
             next = strategies.get(StrategyType.EXPLORE)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
 
         /* no where to go, so go to closest health/water */
         if (next == null) {
-            /*selecting the next Coordinate to heal tile*/
             next = strategies.get(StrategyType.HEAL)
                     .getNextPath(map, carPosition, healthUsage, health, fuelCost, speed, movingDirection, enoughParcel);
         }
