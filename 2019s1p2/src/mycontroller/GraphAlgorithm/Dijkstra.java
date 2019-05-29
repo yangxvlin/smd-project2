@@ -25,7 +25,7 @@ public class Dijkstra {
      * @param movingDirection : car's current moving direction
      * @param comparator : the node compare function
      * @param allowableNeighborTileStatus : allowable tile status for neighbor tile when expand to new nodes
-     * @return
+     * @return dijkstra searched result
      */
     public static DijkstraResult dijkstra(MapRecorder map,
                                           Coordinate source,
