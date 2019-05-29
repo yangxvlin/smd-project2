@@ -6,7 +6,7 @@ import tiles.MapTile;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 13:08
- * description:
+ * description: Finish Tile adapter
  **/
 
 public class FinishAdapter implements ITileAdapter {
