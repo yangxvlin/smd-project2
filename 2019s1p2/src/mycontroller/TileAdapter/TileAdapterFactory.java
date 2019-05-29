@@ -7,22 +7,17 @@ import tiles.TrapTile;
  * Xulin Yang, 904904
  *
  * @create 2019-05-22 13:37
- * description:
+ * description: Tile adapter factory responsible for creation
  **/
 
 public class TileAdapterFactory {
     /**
-     *
+     * singleton tile adapter factory instance
      */
     private static TileAdapterFactory tileAdapterFactory = null;
 
     /**
-     *
-     */
-    private TileAdapterFactory() {}
-
-    /**
-     * @return
+     * @return : singleton tile adapter factory instance
      */
     public static TileAdapterFactory getInstance() {
         if (tileAdapterFactory == null) {
@@ -33,8 +28,8 @@ public class TileAdapterFactory {
     }
 
     /**
-     * @param mapTile
-     * @return
+     * @param mapTile : mapTile in the system
+     * @return : adapter for the input mapTile
      */
     public ITileAdapter createTileAdapter(MapTile mapTile) {
         switch (mapTile.getType()) {

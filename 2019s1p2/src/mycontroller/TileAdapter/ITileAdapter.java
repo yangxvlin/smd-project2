@@ -20,7 +20,7 @@ public interface ITileAdapter {
 
     /**
      * @param tileType : TileType
-     * @return : true if object is input TileType
+     * @return : true if object is input TileType otherwise false
      */
     boolean isType(TileType tileType);
 }
