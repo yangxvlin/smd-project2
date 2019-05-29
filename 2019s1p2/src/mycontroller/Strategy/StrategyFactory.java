@@ -99,8 +99,8 @@ public class StrategyFactory {
                 /* register strategy into the fuel conserve strategy */
                 Comparator<Node> fuelComparator = new FuelConserveStrategy.FuelComparator();
 
-                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  createStrategy(IStrategy.StrategyType.PICKUP, fuelComparator,  searchAlgorithm));
-                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    createStrategy(IStrategy.StrategyType.EXIT,   fuelComparator,  searchAlgorithm));
+                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.PICKUP,  createStrategy(IStrategy.StrategyType.PICKUP,  fuelComparator,  searchAlgorithm));
+                fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXIT,    createStrategy(IStrategy.StrategyType.EXIT,    fuelComparator,  searchAlgorithm));
                 fuelConserveStrategy.registerIStrategy(IStrategy.StrategyType.EXPLORE, createStrategy(IStrategy.StrategyType.EXPLORE, fuelComparator, searchAlgorithm));
 
                 return fuelConserveStrategy;
