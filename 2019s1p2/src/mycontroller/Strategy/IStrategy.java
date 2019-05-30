@@ -1,6 +1,5 @@
 package mycontroller.Strategy;
 
-import mycontroller.GraphAlgorithm.DijkstraResult;
 import mycontroller.GraphAlgorithm.ISearchAlgorithm;
 import mycontroller.GraphAlgorithm.ISearchResult;
 import mycontroller.GraphAlgorithm.Node;
@@ -13,7 +12,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-22 1:43
  * description: This interface defines APIs for strategies used for getting next step coordinate.

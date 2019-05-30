@@ -1,7 +1,8 @@
 package mycontroller;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-21 23:31
  * description: customized tile status in map

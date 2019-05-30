@@ -3,7 +3,8 @@ package mycontroller.TileAdapter;
 import tiles.MapTile;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-22 13:13
  * description: Health Tile adapter

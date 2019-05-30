@@ -10,7 +10,8 @@ import world.WorldSpatial;
 import java.util.*;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-26 14:15
  *
@@ -90,7 +91,7 @@ public class ExitStrategy implements IStrategy {
         }
 
 
-        /* return thr Coordinate to go, if there is no way to Exit tiles, the Coordinate would be null. */
+        /* return the Coordinate to go, if there is no way to Exit tiles, the Coordinate would be null. */
         return next;
     }
 

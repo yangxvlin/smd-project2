@@ -10,7 +10,8 @@ import world.Car;
 import world.WorldSpatial;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-21 20:33
  * description: our ai car controller

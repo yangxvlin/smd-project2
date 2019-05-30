@@ -8,7 +8,8 @@ import swen30006.driving.Simulation;
 import java.util.Comparator;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-22 15:49
  *

@@ -8,10 +8,11 @@ import world.WorldSpatial;
 import java.util.ArrayList;
 
 /**
- * Xulin Yang, 904904
+ * Team number: W12-3
+ * Team member: XuLin Yang(904904), Zhuoqun Huang(908525), Renjie Meng(877396)
  *
  * @create 2019-05-23 15:51
- * description: Class to represent a node in the graph search algorithm,
+ * description: Class to represent a node in the graph search algorithm.
  **/
 
 public class Node {
