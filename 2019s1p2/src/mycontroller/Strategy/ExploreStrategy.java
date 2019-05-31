@@ -61,7 +61,7 @@ public class ExploreStrategy implements IStrategy {
          the out most tiles are the explored tiles that connects with unexplored tiles
          get Coordinates of all of out most tiles
         */
-        ArrayList<Coordinate> outMostExplored = new ArrayList<>(map.getOutMostExploredCoordinates());
+        ArrayList<Coordinate> outMostExplored = map.getOutMostExploredCoordinates();
 
         /* If there is no out most tiles, then return null, since no tile to explore */
         if (outMostExplored.isEmpty()) {
