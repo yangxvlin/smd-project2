@@ -19,6 +19,7 @@ Report: Understanding of GOF+GRASP principles has been demonstrated. You forgot 
 Implementation: Passed all test cases. Well done.
 
 ···
+
 Hi Xulin, 
 
 As Philip replied to you, all associations need multiplicities. In terms of your labels, ‘uses’ and ‘contains’ are pretty generic words, and more descriptive words/phrases could have been used to clearly describe the relationships between the classes.
@@ -29,4 +30,5 @@ You only lost 3 marks on the project. Having had a look at your work I agree wit
 
 Cheers,
 Charlotte.
+
 ···
